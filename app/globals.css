@@ -1,19 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
-  :root {
-    --brand: #2563eb;
-    --brand-dark: #1b2f5e;
-  }
-
   html {
     scroll-behavior: smooth;
   }
-
   body {
-    @apply bg-gray-950 text-white;
+    background-color: #030712;
+    color: white;
   }
 }
 
@@ -22,8 +15,10 @@
     background: linear-gradient(135deg, #1b2f5e 0%, #2563eb 100%);
   }
   .gradient-text {
-    @apply bg-clip-text text-transparent;
     background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .glass {
     background: rgba(255, 255, 255, 0.05);
@@ -31,6 +26,10 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10;
+    transition: all 0.3s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
   }
 }
