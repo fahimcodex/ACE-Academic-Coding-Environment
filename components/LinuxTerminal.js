@@ -8,7 +8,7 @@ import { RotateCcw } from "lucide-react";
 
 const WELCOME_LINES = [
   { type: "output", text: "╔══════════════════════════════════════════╗" },
-  { type: "output", text: "║   CodePath Linux Terminal  v1.0          ║" },
+  { type: "output", text: "║   ACE Linux Terminal  v1.0          ║" },
   { type: "output", text: "║   Type 'help' to see available commands  ║" },
   { type: "output", text: "╚══════════════════════════════════════════╝" },
   { type: "output", text: "" },

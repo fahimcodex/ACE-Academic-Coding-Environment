@@ -230,7 +230,7 @@ export default function HomePage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-blue-300 border border-blue-500/20 mb-8">
             <Zap className="w-4 h-4 text-yellow-400" />
-            Gamified coding education — free forever
+            Gamified coding education
           </div>
 
           {/* Headline */}
@@ -467,11 +467,12 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <Code2 className="w-5 h-5 text-blue-400" />
             <span className="font-bold">
-              Code<span className="text-blue-400">Path</span>
+              <span className="text-blue-400">ACE</span>
             </span>
           </div>
           <p className="text-gray-500 text-sm">
-            © 2026 CodePath. Built with Next.js & Firebase.
+            © 2026 ACE — Academic Coding Environment. Built with Next.js &
+            Firebase.
           </p>
           <div className="flex gap-6 text-sm text-gray-500">
             <Link href="/privacy" className="hover:text-gray-300">

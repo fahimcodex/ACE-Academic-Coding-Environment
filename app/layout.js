@@ -2,7 +2,7 @@ import { AuthProvider } from "@/lib/auth";
 import "./globals.css";
 
 export const metadata = {
-  title: "ACE — Interactive Coding Learning Platform",
+  title: "ACE — Academic Coding Environment",
   description:
     "Learn Linux, C, C++, and Python through interactive lessons, real-time coding, and gamified challenges.",
 };

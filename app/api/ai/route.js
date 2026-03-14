@@ -58,7 +58,7 @@ async function callGroq(systemPrompt, userMessage) {
 // ── Handlers ──────────────────────────────────────────────────────────────────
 
 async function handleExplain({ code, language, level = "beginner" }) {
-  const system = `You are a patient and encouraging coding tutor on CodePath, an interactive learning platform.
+  const system = `You are a patient and encouraging coding tutor on ACE (Academic Coding Environment), an interactive learning platform.
 Explain code clearly for a ${level} learner. Use simple language and helpful analogies.
 Format your response with:
 1. A one-sentence summary of what the code does
@@ -71,7 +71,7 @@ Keep it under 300 words.`;
 }
 
 async function handleDebug({ code, language, error }) {
-  const system = `You are an expert ${language} debugger on CodePath.
+  const system = `You are an expert ${language} debugger on ACE (Academic Coding Environment).
 Help the learner find and fix their bug. Be encouraging.
 
 Structure your response EXACTLY as:
@@ -102,7 +102,7 @@ Structure your response EXACTLY as:
 }
 
 async function handleLearningPath({ completedLessons, xp, level, weakAreas }) {
-  const system = `You are a personalized learning advisor on CodePath, a coding education platform.
+  const system = `You are a personalized learning advisor on ACE, an academic coding education platform.
 Suggest a focused weekly study plan based on learner data.
 Format as:
 - A 2-sentence assessment of where they are
@@ -127,7 +127,7 @@ async function handlePractice({
   difficulty,
   completedProblems,
 }) {
-  const system = `You are a coding challenge creator on CodePath.
+  const system = `You are a coding challenge creator on ACE (Academic Coding Environment).
 Generate a single well-defined practice problem. It must be solvable in under 20 lines.
 
 Format EXACTLY as:
