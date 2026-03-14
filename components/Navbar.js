@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth";
 import NotificationBell from "@/components/NotificationBell";
-import { Code2, Menu, X, Zap, LogOut, User, LayoutDashboard, Trophy } from "lucide-react";
+import { Code2, Menu, X, Zap, LogOut, User, LayoutDashboard, Trophy, Brain } from "lucide-react";
 
 export default function Navbar() {
   const { user, profile, signInWithGoogle, logout } = useAuth();
@@ -32,6 +32,10 @@ export default function Navbar() {
             <Link href="/courses"     className="hover:text-white transition-colors">Courses</Link>
             <Link href="/challenges"  className="hover:text-white transition-colors">Challenges</Link>
             <Link href="/leaderboard" className="hover:text-white transition-colors">Leaderboard</Link>
+            <Link href="/ai"
+              className="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium transition-colors">
+              <Brain className="w-3.5 h-3.5" /> AI Hub
+            </Link>
           </div>
 
           {/* Right side */}
@@ -80,6 +84,10 @@ export default function Navbar() {
                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors">
                         <Trophy className="w-4 h-4" /> Leaderboard
                       </Link>
+                      <Link href="/ai" onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-pink-400 hover:text-pink-300 hover:bg-white/5 transition-colors">
+                        <Brain className="w-4 h-4" /> AI Hub
+                      </Link>
                       <button onClick={() => { logout(); setUserMenuOpen(false); }}
                         className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-white/5 transition-colors">
                         <LogOut className="w-4 h-4" /> Sign Out
@@ -116,11 +124,14 @@ export default function Navbar() {
           <Link href="/courses"     className="block text-gray-300 hover:text-white py-1">Courses</Link>
           <Link href="/challenges"  className="block text-gray-300 hover:text-white py-1">Challenges</Link>
           <Link href="/leaderboard" className="block text-gray-300 hover:text-white py-1">Leaderboard</Link>
+          <Link href="/ai"          className="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 py-1">
+            <Brain className="w-4 h-4" /> AI Hub
+          </Link>
           {user ? (
             <>
-              <Link href="/dashboard"           className="block text-gray-300 hover:text-white py-1">Dashboard</Link>
+              <Link href="/dashboard"             className="block text-gray-300 hover:text-white py-1">Dashboard</Link>
               <Link href={`/profile/${user.uid}`} className="block text-gray-300 hover:text-white py-1">My Profile</Link>
-              <button onClick={logout} className="text-red-400 hover:text-red-300 py-1">Sign Out</button>
+              <button onClick={logout}            className="block text-red-400 hover:text-red-300 py-1">Sign Out</button>
             </>
           ) : (
             <button onClick={signInWithGoogle}
