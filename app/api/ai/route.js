@@ -4,13 +4,14 @@
 
 import { NextResponse } from "next/server";
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // Rate limit: 20 requests per user per hour (in-memory)
 const rateLimitMap = new Map();
 
 function checkRateLimit(uid) {
-  const now   = Date.now();
+  const now = Date.now();
   const entry = rateLimitMap.get(uid);
   if (!entry || now > entry.resetAt) {
     rateLimitMap.set(uid, { count: 1, resetAt: now + 3600_000 });
@@ -26,19 +27,19 @@ async function callGemini(prompt) {
   if (!apiKey) {
     throw new Error(
       "GEMINI_API_KEY is not set.\n\n" +
-      "Get a free key at https://aistudio.google.com → Get API Key\n" +
-      "Then add GEMINI_API_KEY=your_key to your .env.local file."
+        "Get a free key at https://aistudio.google.com → Get API Key\n" +
+        "Then add GEMINI_API_KEY=your_key to your .env.local file.",
     );
   }
 
   const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-    method:  "POST",
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
         maxOutputTokens: 1024,
-        temperature:     0.7,
+        temperature: 0.7,
       },
     }),
   });
@@ -124,7 +125,12 @@ Keep it under 250 words. Be specific and actionable.`;
   return callGemini(prompt);
 }
 
-async function handlePractice({ topic, language, difficulty, completedProblems }) {
+async function handlePractice({
+  topic,
+  language,
+  difficulty,
+  completedProblems,
+}) {
   const prompt = `You are a coding challenge creator on CodePath, a coding education platform.
 Generate a single, well-defined ${difficulty} ${language} practice problem about: ${topic}
 
@@ -165,22 +171,32 @@ export async function POST(request) {
     if (!checkRateLimit(uid)) {
       return NextResponse.json(
         { error: "Rate limit reached. You can make 20 AI requests per hour." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     let result = "";
     switch (action) {
-      case "explain":       result = await handleExplain(params);       break;
-      case "debug":         result = await handleDebug(params);         break;
-      case "learning_path": result = await handleLearningPath(params);  break;
-      case "practice":      result = await handlePractice(params);      break;
+      case "explain":
+        result = await handleExplain(params);
+        break;
+      case "debug":
+        result = await handleDebug(params);
+        break;
+      case "learning_path":
+        result = await handleLearningPath(params);
+        break;
+      case "practice":
+        result = await handlePractice(params);
+        break;
       default:
-        return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+        return NextResponse.json(
+          { error: `Unknown action: ${action}` },
+          { status: 400 },
+        );
     }
 
     return NextResponse.json({ result });
-
   } catch (err) {
     console.error("AI route error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
