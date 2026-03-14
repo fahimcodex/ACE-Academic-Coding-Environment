@@ -195,7 +195,7 @@ function TestimonialCard({ t }) {
       </div>
       <p className="text-gray-300 text-sm leading-relaxed mb-4">"{t.text}"</p>
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold flex-shrink-0">
+        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
           {t.avatar}
         </div>
         <div>
