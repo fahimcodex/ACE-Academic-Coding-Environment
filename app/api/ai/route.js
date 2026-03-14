@@ -1,15 +1,12 @@
 // app/api/ai/route.js
-// Server-side AI route using Google Gemini (free, no card needed)
-// Add GEMINI_API_KEY to your .env.local
+// Uses Groq API — free, fast, no region restrictions
 
 import { NextResponse } from "next/server";
 
-const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const MODEL = "llama-3.1-8b-instant"; // free model on Groq
 
-// Rate limit: 20 requests per user per hour (in-memory)
 const rateLimitMap = new Map();
-
 function checkRateLimit(uid) {
   const now = Date.now();
   const entry = rateLimitMap.get(uid);
@@ -22,71 +19,71 @@ function checkRateLimit(uid) {
   return true;
 }
 
-async function callGemini(prompt) {
-  const apiKey = process.env.GEMINI_API_KEY;
+async function callGroq(systemPrompt, userMessage) {
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     throw new Error(
-      "GEMINI_API_KEY is not set.\n\n" +
-        "Get a free key at https://aistudio.google.com → Get API Key\n" +
-        "Then add GEMINI_API_KEY=your_key to your .env.local file.",
+      "GROQ_API_KEY is not set.\n\n" +
+        "Get a free key at https://console.groq.com → API Keys\n" +
+        "Then add GROQ_API_KEY=your_key to your .env.local file.",
     );
   }
 
-  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+  const res = await fetch(GROQ_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        maxOutputTokens: 1024,
-        temperature: 0.7,
-      },
+      model: MODEL,
+      max_tokens: 1024,
+      temperature: 0.7,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage },
+      ],
     }),
   });
 
   if (!res.ok) {
     const errText = await res.text();
-    throw new Error(`Gemini API error (${res.status}): ${errText}`);
+    throw new Error(`Groq API error (${res.status}): ${errText}`);
   }
 
   const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  return data.choices?.[0]?.message?.content ?? "";
 }
 
 // ── Handlers ──────────────────────────────────────────────────────────────────
 
 async function handleExplain({ code, language, level = "beginner" }) {
-  const prompt = `You are a patient and encouraging coding tutor on CodePath, an interactive learning platform.
-Explain the following ${language} code clearly for a ${level} learner.
-
+  const system = `You are a patient and encouraging coding tutor on CodePath, an interactive learning platform.
+Explain code clearly for a ${level} learner. Use simple language and helpful analogies.
 Format your response with:
 1. A one-sentence summary of what the code does
-2. A line-by-line breakdown using plain English
-3. One tip for improvement or a related concept to explore next
+2. A line-by-line breakdown in plain English
+3. One tip for improvement or a concept to explore next
+Keep it under 300 words.`;
 
-Keep it under 300 words. Be friendly and encouraging.
-
-Code to explain:
-\`\`\`${language}
-${code}
-\`\`\``;
-  return callGemini(prompt);
+  const user = `Please explain this ${language} code:\n\n\`\`\`${language}\n${code}\n\`\`\``;
+  return callGroq(system, user);
 }
 
 async function handleDebug({ code, language, error }) {
-  const prompt = `You are an expert ${language} debugger on CodePath, an interactive learning platform.
-Help the learner understand and fix their bug. Be encouraging — bugs are how we learn!
+  const system = `You are an expert ${language} debugger on CodePath.
+Help the learner find and fix their bug. Be encouraging.
 
-Structure your response EXACTLY as follows:
+Structure your response EXACTLY as:
 
 🐛 **Bug Found:**
-[One clear sentence describing the bug]
+[One sentence describing the bug]
 
 📍 **Location:**
-[Which line or part of the code has the issue]
+[Which line has the issue]
 
 💡 **Why This Happens:**
-[Brief explanation of the root cause in plain English]
+[Brief plain-English explanation]
 
 ✅ **Fixed Code:**
 \`\`\`${language}
@@ -94,35 +91,34 @@ Structure your response EXACTLY as follows:
 \`\`\`
 
 🎓 **What to Remember:**
-[One sentence learning takeaway]
+[One sentence learning takeaway]`;
 
-Here is the code:
-\`\`\`${language}
-${code}
-\`\`\`
-
-${error ? `Error message or problem description:\n${error}` : "The code does not produce the expected output."}`;
-  return callGemini(prompt);
+  const user = `Here is my ${language} code:\n\`\`\`${language}\n${code}\n\`\`\`\n\n${
+    error
+      ? `Error message:\n${error}`
+      : "The code does not produce the expected output."
+  }\n\nPlease help me find and fix the bug.`;
+  return callGroq(system, user);
 }
 
 async function handleLearningPath({ completedLessons, xp, level, weakAreas }) {
-  const prompt = `You are a personalized learning advisor on CodePath, a coding education platform.
-Based on the learner's data below, suggest a focused weekly study plan.
-
-Learner data:
-- Total XP: ${xp}
-- Current Level: ${level}
-- Lessons completed: ${completedLessons.join(", ") || "none yet"}
-- Topics they find difficult: ${weakAreas.join(", ") || "not identified yet"}
-
-Format your response as:
-- A 2-sentence assessment of where they currently are
-- 3-5 specific lesson or topic recommendations in priority order
-- One daily habit tip to build consistency
-- One short motivational closing sentence
-
+  const system = `You are a personalized learning advisor on CodePath, a coding education platform.
+Suggest a focused weekly study plan based on learner data.
+Format as:
+- A 2-sentence assessment of where they are
+- 3-5 specific topic recommendations in priority order
+- One daily habit tip
+- One motivational closing sentence
 Keep it under 250 words. Be specific and actionable.`;
-  return callGemini(prompt);
+
+  const user = `Learner data:
+- Total XP: ${xp}
+- Level: ${level}
+- Completed lessons: ${completedLessons.join(", ") || "none yet"}
+- Topics they struggle with: ${weakAreas.join(", ") || "not identified yet"}
+
+Please suggest a personalized learning path for this week.`;
+  return callGroq(system, user);
 }
 
 async function handlePractice({
@@ -131,33 +127,34 @@ async function handlePractice({
   difficulty,
   completedProblems,
 }) {
-  const prompt = `You are a coding challenge creator on CodePath, a coding education platform.
-Generate a single, well-defined ${difficulty} ${language} practice problem about: ${topic}
+  const system = `You are a coding challenge creator on CodePath.
+Generate a single well-defined practice problem. It must be solvable in under 20 lines.
 
-Problems this learner has already completed: ${completedProblems.join(", ") || "none yet"}
-Make this problem fresh and different from those.
+Format EXACTLY as:
 
-Format your response EXACTLY as:
-
-**Problem Title:** [short descriptive title]
+**Problem Title:** [short title]
 
 **Description:**
-[2-3 sentence clear problem statement]
+[2-3 sentence problem statement]
 
 **Example:**
-Input: [example input]
+Input: [example]
 Output: [expected output]
 
 **Starter Code:**
 \`\`\`${language}
-[starter code with comments guiding the learner — do not solve it]
+[starter code with helpful comments — do NOT solve it]
 \`\`\`
 
-**Hint:** [one sentence hint that doesn't give away the solution]`;
-  return callGemini(prompt);
+**Hint:** [one sentence hint]`;
+
+  const user = `Generate a ${difficulty} ${language} practice problem about: ${topic}
+Problems already done: ${completedProblems.join(", ") || "none"}
+Make it different from those.`;
+  return callGroq(system, user);
 }
 
-// ── Main route handler ────────────────────────────────────────────────────────
+// ── Main handler ──────────────────────────────────────────────────────────────
 
 export async function POST(request) {
   try {
@@ -167,7 +164,6 @@ export async function POST(request) {
     if (!uid) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
-
     if (!checkRateLimit(uid)) {
       return NextResponse.json(
         { error: "Rate limit reached. You can make 20 AI requests per hour." },
