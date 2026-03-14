@@ -193,7 +193,9 @@ function TestimonialCard({ t }) {
           <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
         ))}
       </div>
-      <p className="text-gray-300 text-sm leading-relaxed mb-4">"{t.text}"</p>
+      <p className="text-gray-300 text-sm leading-relaxed mb-4">
+        &quot;{t.text}&quot;
+      </p>
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
           {t.avatar}
@@ -451,7 +453,7 @@ export default function HomePage() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  Sign in with Google — it's free
+                  Sign in with Google — it&apos;s free
                 </button>
               )}
             </div>
