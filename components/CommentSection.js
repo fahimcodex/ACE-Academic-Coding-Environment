@@ -45,7 +45,7 @@ function CommentBody({ text }) {
   // Split on triple-backtick code blocks
   const parts = text.split(/(```[\s\S]*?```)/g);
   return (
-    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
+    <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap wrap-break-word">
       {parts.map((part, i) => {
         if (part.startsWith("```") && part.endsWith("```")) {
           const code = part.slice(3, -3).trim();
@@ -132,7 +132,7 @@ function CommentCard({ comment, lessonId, depth = 0 }) {
     <div className={`${depth > 0 ? "ml-8 border-l border-white/10 pl-4" : ""}`}>
       <div className="flex gap-3 py-3">
         {/* Avatar */}
-        <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 ring-1 ring-white/10">
+        <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 ring-1 ring-white/10">
           {comment.photoURL ? (
             <Image
               src={comment.photoURL}
@@ -294,7 +294,7 @@ export default function CommentSection({ lessonId }) {
       {user ? (
         <div className="glass rounded-2xl p-4 border border-white/10 mb-6">
           <div className="flex gap-3">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0">
               {user.photoURL ? (
                 <Image
                   src={user.photoURL}
