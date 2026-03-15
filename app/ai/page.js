@@ -183,8 +183,8 @@ function GuestAiPage({ signInWithGoogle }) {
       <section className="relative pt-32 pb-20 px-4 overflow-hidden">
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-pink-600/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/4 left-1/3 w-[300px] h-[300px] bg-blue-600/8 rounded-full blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-125 h-125 bg-pink-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/3 w-75 h-75 bg-blue-600/8 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-3xl mx-auto text-center">
