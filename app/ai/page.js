@@ -145,10 +145,10 @@ function Select({ value, onChange, options, label }) {
       {label && <p className="text-xs text-gray-400 mb-1">{label}</p>}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-between gap-2 glass border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors w-full min-w-[130px]"
+        className="flex items-center justify-between gap-2 glass border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors w-full min-w-32.5"
       >
         <span className="capitalize truncate">{value}</span>
-        <ChevronDown className="w-3 h-3 flex-shrink-0" />
+        <ChevronDown className="w-3 h-3 shrink-0" />
       </button>
       {open && (
         <div className="absolute top-full mt-1 left-0 glass rounded-lg border border-white/10 py-1 z-20 w-full min-w-32.5 max-h-48 overflow-y-auto">
@@ -304,7 +304,7 @@ function GuestAiPage({ signInWithGoogle }) {
       </section>
 
       {/* ── How it works ── */}
-      <section className="py-20 px-4 bg-white/[0.02]">
+      <section className="py-20 px-4 bg-white/2">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl font-bold mb-3">How it works</h2>
@@ -351,7 +351,7 @@ function GuestAiPage({ signInWithGoogle }) {
               "Unlimited Practice Problem generation",
             ].map((item) => (
               <div key={item} className="flex items-center gap-3 px-6 py-4">
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 shrink-0" />
                 <p className="text-gray-300 text-sm">{item}</p>
               </div>
             ))}
@@ -363,7 +363,7 @@ function GuestAiPage({ signInWithGoogle }) {
       <section className="py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="glass rounded-3xl p-12 border border-pink-500/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-600/5 to-blue-600/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-br from-pink-600/5 to-blue-600/5 pointer-events-none" />
             <div className="relative">
               <Brain className="w-12 h-12 text-pink-400 mx-auto mb-6" />
               <h2 className="text-3xl font-bold mb-4">
@@ -669,7 +669,7 @@ function SignedInAiPage({ user, profile }) {
                 </div>
                 {practiceCode && (
                   <div>
-                    <div className="px-4 py-2 bg-white/[0.02] border-b border-white/10 flex items-center justify-between">
+                    <div className="px-4 py-2 bg-white/2 border-b border-white/10 flex items-center justify-between">
                       <span className="text-xs text-gray-400 font-mono">
                         {practiceLang === "cpp"
                           ? "solution.cpp"
@@ -700,7 +700,7 @@ function SignedInAiPage({ user, profile }) {
                         padding: { top: 10 },
                       }}
                     />
-                    <div className="px-4 py-3 bg-white/[0.02] border-t border-white/10 text-center">
+                    <div className="px-4 py-3 bg-white/2 border-t border-white/10 text-center">
                       <p className="text-xs text-gray-500">
                         To run your code, paste it into a{" "}
                         <link

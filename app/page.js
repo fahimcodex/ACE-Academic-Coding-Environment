@@ -133,19 +133,19 @@ const TESTIMONIALS = [
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-function StatCard({ value, label }) {
-  return (
-    <div className="text-center">
-      <div className="text-4xl font-bold gradient-text mb-1">{value}</div>
-      <div className="text-gray-400 text-sm">{label}</div>
-    </div>
-  );
-}
+// function StatCard({ value, label }) {
+//   return (
+//     <div className="text-center">
+//       <div className="text-4xl font-bold gradient-text mb-1">{value}</div>
+//       <div className="text-gray-400 text-sm">{label}</div>
+//     </div>
+//   );
+// }
 
 function LanguageCard({ lang }) {
   return (
     <div
-      className={`glass rounded-2xl p-6 border ${lang.border} bg-gradient-to-br ${lang.color} card-hover group`}
+      className={`glass rounded-2xl p-6 border ${lang.border} bg-linear-to-br ${lang.color} card-hover group`}
     >
       <div className="flex items-start justify-between mb-4">
         <span className="text-4xl">{lang.icon}</span>
@@ -185,29 +185,29 @@ function FeatureCard({ feature }) {
   );
 }
 
-function TestimonialCard({ t }) {
-  return (
-    <div className="glass rounded-2xl p-6 card-hover">
-      <div className="flex gap-1 mb-3">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-        ))}
-      </div>
-      <p className="text-gray-300 text-sm leading-relaxed mb-4">
-        &quot;{t.text}&quot;
-      </p>
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
-          {t.avatar}
-        </div>
-        <div>
-          <p className="text-sm font-semibold">{t.name}</p>
-          <p className="text-xs text-gray-400">{t.role}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+// function TestimonialCard({ t }) {
+//   return (
+//     <div className="glass rounded-2xl p-6 card-hover">
+//       <div className="flex gap-1 mb-3">
+//         {[...Array(5)].map((_, i) => (
+//           <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+//         ))}
+//       </div>
+//       <p className="text-gray-300 text-sm leading-relaxed mb-4">
+//         &quot;{t.text}&quot;
+//       </p>
+//       <div className="flex items-center gap-3">
+//         <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold shrink-0">
+//           {t.avatar}
+//         </div>
+//         <div>
+//           <p className="text-sm font-semibold">{t.name}</p>
+//           <p className="text-xs text-gray-400">{t.role}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
@@ -298,7 +298,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats ── */}
-      <section className="py-12 border-y border-white/5">
+      {/* <section className="py-12 border-y border-white/5">
         <div className="max-w-3xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {STATS.map((s) => (
@@ -306,7 +306,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── Language Tracks ── */}
       <section className="py-24 px-4">
@@ -329,7 +329,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Features ── */}
-      <section className="py-24 px-4 bg-white/[0.02]">
+      <section className="py-24 px-4 bg-white/2">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold mb-4">
@@ -352,7 +352,7 @@ export default function HomePage() {
       <section className="py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold mb-4">How CodePath works</h2>
+            <h2 className="text-4xl font-bold mb-4">How ACE works</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -396,7 +396,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Testimonials ── */}
-      <section className="py-24 px-4 bg-white/[0.02]">
+      {/* <section className="py-24 px-4 bg-white/2">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold mb-4">Learners love CodePath</h2>
@@ -407,13 +407,13 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── Final CTA ── */}
       <section className="py-24 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="glass rounded-3xl p-12 border border-blue-500/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-br from-blue-600/10 to-purple-600/5 pointer-events-none" />
             <div className="relative">
               <Shield className="w-12 h-12 text-blue-400 mx-auto mb-6" />
               <h2 className="text-4xl font-bold mb-4">
