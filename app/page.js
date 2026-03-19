@@ -25,6 +25,7 @@ const LANGUAGES = [
   {
     icon: "🐧",
     name: "Linux",
+    slug: "linux",
     color: "from-orange-500/20 to-orange-600/5",
     border: "border-orange-500/30",
     tag: "text-orange-400",
@@ -35,6 +36,7 @@ const LANGUAGES = [
   {
     icon: "⚙️",
     name: "C",
+    slug: "c",
     color: "from-blue-500/20 to-blue-600/5",
     border: "border-blue-500/30",
     tag: "text-blue-400",
@@ -45,6 +47,7 @@ const LANGUAGES = [
   {
     icon: "🔷",
     name: "C++",
+    slug: "cpp",
     color: "from-purple-500/20 to-purple-600/5",
     border: "border-purple-500/30",
     tag: "text-purple-400",
@@ -55,6 +58,7 @@ const LANGUAGES = [
   {
     icon: "🐍",
     name: "Python",
+    slug: "python",
     color: "from-green-500/20 to-green-600/5",
     border: "border-green-500/30",
     tag: "text-green-400",
@@ -160,7 +164,7 @@ function LanguageCard({ lang }) {
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-500">{lang.lessons} lessons</span>
         <Link
-          href={`/courses/${lang.name.toLowerCase()}`}
+          href={`/courses/${lang.slug}`}
           className={`flex items-center gap-1 text-sm font-semibold ${lang.tag} group-hover:gap-2 transition-all`}
         >
           Start <ArrowRight className="w-4 h-4" />
@@ -336,8 +340,8 @@ export default function HomePage() {
               Everything you need to learn faster.
             </h2>
             <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              CodePath combines structured curriculum, real-time practice, and
-              social motivation in one place.
+              ACE combines structured curriculum, real-time practice, and social
+              motivation in one place.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -399,7 +403,7 @@ export default function HomePage() {
       {/* <section className="py-24 px-4 bg-white/2">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold mb-4">Learners love CodePath</h2>
+            <h2 className="text-4xl font-bold mb-4">Learners love ACE</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t) => (
