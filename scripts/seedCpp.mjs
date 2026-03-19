@@ -6,24 +6,29 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyBeCUpoOfSyEO_i7hBcoSd-pRq95TTpi9A",
-  authDomain:        "academic-coding-environment.firebaseapp.com",
-  projectId:         "academic-coding-environment",
-  storageBucket:     "academic-coding-environment.firebasestorage.app",
+  apiKey: "AIzaSyBeCUpoOfSyEO_i7hBcoSd-pRq95TTpi9A",
+  authDomain: "academic-coding-environment.firebaseapp.com",
+  projectId: "academic-coding-environment",
+  storageBucket: "academic-coding-environment.firebasestorage.app",
   messagingSenderId: "575762500824",
-  appId:             "1:575762500824:web:87c159931942ed565d1bad",
+  appId: "1:575762500824:web:87c159931942ed565d1bad",
 };
 
 const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const db = getFirestore(app);
 
 const lessons = [
-
   // ── BEGINNER (2–8) ────────────────────────────────────────────────────────
 
   {
-    id:"cpp-02", courseId:"cpp", order:2, title:"Variables & Data Types", duration:"15 min", xpReward:25, language:"cpp",
-    theory:`# Variables & Data Types
+    id: "cpp-02",
+    courseId: "cpp",
+    order: 2,
+    title: "Variables & Data Types",
+    duration: "15 min",
+    xpReward: 25,
+    language: "cpp",
+    theory: `# Variables & Data Types
 
 C++ is a **statically typed** language — you must declare the type of every variable before using it.
 
@@ -72,7 +77,7 @@ int    b = 2;
 double result = (double)a / b;  // 2.5 (without cast: 2)
 cout << result << endl;
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -107,16 +112,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"Which type is preferred for decimal numbers in C++?", options:["float","int","double","long"], correct:2, explanation:"double is preferred over float because it has higher precision (64-bit vs 32-bit)."},
-      {id:"q2", question:"What does the 'auto' keyword do in C++?", options:["Creates an automatic pointer","Lets the compiler deduce the type","Makes a variable constant","Creates a global variable"], correct:1, explanation:"auto tells the compiler to automatically determine the variable's type from its initializer value."},
-      {id:"q3", question:"What happens if you try to modify a const variable?", options:["It silently ignores the change","It resets to default","The compiler gives an error","It creates a new variable"], correct:2, explanation:"const variables cannot be modified after initialization — the compiler produces an error if you try."},
+    quiz: [
+      {
+        id: "q1",
+        question: "Which type is preferred for decimal numbers in C++?",
+        options: ["float", "int", "double", "long"],
+        correct: 2,
+        explanation:
+          "double is preferred over float because it has higher precision (64-bit vs 32-bit).",
+      },
+      {
+        id: "q2",
+        question: "What does the 'auto' keyword do in C++?",
+        options: [
+          "Creates an automatic pointer",
+          "Lets the compiler deduce the type",
+          "Makes a variable constant",
+          "Creates a global variable",
+        ],
+        correct: 1,
+        explanation:
+          "auto tells the compiler to automatically determine the variable's type from its initializer value.",
+      },
+      {
+        id: "q3",
+        question: "What happens if you try to modify a const variable?",
+        options: [
+          "It silently ignores the change",
+          "It resets to default",
+          "The compiler gives an error",
+          "It creates a new variable",
+        ],
+        correct: 2,
+        explanation:
+          "const variables cannot be modified after initialization — the compiler produces an error if you try.",
+      },
     ],
   },
 
   {
-    id:"cpp-03", courseId:"cpp", order:3, title:"Operators & Expressions", duration:"12 min", xpReward:25, language:"cpp",
-    theory:`# Operators & Expressions
+    id: "cpp-03",
+    courseId: "cpp",
+    order: 3,
+    title: "Operators & Expressions",
+    duration: "12 min",
+    xpReward: 25,
+    language: "cpp",
+    theory: `# Operators & Expressions
 
 ## Arithmetic Operators
 
@@ -174,7 +216,7 @@ int age = 18;
 string status = (age >= 18) ? "Adult" : "Minor";
 cout << status << endl;  // Adult
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -211,16 +253,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does the % operator do in C++?", options:["Division","Power","Remainder after division","Percentage"], correct:2, explanation:"% is the modulo operator — it returns the remainder after integer division. 10 % 3 = 1."},
-      {id:"q2", question:"What is the difference between n++ and ++n?", options:["No difference","n++ adds 2, ++n adds 1","n++ uses then increments; ++n increments then uses","++n is faster"], correct:2, explanation:"n++ (post-increment) returns the current value then increments. ++n (pre-increment) increments first then returns the new value."},
-      {id:"q3", question:"What does (age >= 18) ? \"Adult\" : \"Minor\" do?", options:["Compares two strings","A ternary expression returning Adult if age>=18, Minor otherwise","Creates two variables","Throws an error if age<18"], correct:1, explanation:"The ternary operator ?: is a compact if-else. It returns the first value if the condition is true, otherwise the second."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does the % operator do in C++?",
+        options: [
+          "Division",
+          "Power",
+          "Remainder after division",
+          "Percentage",
+        ],
+        correct: 2,
+        explanation:
+          "% is the modulo operator — it returns the remainder after integer division. 10 % 3 = 1.",
+      },
+      {
+        id: "q2",
+        question: "What is the difference between n++ and ++n?",
+        options: [
+          "No difference",
+          "n++ adds 2, ++n adds 1",
+          "n++ uses then increments; ++n increments then uses",
+          "++n is faster",
+        ],
+        correct: 2,
+        explanation:
+          "n++ (post-increment) returns the current value then increments. ++n (pre-increment) increments first then returns the new value.",
+      },
+      {
+        id: "q3",
+        question: 'What does (age >= 18) ? "Adult" : "Minor" do?',
+        options: [
+          "Compares two strings",
+          "A ternary expression returning Adult if age>=18, Minor otherwise",
+          "Creates two variables",
+          "Throws an error if age<18",
+        ],
+        correct: 1,
+        explanation:
+          "The ternary operator ?: is a compact if-else. It returns the first value if the condition is true, otherwise the second.",
+      },
     ],
   },
 
   {
-    id:"cpp-04", courseId:"cpp", order:4, title:"Control Flow: if/else & switch", duration:"15 min", xpReward:25, language:"cpp",
-    theory:`# Control Flow: if/else & switch
+    id: "cpp-04",
+    courseId: "cpp",
+    order: 4,
+    title: "Control Flow: if/else & switch",
+    duration: "15 min",
+    xpReward: 25,
+    language: "cpp",
+    theory: `# Control Flow: if/else & switch
 
 ## if / else if / else
 
@@ -285,7 +369,7 @@ if (age < 13 || age > 65) {
     cout << "Special pricing applies" << endl;
 }
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -330,16 +414,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What happens in a switch statement if you forget 'break'?", options:["The program crashes","Execution falls through to the next case","Only the matching case runs","The default runs"], correct:1, explanation:"Without break, execution continues ('falls through') into the next case, running its code even if that case doesn't match."},
-      {id:"q2", question:"Which operator means AND in C++?", options:["&","||","&&","and"], correct:2, explanation:"&& is the logical AND operator. Both conditions must be true for the whole expression to be true."},
-      {id:"q3", question:"What is the 'default' case in a switch statement?", options:["The first case","Required in every switch","Runs when no other case matches","The fastest case"], correct:2, explanation:"The default case runs when the switch value doesn't match any of the defined cases. It's optional but good practice."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What happens in a switch statement if you forget 'break'?",
+        options: [
+          "The program crashes",
+          "Execution falls through to the next case",
+          "Only the matching case runs",
+          "The default runs",
+        ],
+        correct: 1,
+        explanation:
+          "Without break, execution continues ('falls through') into the next case, running its code even if that case doesn't match.",
+      },
+      {
+        id: "q2",
+        question: "Which operator means AND in C++?",
+        options: ["&", "||", "&&", "and"],
+        correct: 2,
+        explanation:
+          "&& is the logical AND operator. Both conditions must be true for the whole expression to be true.",
+      },
+      {
+        id: "q3",
+        question: "What is the 'default' case in a switch statement?",
+        options: [
+          "The first case",
+          "Required in every switch",
+          "Runs when no other case matches",
+          "The fastest case",
+        ],
+        correct: 2,
+        explanation:
+          "The default case runs when the switch value doesn't match any of the defined cases. It's optional but good practice.",
+      },
     ],
   },
 
   {
-    id:"cpp-05", courseId:"cpp", order:5, title:"Loops", duration:"15 min", xpReward:25, language:"cpp",
-    theory:`# Loops
+    id: "cpp-05",
+    courseId: "cpp",
+    order: 5,
+    title: "Loops",
+    duration: "15 min",
+    xpReward: 25,
+    language: "cpp",
+    theory: `# Loops
 
 ## for Loop
 
@@ -408,7 +529,7 @@ for (int i = 1; i <= 3; i++) {
     cout << endl;
 }
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 using namespace std;
 
 int main() {
@@ -445,16 +566,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What are the three parts of a for loop header?", options:["condition, body, end","init, condition, update","start, stop, step","declare, check, run"], correct:1, explanation:"A for loop header has three parts: initialization (int i=0), condition (i<5), and update (i++), separated by semicolons."},
-      {id:"q2", question:"What does a do-while loop guarantee?", options:["Infinite execution","The body runs at least once","Better performance","The condition is checked first"], correct:1, explanation:"A do-while loop checks the condition after the body runs, guaranteeing the body executes at least once."},
-      {id:"q3", question:"What does 'continue' do inside a loop?", options:["Exits the loop","Restarts the program","Skips the rest of the current iteration","Pauses execution"], correct:2, explanation:"continue skips the remaining code in the current iteration and moves to the next iteration of the loop."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What are the three parts of a for loop header?",
+        options: [
+          "condition, body, end",
+          "init, condition, update",
+          "start, stop, step",
+          "declare, check, run",
+        ],
+        correct: 1,
+        explanation:
+          "A for loop header has three parts: initialization (int i=0), condition (i<5), and update (i++), separated by semicolons.",
+      },
+      {
+        id: "q2",
+        question: "What does a do-while loop guarantee?",
+        options: [
+          "Infinite execution",
+          "The body runs at least once",
+          "Better performance",
+          "The condition is checked first",
+        ],
+        correct: 1,
+        explanation:
+          "A do-while loop checks the condition after the body runs, guaranteeing the body executes at least once.",
+      },
+      {
+        id: "q3",
+        question: "What does 'continue' do inside a loop?",
+        options: [
+          "Exits the loop",
+          "Restarts the program",
+          "Skips the rest of the current iteration",
+          "Pauses execution",
+        ],
+        correct: 2,
+        explanation:
+          "continue skips the remaining code in the current iteration and moves to the next iteration of the loop.",
+      },
     ],
   },
 
   {
-    id:"cpp-06", courseId:"cpp", order:6, title:"Functions", duration:"18 min", xpReward:30, language:"cpp",
-    theory:`# Functions
+    id: "cpp-06",
+    courseId: "cpp",
+    order: 6,
+    title: "Functions",
+    duration: "18 min",
+    xpReward: 30,
+    language: "cpp",
+    theory: `# Functions
 
 Functions let you group reusable code under a name.
 
@@ -517,7 +680,7 @@ int n = 10;
 doubleVal(n);  cout << n << endl;  // 10
 doubleRef(n);  cout << n << endl;  // 20
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 #include <cmath>
 using namespace std;
@@ -557,16 +720,58 @@ double circleArea(double r)   { return 3.14159 * r * r; }
 int    factorial(int n)        { return (n <= 1) ? 1 : n * factorial(n-1); }
 void   printStars(int n, char c) { for(int i=0;i<n;i++) cout<<c; cout<<endl; }
 int    max3(int a, int b, int c) { return max(a, max(b, c)); }`,
-    quiz:[
-      {id:"q1", question:"What is function overloading?", options:["Calling a function too many times","Multiple functions with the same name but different parameters","A function that calls itself","A function with no return type"], correct:1, explanation:"Function overloading allows multiple functions with the same name as long as their parameter lists differ in type or number."},
-      {id:"q2", question:"What does passing by reference (&) do?", options:["Creates a copy","Passes a pointer","Allows the function to modify the original variable","Makes the variable const"], correct:2, explanation:"Pass by reference passes the actual variable, not a copy, so any modifications inside the function affect the original."},
-      {id:"q3", question:"What is a function prototype?", options:["The function's full implementation","A declaration that tells the compiler the function's name, return type, and parameters","A template function","A virtual function"], correct:1, explanation:"A function prototype (declaration) tells the compiler about a function before its full definition, allowing it to be called before being defined."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is function overloading?",
+        options: [
+          "Calling a function too many times",
+          "Multiple functions with the same name but different parameters",
+          "A function that calls itself",
+          "A function with no return type",
+        ],
+        correct: 1,
+        explanation:
+          "Function overloading allows multiple functions with the same name as long as their parameter lists differ in type or number.",
+      },
+      {
+        id: "q2",
+        question: "What does passing by reference (&) do?",
+        options: [
+          "Creates a copy",
+          "Passes a pointer",
+          "Allows the function to modify the original variable",
+          "Makes the variable const",
+        ],
+        correct: 2,
+        explanation:
+          "Pass by reference passes the actual variable, not a copy, so any modifications inside the function affect the original.",
+      },
+      {
+        id: "q3",
+        question: "What is a function prototype?",
+        options: [
+          "The function's full implementation",
+          "A declaration that tells the compiler the function's name, return type, and parameters",
+          "A template function",
+          "A virtual function",
+        ],
+        correct: 1,
+        explanation:
+          "A function prototype (declaration) tells the compiler about a function before its full definition, allowing it to be called before being defined.",
+      },
     ],
   },
 
   {
-    id:"cpp-07", courseId:"cpp", order:7, title:"Arrays & Strings", duration:"18 min", xpReward:30, language:"cpp",
-    theory:`# Arrays & Strings
+    id: "cpp-07",
+    courseId: "cpp",
+    order: 7,
+    title: "Arrays & Strings",
+    duration: "18 min",
+    xpReward: 30,
+    language: "cpp",
+    theory: `# Arrays & Strings
 
 ## C-Style Arrays
 
@@ -619,7 +824,7 @@ cout << s.replace(2,5,"Hi")    << endl;  // replace chars
 string line;
 getline(cin, line);  // reads entire line including spaces
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -657,16 +862,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"How do you find the number of elements in a C-style array?", options:["array.size()","array.length()","sizeof(array)/sizeof(array[0])","count(array)"], correct:2, explanation:"sizeof(array) gives total bytes; sizeof(array[0]) gives bytes per element. Dividing gives the element count."},
-      {id:"q2", question:"What does string::npos represent?", options:["The last position","Zero","A 'not found' indicator returned by find()","The string's length"], correct:2, explanation:"string::npos is the maximum value of size_t and is returned by find() when the substring is not found."},
-      {id:"q3", question:"Which function reads a full line including spaces in C++?", options:["cin >>","cin.get()","getline(cin, str)","cin.read()"], correct:2, explanation:"getline(cin, str) reads an entire line including spaces until a newline character, unlike cin >> which stops at whitespace."},
+    quiz: [
+      {
+        id: "q1",
+        question: "How do you find the number of elements in a C-style array?",
+        options: [
+          "array.size()",
+          "array.length()",
+          "sizeof(array)/sizeof(array[0])",
+          "count(array)",
+        ],
+        correct: 2,
+        explanation:
+          "sizeof(array) gives total bytes; sizeof(array[0]) gives bytes per element. Dividing gives the element count.",
+      },
+      {
+        id: "q2",
+        question: "What does string::npos represent?",
+        options: [
+          "The last position",
+          "Zero",
+          "A 'not found' indicator returned by find()",
+          "The string's length",
+        ],
+        correct: 2,
+        explanation:
+          "string::npos is the maximum value of size_t and is returned by find() when the substring is not found.",
+      },
+      {
+        id: "q3",
+        question: "Which function reads a full line including spaces in C++?",
+        options: ["cin >>", "cin.get()", "getline(cin, str)", "cin.read()"],
+        correct: 2,
+        explanation:
+          "getline(cin, str) reads an entire line including spaces until a newline character, unlike cin >> which stops at whitespace.",
+      },
     ],
   },
 
   {
-    id:"cpp-08", courseId:"cpp", order:8, title:"Pointers & References", duration:"20 min", xpReward:35, language:"cpp",
-    theory:`# Pointers & References
+    id: "cpp-08",
+    courseId: "cpp",
+    order: 8,
+    title: "Pointers & References",
+    duration: "20 min",
+    xpReward: 35,
+    language: "cpp",
+    theory: `# Pointers & References
 
 Pointers and references are fundamental to C++ and are what give it power over memory.
 
@@ -732,7 +974,7 @@ cout << *p     << endl;   // 10
 cout << *(p+1) << endl;   // 20
 cout << *(p+2) << endl;   // 30
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 using namespace std;
 
 void increment(int* p)  { (*p)++; }         // pointer param
@@ -773,18 +1015,60 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does the * operator do when used with a pointer?", options:["Declares a pointer","Multiplies values","Dereferences the pointer (gets the value at the address)","Gets the address of a variable"], correct:2, explanation:"When used with an existing pointer (not in declaration), * dereferences it — meaning it accesses the value stored at that memory address."},
-      {id:"q2", question:"What is the & operator used for in 'int* ptr = &x'?", options:["Logical AND","Bitwise AND","Gets the memory address of x","Creates a reference"], correct:2, explanation:"In this context, & is the address-of operator. It returns the memory address of the variable x."},
-      {id:"q3", question:"What is nullptr in C++?", options:["Zero","An empty string","A pointer to memory address 0 meaning 'points to nothing'","An error code"], correct:2, explanation:"nullptr is the C++11 null pointer constant. It represents a pointer that doesn't point to any valid memory location."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does the * operator do when used with a pointer?",
+        options: [
+          "Declares a pointer",
+          "Multiplies values",
+          "Dereferences the pointer (gets the value at the address)",
+          "Gets the address of a variable",
+        ],
+        correct: 2,
+        explanation:
+          "When used with an existing pointer (not in declaration), * dereferences it — meaning it accesses the value stored at that memory address.",
+      },
+      {
+        id: "q2",
+        question: "What is the & operator used for in 'int* ptr = &x'?",
+        options: [
+          "Logical AND",
+          "Bitwise AND",
+          "Gets the memory address of x",
+          "Creates a reference",
+        ],
+        correct: 2,
+        explanation:
+          "In this context, & is the address-of operator. It returns the memory address of the variable x.",
+      },
+      {
+        id: "q3",
+        question: "What is nullptr in C++?",
+        options: [
+          "Zero",
+          "An empty string",
+          "A pointer to memory address 0 meaning 'points to nothing'",
+          "An error code",
+        ],
+        correct: 2,
+        explanation:
+          "nullptr is the C++11 null pointer constant. It represents a pointer that doesn't point to any valid memory location.",
+      },
     ],
   },
 
   // ── INTERMEDIATE (9–17) ───────────────────────────────────────────────────
 
   {
-    id:"cpp-09", courseId:"cpp", order:9, title:"OOP I — Classes & Objects", duration:"20 min", xpReward:40, language:"cpp",
-    theory:`# OOP I — Classes & Objects
+    id: "cpp-09",
+    courseId: "cpp",
+    order: 9,
+    title: "OOP I — Classes & Objects",
+    duration: "20 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# OOP I — Classes & Objects
 
 A **class** bundles data (attributes) and functions (methods) together.
 
@@ -854,7 +1138,7 @@ public:
     }
 };
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -907,16 +1191,59 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is the difference between public and private in a class?", options:["public is faster","private members can only be accessed within the class; public from anywhere","There is no difference in C++","public is for functions, private for data"], correct:1, explanation:"private restricts access to within the class itself. public allows access from anywhere. This is encapsulation — hiding internal details."},
-      {id:"q2", question:"What is a destructor?", options:["A function that creates objects","A function called automatically when an object is destroyed","A private constructor","A function that deletes pointers"], correct:1, explanation:"A destructor (~ClassName) is called automatically when an object goes out of scope or is deleted. Used for cleanup like freeing memory."},
-      {id:"q3", question:"What does 'this' pointer refer to inside a class method?", options:["The parent class","The next object created","A pointer to the current object instance","The class definition itself"], correct:2, explanation:"'this' is a pointer to the current object. It's useful when a parameter has the same name as a member variable."},
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "What is the difference between public and private in a class?",
+        options: [
+          "public is faster",
+          "private members can only be accessed within the class; public from anywhere",
+          "There is no difference in C++",
+          "public is for functions, private for data",
+        ],
+        correct: 1,
+        explanation:
+          "private restricts access to within the class itself. public allows access from anywhere. This is encapsulation — hiding internal details.",
+      },
+      {
+        id: "q2",
+        question: "What is a destructor?",
+        options: [
+          "A function that creates objects",
+          "A function called automatically when an object is destroyed",
+          "A private constructor",
+          "A function that deletes pointers",
+        ],
+        correct: 1,
+        explanation:
+          "A destructor (~ClassName) is called automatically when an object goes out of scope or is deleted. Used for cleanup like freeing memory.",
+      },
+      {
+        id: "q3",
+        question: "What does 'this' pointer refer to inside a class method?",
+        options: [
+          "The parent class",
+          "The next object created",
+          "A pointer to the current object instance",
+          "The class definition itself",
+        ],
+        correct: 2,
+        explanation:
+          "'this' is a pointer to the current object. It's useful when a parameter has the same name as a member variable.",
+      },
     ],
   },
 
   {
-    id:"cpp-10", courseId:"cpp", order:10, title:"OOP II — Inheritance & Polymorphism", duration:"22 min", xpReward:40, language:"cpp",
-    theory:`# OOP II — Inheritance & Polymorphism
+    id: "cpp-10",
+    courseId: "cpp",
+    order: 10,
+    title: "OOP II — Inheritance & Polymorphism",
+    duration: "22 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# OOP II — Inheritance & Polymorphism
 
 ## Inheritance
 
@@ -974,7 +1301,7 @@ for (Shape* s : shapes) {
     s->describe();   // calls correct area() for each type
 }
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -1033,16 +1360,58 @@ int main() {
     for (Vehicle* v : fleet) delete v;
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does the 'override' keyword do in C++11?", options:["Creates a new function","Explicitly marks that a function overrides a virtual function","Makes a function faster","Prevents a function from being overridden further"], correct:1, explanation:"override explicitly tells the compiler this function is meant to override a virtual function. If the base function signature doesn't match, the compiler gives an error."},
-      {id:"q2", question:"Why do we use virtual functions?", options:["To make functions faster","To enable polymorphism — calling the correct derived class function through a base class pointer","To hide functions from derived classes","To make functions static"], correct:1, explanation:"virtual allows the correct overridden function to be called at runtime based on the actual object type, not the pointer type. This is runtime polymorphism."},
-      {id:"q3", question:"What is the access specifier 'protected'?", options:["Same as private","Same as public","Accessible within the class and its derived classes, but not from outside","Only accessible in virtual functions"], correct:2, explanation:"protected members are accessible within the class itself and any derived classes, but not from outside the class hierarchy."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does the 'override' keyword do in C++11?",
+        options: [
+          "Creates a new function",
+          "Explicitly marks that a function overrides a virtual function",
+          "Makes a function faster",
+          "Prevents a function from being overridden further",
+        ],
+        correct: 1,
+        explanation:
+          "override explicitly tells the compiler this function is meant to override a virtual function. If the base function signature doesn't match, the compiler gives an error.",
+      },
+      {
+        id: "q2",
+        question: "Why do we use virtual functions?",
+        options: [
+          "To make functions faster",
+          "To enable polymorphism — calling the correct derived class function through a base class pointer",
+          "To hide functions from derived classes",
+          "To make functions static",
+        ],
+        correct: 1,
+        explanation:
+          "virtual allows the correct overridden function to be called at runtime based on the actual object type, not the pointer type. This is runtime polymorphism.",
+      },
+      {
+        id: "q3",
+        question: "What is the access specifier 'protected'?",
+        options: [
+          "Same as private",
+          "Same as public",
+          "Accessible within the class and its derived classes, but not from outside",
+          "Only accessible in virtual functions",
+        ],
+        correct: 2,
+        explanation:
+          "protected members are accessible within the class itself and any derived classes, but not from outside the class hierarchy.",
+      },
     ],
   },
 
   {
-    id:"cpp-11", courseId:"cpp", order:11, title:"OOP III — Operator Overloading", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# Operator Overloading
+    id: "cpp-11",
+    courseId: "cpp",
+    order: 11,
+    title: "OOP III — Operator Overloading",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# Operator Overloading
 
 Operator overloading lets you define how operators like \`+\`, \`==\`, and \`<<\` work with your custom classes.
 
@@ -1094,7 +1463,7 @@ cout << v << endl;   // (3, 4)
 - You cannot change operator precedence
 - At least one operand must be a user-defined type
 - Some operators cannot be overloaded (\`::\`, \`.\`, \`?:\`)`,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <cmath>
 using namespace std;
 
@@ -1145,16 +1514,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is operator overloading?", options:["Using too many operators","Defining how operators work with custom classes","Replacing built-in operators","Deleting default operators"], correct:1, explanation:"Operator overloading lets you define custom behavior for operators like +, ==, << when used with your own class types."},
-      {id:"q2", question:"What is a 'friend' function?", options:["A derived class function","A function that can access private members of a class even though it's not a member","A static function","A virtual function"], correct:1, explanation:"A friend function is declared inside a class with the 'friend' keyword. It has access to the class's private and protected members but is not a member of the class itself."},
-      {id:"q3", question:"Which of these operators CANNOT be overloaded?", options:["==","<<","::","+="], correct:2, explanation:"The scope resolution operator :: cannot be overloaded. Others that can't include . (member access), .* (pointer-to-member), and ?: (ternary)."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is operator overloading?",
+        options: [
+          "Using too many operators",
+          "Defining how operators work with custom classes",
+          "Replacing built-in operators",
+          "Deleting default operators",
+        ],
+        correct: 1,
+        explanation:
+          "Operator overloading lets you define custom behavior for operators like +, ==, << when used with your own class types.",
+      },
+      {
+        id: "q2",
+        question: "What is a 'friend' function?",
+        options: [
+          "A derived class function",
+          "A function that can access private members of a class even though it's not a member",
+          "A static function",
+          "A virtual function",
+        ],
+        correct: 1,
+        explanation:
+          "A friend function is declared inside a class with the 'friend' keyword. It has access to the class's private and protected members but is not a member of the class itself.",
+      },
+      {
+        id: "q3",
+        question: "Which of these operators CANNOT be overloaded?",
+        options: ["==", "<<", "::", "+="],
+        correct: 2,
+        explanation:
+          "The scope resolution operator :: cannot be overloaded. Others that can't include . (member access), .* (pointer-to-member), and ?: (ternary).",
+      },
     ],
   },
 
   {
-    id:"cpp-12", courseId:"cpp", order:12, title:"Memory Management", duration:"22 min", xpReward:45, language:"cpp",
-    theory:`# Memory Management
+    id: "cpp-12",
+    courseId: "cpp",
+    order: 12,
+    title: "Memory Management",
+    duration: "22 min",
+    xpReward: 45,
+    language: "cpp",
+    theory: `# Memory Management
 
 Understanding memory is what makes C++ powerful — and dangerous.
 
@@ -1216,7 +1622,7 @@ public:
     int& operator[](int i) { return data[i]; }
 };
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 using namespace std;
 
 class DynamicArray {
@@ -1280,16 +1686,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is a memory leak?", options:["Using too much stack memory","Allocated heap memory that is never freed","A segmentation fault","Using delete twice"], correct:1, explanation:"A memory leak occurs when heap memory is allocated with new but never freed with delete. The program uses more and more memory over time."},
-      {id:"q2", question:"What is the difference between 'delete' and 'delete[]'?", options:["No difference","delete is for objects; delete[] is for arrays allocated with new[]","delete[] is slower","delete[] frees more memory"], correct:1, explanation:"delete is for single objects (new). delete[] is for arrays (new[]). Using the wrong one causes undefined behavior."},
-      {id:"q3", question:"What does RAII stand for and what does it mean?", options:["Resource Allocation Is Important","Random Access Iterator Interface","Resource Acquisition Is Initialization — tie resource lifetime to object lifetime","Rapid Application Interface Integration"], correct:2, explanation:"RAII means resources (memory, files, locks) are acquired in constructors and released in destructors, ensuring cleanup happens automatically when objects go out of scope."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is a memory leak?",
+        options: [
+          "Using too much stack memory",
+          "Allocated heap memory that is never freed",
+          "A segmentation fault",
+          "Using delete twice",
+        ],
+        correct: 1,
+        explanation:
+          "A memory leak occurs when heap memory is allocated with new but never freed with delete. The program uses more and more memory over time.",
+      },
+      {
+        id: "q2",
+        question: "What is the difference between 'delete' and 'delete[]'?",
+        options: [
+          "No difference",
+          "delete is for objects; delete[] is for arrays allocated with new[]",
+          "delete[] is slower",
+          "delete[] frees more memory",
+        ],
+        correct: 1,
+        explanation:
+          "delete is for single objects (new). delete[] is for arrays (new[]). Using the wrong one causes undefined behavior.",
+      },
+      {
+        id: "q3",
+        question: "What does RAII stand for and what does it mean?",
+        options: [
+          "Resource Allocation Is Important",
+          "Random Access Iterator Interface",
+          "Resource Acquisition Is Initialization — tie resource lifetime to object lifetime",
+          "Rapid Application Interface Integration",
+        ],
+        correct: 2,
+        explanation:
+          "RAII means resources (memory, files, locks) are acquired in constructors and released in destructors, ensuring cleanup happens automatically when objects go out of scope.",
+      },
     ],
   },
 
   {
-    id:"cpp-13", courseId:"cpp", order:13, title:"STL: Vectors", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# STL: Vectors
+    id: "cpp-13",
+    courseId: "cpp",
+    order: 13,
+    title: "STL: Vectors",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# STL: Vectors
 
 \`std::vector\` is the most commonly used container in C++ — a dynamic array that resizes automatically.
 
@@ -1340,7 +1788,7 @@ nums.resize(10, 0);                  // resize to 10, fill with 0
 vector<vector<int>> matrix(3, vector<int>(3, 0));
 matrix[1][2] = 5;
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -1386,16 +1834,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does vector::push_back() do?", options:["Removes last element","Adds element to the front","Adds element to the end","Inserts at a position"], correct:2, explanation:"push_back() appends an element to the end of the vector, automatically resizing if necessary."},
-      {id:"q2", question:"How do you remove the last element from a vector?", options:["erase(end())","remove_back()","pop_back()","delete back()"], correct:2, explanation:"pop_back() removes and destroys the last element of the vector, reducing its size by one."},
-      {id:"q3", question:"What type does vector::size() return?", options:["int","long","size_t (unsigned)","ptrdiff_t"], correct:2, explanation:"size() returns size_t which is an unsigned integer type. Comparing it with signed int can cause warnings — use size_t or cast when needed."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does vector::push_back() do?",
+        options: [
+          "Removes last element",
+          "Adds element to the front",
+          "Adds element to the end",
+          "Inserts at a position",
+        ],
+        correct: 2,
+        explanation:
+          "push_back() appends an element to the end of the vector, automatically resizing if necessary.",
+      },
+      {
+        id: "q2",
+        question: "How do you remove the last element from a vector?",
+        options: [
+          "erase(end())",
+          "remove_back()",
+          "pop_back()",
+          "delete back()",
+        ],
+        correct: 2,
+        explanation:
+          "pop_back() removes and destroys the last element of the vector, reducing its size by one.",
+      },
+      {
+        id: "q3",
+        question: "What type does vector::size() return?",
+        options: ["int", "long", "size_t (unsigned)", "ptrdiff_t"],
+        correct: 2,
+        explanation:
+          "size() returns size_t which is an unsigned integer type. Comparing it with signed int can cause warnings — use size_t or cast when needed.",
+      },
     ],
   },
 
   {
-    id:"cpp-14", courseId:"cpp", order:14, title:"STL: Maps & Sets", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# STL: Maps & Sets
+    id: "cpp-14",
+    courseId: "cpp",
+    order: 14,
+    title: "STL: Maps & Sets",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# STL: Maps & Sets
 
 ## std::map — Key-Value Storage
 
@@ -1450,7 +1935,7 @@ cout << s.size()   << endl;  // 5
 | unordered_map | No | Yes | O(1) avg |
 | set | Yes | Yes | O(log n) |
 | unordered_set | No | Yes | O(1) avg |`,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <map>
 #include <set>
 #include <unordered_map>
@@ -1495,16 +1980,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is the main difference between map and unordered_map?", options:["map can store more items","map keeps keys sorted; unordered_map is faster with O(1) average lookup","unordered_map requires unique values","map uses less memory"], correct:1, explanation:"map stores keys in sorted order using a red-black tree (O(log n) operations). unordered_map uses a hash table (O(1) average) but has no ordering."},
-      {id:"q2", question:"What does set guarantee about its elements?", options:["They are stored in insertion order","They are unique and sorted","They allow duplicates","They are stored in a hash table"], correct:1, explanation:"std::set stores unique elements in sorted order. Duplicate insertions are silently ignored."},
-      {id:"q3", question:"How do you safely check if a key exists in a map?", options:["map[key] != null","map.exists(key)","map.count(key) > 0","map.find(key) != nullptr"], correct:2, explanation:"count() returns 1 if the key exists, 0 if not. Using map[key] creates the key with a default value if it doesn't exist — which is usually not what you want."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is the main difference between map and unordered_map?",
+        options: [
+          "map can store more items",
+          "map keeps keys sorted; unordered_map is faster with O(1) average lookup",
+          "unordered_map requires unique values",
+          "map uses less memory",
+        ],
+        correct: 1,
+        explanation:
+          "map stores keys in sorted order using a red-black tree (O(log n) operations). unordered_map uses a hash table (O(1) average) but has no ordering.",
+      },
+      {
+        id: "q2",
+        question: "What does set guarantee about its elements?",
+        options: [
+          "They are stored in insertion order",
+          "They are unique and sorted",
+          "They allow duplicates",
+          "They are stored in a hash table",
+        ],
+        correct: 1,
+        explanation:
+          "std::set stores unique elements in sorted order. Duplicate insertions are silently ignored.",
+      },
+      {
+        id: "q3",
+        question: "How do you safely check if a key exists in a map?",
+        options: [
+          "map[key] != null",
+          "map.exists(key)",
+          "map.count(key) > 0",
+          "map.find(key) != nullptr",
+        ],
+        correct: 2,
+        explanation:
+          "count() returns 1 if the key exists, 0 if not. Using map[key] creates the key with a default value if it doesn't exist — which is usually not what you want.",
+      },
     ],
   },
 
   {
-    id:"cpp-15", courseId:"cpp", order:15, title:"STL: Algorithms", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# STL: Algorithms
+    id: "cpp-15",
+    courseId: "cpp",
+    order: 15,
+    title: "STL: Algorithms",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# STL: Algorithms
 
 The \`<algorithm>\` header provides powerful, reusable algorithms that work with any container.
 
@@ -1555,7 +2082,7 @@ int sum = accumulate(v.begin(), v.end(), 0);
 int product = accumulate(v.begin(), v.end(), 1,
                          [](int a, int b){ return a*b; });
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -1602,16 +2129,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does std::transform() do?", options:["Converts types","Applies a function to each element and stores the result","Sorts elements","Removes elements"], correct:1, explanation:"transform() applies a function to each element in a range and stores the results in a destination range."},
-      {id:"q2", question:"What does accumulate() do by default?", options:["Multiplies all elements","Finds the maximum","Sums all elements starting from an initial value","Concatenates strings"], correct:2, explanation:"accumulate() (from <numeric>) sums all elements in a range, starting from the initial value you provide as the third argument."},
-      {id:"q3", question:"What must be true for binary_search() to work correctly?", options:["The range must have at least 2 elements","The range must be sorted","The range must contain unique elements","The range must be a vector"], correct:1, explanation:"binary_search() requires the range to be sorted in ascending order (or by the comparator you provide). On unsorted data it gives undefined results."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does std::transform() do?",
+        options: [
+          "Converts types",
+          "Applies a function to each element and stores the result",
+          "Sorts elements",
+          "Removes elements",
+        ],
+        correct: 1,
+        explanation:
+          "transform() applies a function to each element in a range and stores the results in a destination range.",
+      },
+      {
+        id: "q2",
+        question: "What does accumulate() do by default?",
+        options: [
+          "Multiplies all elements",
+          "Finds the maximum",
+          "Sums all elements starting from an initial value",
+          "Concatenates strings",
+        ],
+        correct: 2,
+        explanation:
+          "accumulate() (from <numeric>) sums all elements in a range, starting from the initial value you provide as the third argument.",
+      },
+      {
+        id: "q3",
+        question: "What must be true for binary_search() to work correctly?",
+        options: [
+          "The range must have at least 2 elements",
+          "The range must be sorted",
+          "The range must contain unique elements",
+          "The range must be a vector",
+        ],
+        correct: 1,
+        explanation:
+          "binary_search() requires the range to be sorted in ascending order (or by the comparator you provide). On unsorted data it gives undefined results.",
+      },
     ],
   },
 
   {
-    id:"cpp-16", courseId:"cpp", order:16, title:"Templates", duration:"20 min", xpReward:45, language:"cpp",
-    theory:`# Templates
+    id: "cpp-16",
+    courseId: "cpp",
+    order: 16,
+    title: "Templates",
+    duration: "20 min",
+    xpReward: 45,
+    language: "cpp",
+    theory: `# Templates
 
 Templates let you write **generic code** that works with any data type.
 
@@ -1671,7 +2240,7 @@ T absolute(T x) { return (x < 0) ? -x : x; }
 template <>
 string absolute(string s) { return s; }
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <vector>
 #include <string>
 using namespace std;
@@ -1734,16 +2303,53 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is the purpose of templates in C++?", options:["To make code run faster","To write generic code that works with any data type","To create abstract classes","To enable multiple inheritance"], correct:1, explanation:"Templates allow you to write a single function or class that works with any data type, avoiding code duplication."},
-      {id:"q2", question:"What keyword introduces a template parameter?", options:["generic","template","type","class only"], correct:1, explanation:"The template keyword followed by <typename T> (or <class T>) declares a template. typename and class are interchangeable in this context."},
-      {id:"q3", question:"When does the compiler generate code for a template?", options:["When the template is defined","When the program starts","When the template is instantiated with a specific type","Never — templates are runtime"], correct:2, explanation:"Templates are compiled at instantiation — when you write Stack<int>, the compiler generates a version of the template code specifically for int."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is the purpose of templates in C++?",
+        options: [
+          "To make code run faster",
+          "To write generic code that works with any data type",
+          "To create abstract classes",
+          "To enable multiple inheritance",
+        ],
+        correct: 1,
+        explanation:
+          "Templates allow you to write a single function or class that works with any data type, avoiding code duplication.",
+      },
+      {
+        id: "q2",
+        question: "What keyword introduces a template parameter?",
+        options: ["generic", "template", "type", "class only"],
+        correct: 1,
+        explanation:
+          "The template keyword followed by <typename T> (or <class T>) declares a template. typename and class are interchangeable in this context.",
+      },
+      {
+        id: "q3",
+        question: "When does the compiler generate code for a template?",
+        options: [
+          "When the template is defined",
+          "When the program starts",
+          "When the template is instantiated with a specific type",
+          "Never — templates are runtime",
+        ],
+        correct: 2,
+        explanation:
+          "Templates are compiled at instantiation — when you write Stack<int>, the compiler generates a version of the template code specifically for int.",
+      },
     ],
   },
 
   {
-    id:"cpp-17", courseId:"cpp", order:17, title:"Exception Handling", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# Exception Handling
+    id: "cpp-17",
+    courseId: "cpp",
+    order: 17,
+    title: "Exception Handling",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# Exception Handling
 
 Exceptions let you handle errors gracefully without crashing.
 
@@ -1803,7 +2409,7 @@ try {
     cout << e.what() << " — needed: " << e.getAmount() << endl;
 }
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -1861,18 +2467,56 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does e.what() return for a standard exception?", options:["The exception type","A description string of the error","The line number","The error code"], correct:1, explanation:"what() is a virtual method inherited from std::exception that returns a C-string describing the exception."},
-      {id:"q2", question:"What does catch(...) do?", options:["Catches only int exceptions","Catches only std::exception types","Catches any exception type","Is a syntax error"], correct:2, explanation:"catch(...) is the catch-all handler — it catches any exception regardless of type. Place it last after more specific handlers."},
-      {id:"q3", question:"Which header is needed for standard exceptions like runtime_error?", options:["<exception>","<error>","<stdexcept>","<iostream>"], correct:2, explanation:"<stdexcept> provides standard exception classes like runtime_error, invalid_argument, out_of_range, and overflow_error."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does e.what() return for a standard exception?",
+        options: [
+          "The exception type",
+          "A description string of the error",
+          "The line number",
+          "The error code",
+        ],
+        correct: 1,
+        explanation:
+          "what() is a virtual method inherited from std::exception that returns a C-string describing the exception.",
+      },
+      {
+        id: "q2",
+        question: "What does catch(...) do?",
+        options: [
+          "Catches only int exceptions",
+          "Catches only std::exception types",
+          "Catches any exception type",
+          "Is a syntax error",
+        ],
+        correct: 2,
+        explanation:
+          "catch(...) is the catch-all handler — it catches any exception regardless of type. Place it last after more specific handlers.",
+      },
+      {
+        id: "q3",
+        question:
+          "Which header is needed for standard exceptions like runtime_error?",
+        options: ["<exception>", "<error>", "<stdexcept>", "<iostream>"],
+        correct: 2,
+        explanation:
+          "<stdexcept> provides standard exception classes like runtime_error, invalid_argument, out_of_range, and overflow_error.",
+      },
     ],
   },
 
   // ── ADVANCED (18–25) ─────────────────────────────────────────────────────
 
   {
-    id:"cpp-18", courseId:"cpp", order:18, title:"Smart Pointers", duration:"20 min", xpReward:50, language:"cpp",
-    theory:`# Smart Pointers
+    id: "cpp-18",
+    courseId: "cpp",
+    order: 18,
+    title: "Smart Pointers",
+    duration: "20 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Smart Pointers
 
 Smart pointers are wrappers that automatically manage memory — no manual \`delete\` needed.
 
@@ -1930,7 +2574,7 @@ auto dog = make_unique<Dog>("Rex");
 dog->name = "Max";
 // Automatically destroyed when dog goes out of scope
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -1979,16 +2623,59 @@ int main() {
     cout << "\nAll resources cleaned up!" << endl;
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is the advantage of using smart pointers over raw pointers?", options:["They are faster","They automatically free memory when no longer needed","They use less memory","They work with more types"], correct:1, explanation:"Smart pointers automatically call delete when they go out of scope or ownership is released, preventing memory leaks."},
-      {id:"q2", question:"What happens when you try to copy a unique_ptr?", options:["It creates a deep copy","It shares ownership","It causes a compile error","It moves ownership"], correct:2, explanation:"unique_ptr cannot be copied because only one owner is allowed. You must use std::move() to transfer ownership."},
-      {id:"q3", question:"What does shared_ptr::use_count() return?", options:["The memory size","The number of shared_ptrs sharing ownership","The pointer address","The reference count minus weak_ptrs"], correct:1, explanation:"use_count() returns the number of shared_ptr objects currently sharing ownership of the managed object."},
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "What is the advantage of using smart pointers over raw pointers?",
+        options: [
+          "They are faster",
+          "They automatically free memory when no longer needed",
+          "They use less memory",
+          "They work with more types",
+        ],
+        correct: 1,
+        explanation:
+          "Smart pointers automatically call delete when they go out of scope or ownership is released, preventing memory leaks.",
+      },
+      {
+        id: "q2",
+        question: "What happens when you try to copy a unique_ptr?",
+        options: [
+          "It creates a deep copy",
+          "It shares ownership",
+          "It causes a compile error",
+          "It moves ownership",
+        ],
+        correct: 2,
+        explanation:
+          "unique_ptr cannot be copied because only one owner is allowed. You must use std::move() to transfer ownership.",
+      },
+      {
+        id: "q3",
+        question: "What does shared_ptr::use_count() return?",
+        options: [
+          "The memory size",
+          "The number of shared_ptrs sharing ownership",
+          "The pointer address",
+          "The reference count minus weak_ptrs",
+        ],
+        correct: 1,
+        explanation:
+          "use_count() returns the number of shared_ptr objects currently sharing ownership of the managed object.",
+      },
     ],
   },
 
   {
-    id:"cpp-19", courseId:"cpp", order:19, title:"Move Semantics", duration:"20 min", xpReward:50, language:"cpp",
-    theory:`# Move Semantics
+    id: "cpp-19",
+    courseId: "cpp",
+    order: 19,
+    title: "Move Semantics",
+    duration: "20 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Move Semantics
 
 Move semantics (C++11) allow you to **transfer** resources instead of copying them — making code significantly faster.
 
@@ -2045,7 +2732,7 @@ public:
     }
 };
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <string>
 #include <vector>
 #include <chrono>
@@ -2100,16 +2787,59 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does std::move() actually do to the source object?", options:["Deletes it","Copies it","Casts it to an rvalue reference enabling move semantics","Zeroes out its memory"], correct:2, explanation:"std::move() is just a cast — it casts the argument to an rvalue reference, which enables move semantics. The actual moving happens in the move constructor/assignment."},
-      {id:"q2", question:"What state should an object be in after it has been moved from?", options:["Deleted","Unchanged","In a valid but unspecified state","Set to all zeros"], correct:2, explanation:"After a move, the source object must be in a valid but unspecified state — you can still destroy it or reassign it, but you shouldn't assume its value."},
-      {id:"q3", question:"What is the main benefit of move semantics?", options:["Better syntax","Avoiding expensive deep copies by transferring ownership of resources","Automatic memory management","Thread safety"], correct:1, explanation:"Move semantics allow transferring resources (like heap memory) from one object to another without copying, making operations on large objects significantly faster."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does std::move() actually do to the source object?",
+        options: [
+          "Deletes it",
+          "Copies it",
+          "Casts it to an rvalue reference enabling move semantics",
+          "Zeroes out its memory",
+        ],
+        correct: 2,
+        explanation:
+          "std::move() is just a cast — it casts the argument to an rvalue reference, which enables move semantics. The actual moving happens in the move constructor/assignment.",
+      },
+      {
+        id: "q2",
+        question:
+          "What state should an object be in after it has been moved from?",
+        options: [
+          "Deleted",
+          "Unchanged",
+          "In a valid but unspecified state",
+          "Set to all zeros",
+        ],
+        correct: 2,
+        explanation:
+          "After a move, the source object must be in a valid but unspecified state — you can still destroy it or reassign it, but you shouldn't assume its value.",
+      },
+      {
+        id: "q3",
+        question: "What is the main benefit of move semantics?",
+        options: [
+          "Better syntax",
+          "Avoiding expensive deep copies by transferring ownership of resources",
+          "Automatic memory management",
+          "Thread safety",
+        ],
+        correct: 1,
+        explanation:
+          "Move semantics allow transferring resources (like heap memory) from one object to another without copying, making operations on large objects significantly faster.",
+      },
     ],
   },
 
   {
-    id:"cpp-20", courseId:"cpp", order:20, title:"Lambda Expressions", duration:"18 min", xpReward:45, language:"cpp",
-    theory:`# Lambda Expressions
+    id: "cpp-20",
+    courseId: "cpp",
+    order: 20,
+    title: "Lambda Expressions",
+    duration: "18 min",
+    xpReward: 45,
+    language: "cpp",
+    theory: `# Lambda Expressions
 
 Lambdas are **anonymous functions** defined inline — introduced in C++11.
 
@@ -2159,7 +2889,7 @@ transform(v.begin(), v.end(), v.begin(),
 #include <functional>
 function<int(int)> doubler = [](int x) { return x * 2; };
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -2208,16 +2938,54 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does [=] in a lambda capture clause mean?", options:["Capture nothing","Capture all local variables by reference","Capture all local variables by value","Equality comparison"], correct:2, explanation:"[=] captures all local variables by value — a copy is made at the point the lambda is created."},
-      {id:"q2", question:"What does [&] in a lambda capture clause mean?", options:["Capture nothing","Capture all local variables by reference","Bitwise AND","Capture only the first variable"], correct:1, explanation:"[&] captures all local variables by reference — the lambda can read and modify the original variables."},
-      {id:"q3", question:"What header do you need to store a lambda in a named variable with any signature?", options:["<lambda>","<functional>","<algorithm>","<memory>"], correct:1, explanation:"std::function from <functional> can store any callable (lambda, function pointer, functor) with a specified signature like function<int(int,int)>."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does [=] in a lambda capture clause mean?",
+        options: [
+          "Capture nothing",
+          "Capture all local variables by reference",
+          "Capture all local variables by value",
+          "Equality comparison",
+        ],
+        correct: 2,
+        explanation:
+          "[=] captures all local variables by value — a copy is made at the point the lambda is created.",
+      },
+      {
+        id: "q2",
+        question: "What does [&] in a lambda capture clause mean?",
+        options: [
+          "Capture nothing",
+          "Capture all local variables by reference",
+          "Bitwise AND",
+          "Capture only the first variable",
+        ],
+        correct: 1,
+        explanation:
+          "[&] captures all local variables by reference — the lambda can read and modify the original variables.",
+      },
+      {
+        id: "q3",
+        question:
+          "What header do you need to store a lambda in a named variable with any signature?",
+        options: ["<lambda>", "<functional>", "<algorithm>", "<memory>"],
+        correct: 1,
+        explanation:
+          "std::function from <functional> can store any callable (lambda, function pointer, functor) with a specified signature like function<int(int,int)>.",
+      },
     ],
   },
 
   {
-    id:"cpp-21", courseId:"cpp", order:21, title:"File I/O", duration:"18 min", xpReward:40, language:"cpp",
-    theory:`# File I/O
+    id: "cpp-21",
+    courseId: "cpp",
+    order: 21,
+    title: "File I/O",
+    duration: "18 min",
+    xpReward: 40,
+    language: "cpp",
+    theory: `# File I/O
 
 C++ provides file streams for reading and writing files.
 
@@ -2281,7 +3049,7 @@ inFile.seekg(0, ios::beg);   // go to beginning
 inFile.seekg(0, ios::end);   // go to end
 inFile.tellg();              // current position
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -2346,16 +3114,53 @@ int main() {
     demonstrateFileIO();
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"Which class is used to write to a file in C++?", options:["ifstream","fstream","ofstream","wstream"], correct:2, explanation:"ofstream (output file stream) is used for writing. ifstream for reading. fstream for both read and write."},
-      {id:"q2", question:"What does ios::app do when opening a file?", options:["Appends to end of file instead of overwriting","Opens in binary mode","Creates a new file","Locks the file"], correct:0, explanation:"ios::app (append mode) positions the write pointer at the end of the file so new data is added without overwriting existing content."},
-      {id:"q3", question:"What does getline(file, line) do?", options:["Reads a single character","Reads the whole file","Reads one line including spaces until newline","Reads a word"], correct:2, explanation:"getline() reads an entire line (including spaces) from the stream until it encounters a newline character or EOF."},
+    quiz: [
+      {
+        id: "q1",
+        question: "Which class is used to write to a file in C++?",
+        options: ["ifstream", "fstream", "ofstream", "wstream"],
+        correct: 2,
+        explanation:
+          "ofstream (output file stream) is used for writing. ifstream for reading. fstream for both read and write.",
+      },
+      {
+        id: "q2",
+        question: "What does ios::app do when opening a file?",
+        options: [
+          "Appends to end of file instead of overwriting",
+          "Opens in binary mode",
+          "Creates a new file",
+          "Locks the file",
+        ],
+        correct: 0,
+        explanation:
+          "ios::app (append mode) positions the write pointer at the end of the file so new data is added without overwriting existing content.",
+      },
+      {
+        id: "q3",
+        question: "What does getline(file, line) do?",
+        options: [
+          "Reads a single character",
+          "Reads the whole file",
+          "Reads one line including spaces until newline",
+          "Reads a word",
+        ],
+        correct: 2,
+        explanation:
+          "getline() reads an entire line (including spaces) from the stream until it encounters a newline character or EOF.",
+      },
     ],
   },
 
   {
-    id:"cpp-22", courseId:"cpp", order:22, title:"Multithreading", duration:"20 min", xpReward:50, language:"cpp",
-    theory:`# Multithreading
+    id: "cpp-22",
+    courseId: "cpp",
+    order: 22,
+    title: "Multithreading",
+    duration: "20 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Multithreading
 
 C++11 introduced \`<thread>\` for running code concurrently.
 
@@ -2420,7 +3225,7 @@ counter++;   // read-modify-write is NOT atomic!
 lock_guard<mutex> lock(mtx);
 counter++;
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <thread>
 #include <mutex>
 #include <vector>
@@ -2481,16 +3286,58 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What does thread::join() do?", options:["Creates a new thread","Pauses the current thread","Waits for the thread to complete before continuing","Kills the thread"], correct:2, explanation:"join() blocks the calling thread until the joined thread finishes execution. A thread must be either joined or detached before it's destroyed."},
-      {id:"q2", question:"What is a race condition?", options:["Two threads competing for CPU time","Unpredictable behavior when multiple threads access shared data without synchronization","A deadlock","A thread running too fast"], correct:1, explanation:"A race condition occurs when the result depends on the relative timing of threads accessing shared data. Without synchronization, threads can read/write in any order."},
-      {id:"q3", question:"What does lock_guard<mutex> do?", options:["Creates a new mutex","Locks a mutex and automatically unlocks it when it goes out of scope","Permanently locks a mutex","Tries to lock without blocking"], correct:1, explanation:"lock_guard is a RAII wrapper that locks the mutex on construction and automatically unlocks it when destroyed (when it goes out of scope), preventing forgotten unlocks."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What does thread::join() do?",
+        options: [
+          "Creates a new thread",
+          "Pauses the current thread",
+          "Waits for the thread to complete before continuing",
+          "Kills the thread",
+        ],
+        correct: 2,
+        explanation:
+          "join() blocks the calling thread until the joined thread finishes execution. A thread must be either joined or detached before it's destroyed.",
+      },
+      {
+        id: "q2",
+        question: "What is a race condition?",
+        options: [
+          "Two threads competing for CPU time",
+          "Unpredictable behavior when multiple threads access shared data without synchronization",
+          "A deadlock",
+          "A thread running too fast",
+        ],
+        correct: 1,
+        explanation:
+          "A race condition occurs when the result depends on the relative timing of threads accessing shared data. Without synchronization, threads can read/write in any order.",
+      },
+      {
+        id: "q3",
+        question: "What does lock_guard<mutex> do?",
+        options: [
+          "Creates a new mutex",
+          "Locks a mutex and automatically unlocks it when it goes out of scope",
+          "Permanently locks a mutex",
+          "Tries to lock without blocking",
+        ],
+        correct: 1,
+        explanation:
+          "lock_guard is a RAII wrapper that locks the mutex on construction and automatically unlocks it when destroyed (when it goes out of scope), preventing forgotten unlocks.",
+      },
     ],
   },
 
   {
-    id:"cpp-23", courseId:"cpp", order:23, title:"Data Structures: Linked List", duration:"22 min", xpReward:50, language:"cpp",
-    theory:`# Data Structures: Linked List
+    id: "cpp-23",
+    courseId: "cpp",
+    order: 23,
+    title: "Data Structures: Linked List",
+    duration: "22 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Data Structures: Linked List
 
 A linked list is a sequence of **nodes**, each containing data and a pointer to the next node.
 
@@ -2545,7 +3392,7 @@ public:
     }
 };
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 using namespace std;
 
 class Node {
@@ -2638,16 +3485,50 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is the time complexity of inserting at the front of a linked list?", options:["O(n)","O(log n)","O(1)","O(n²)"], correct:2, explanation:"Inserting at the front is O(1) — just create a new node, point it to the current head, and update head. No traversal needed."},
-      {id:"q2", question:"Why must we implement a destructor for a linked list?", options:["To sort the list","To prevent memory leaks by deleting all nodes","To reset the head pointer","C++ requires it for all classes"], correct:1, explanation:"Without a destructor, all dynamically allocated nodes (created with new) would leak when the list object is destroyed. The destructor traverses and deletes each node."},
-      {id:"q3", question:"What is the time complexity of searching for an element in an unsorted linked list?", options:["O(1)","O(log n)","O(n)","O(n log n)"], correct:2, explanation:"To find an element you must traverse from the head, potentially visiting all n nodes — O(n) linear time."},
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "What is the time complexity of inserting at the front of a linked list?",
+        options: ["O(n)", "O(log n)", "O(1)", "O(n²)"],
+        correct: 2,
+        explanation:
+          "Inserting at the front is O(1) — just create a new node, point it to the current head, and update head. No traversal needed.",
+      },
+      {
+        id: "q2",
+        question: "Why must we implement a destructor for a linked list?",
+        options: [
+          "To sort the list",
+          "To prevent memory leaks by deleting all nodes",
+          "To reset the head pointer",
+          "C++ requires it for all classes",
+        ],
+        correct: 1,
+        explanation:
+          "Without a destructor, all dynamically allocated nodes (created with new) would leak when the list object is destroyed. The destructor traverses and deletes each node.",
+      },
+      {
+        id: "q3",
+        question:
+          "What is the time complexity of searching for an element in an unsorted linked list?",
+        options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+        correct: 2,
+        explanation:
+          "To find an element you must traverse from the head, potentially visiting all n nodes — O(n) linear time.",
+      },
     ],
   },
 
   {
-    id:"cpp-24", courseId:"cpp", order:24, title:"Data Structures: Stack & Queue", duration:"20 min", xpReward:50, language:"cpp",
-    theory:`# Data Structures: Stack & Queue
+    id: "cpp-24",
+    courseId: "cpp",
+    order: 24,
+    title: "Data Structures: Stack & Queue",
+    duration: "20 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Data Structures: Stack & Queue
 
 ## Stack — LIFO (Last In, First Out)
 
@@ -2706,7 +3587,7 @@ stl_queue.push(1); stl_queue.front(); stl_queue.pop();
 
 - Stack: undo/redo, expression evaluation, backtracking, call stack
 - Queue: task scheduling, BFS, print queue, request handling`,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <stack>
 #include <queue>
 #include <string>
@@ -2771,16 +3652,54 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What principle does a Stack follow?", options:["FIFO","FILO","LIFO","Round Robin"], correct:2, explanation:"Stack follows LIFO — Last In, First Out. The most recently pushed element is the first one popped."},
-      {id:"q2", question:"Why is std::deque preferred over std::vector for implementing a Queue?", options:["deque uses less memory","deque has O(1) push_back AND pop_front; vector's pop_front is O(n)","deque is always faster","deque supports sorting"], correct:1, explanation:"vector::erase at the front (pop_front) is O(n) because all elements shift. deque is designed for efficient insertions/deletions at both ends — O(1)."},
-      {id:"q3", question:"What is a practical use case for a Stack?", options:["Task scheduling","BFS graph traversal","Undo/redo functionality","Round-robin processing"], correct:2, explanation:"Undo/redo uses a stack — each action is pushed, undoing pops the last action. This is naturally LIFO behavior."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What principle does a Stack follow?",
+        options: ["FIFO", "FILO", "LIFO", "Round Robin"],
+        correct: 2,
+        explanation:
+          "Stack follows LIFO — Last In, First Out. The most recently pushed element is the first one popped.",
+      },
+      {
+        id: "q2",
+        question:
+          "Why is std::deque preferred over std::vector for implementing a Queue?",
+        options: [
+          "deque uses less memory",
+          "deque has O(1) push_back AND pop_front; vector's pop_front is O(n)",
+          "deque is always faster",
+          "deque supports sorting",
+        ],
+        correct: 1,
+        explanation:
+          "vector::erase at the front (pop_front) is O(n) because all elements shift. deque is designed for efficient insertions/deletions at both ends — O(1).",
+      },
+      {
+        id: "q3",
+        question: "What is a practical use case for a Stack?",
+        options: [
+          "Task scheduling",
+          "BFS graph traversal",
+          "Undo/redo functionality",
+          "Round-robin processing",
+        ],
+        correct: 2,
+        explanation:
+          "Undo/redo uses a stack — each action is pushed, undoing pops the last action. This is naturally LIFO behavior.",
+      },
     ],
   },
 
   {
-    id:"cpp-25", courseId:"cpp", order:25, title:"Modern C++ Best Practices", duration:"20 min", xpReward:50, language:"cpp",
-    theory:`# Modern C++ Best Practices
+    id: "cpp-25",
+    courseId: "cpp",
+    order: 25,
+    title: "Modern C++ Best Practices",
+    duration: "20 min",
+    xpReward: 50,
+    language: "cpp",
+    theory: `# Modern C++ Best Practices
 
 Modern C++ (C++11/14/17/20) is safer, faster, and more expressive.
 
@@ -2847,7 +3766,7 @@ int sum = accumulate(v.begin(), v.end(), 0);
 // Even more modern (C++20 ranges)
 // auto sum = ranges::fold_left(v, 0, plus{});
 \`\`\``,
-    starterCode:`#include <iostream>
+    starterCode: `#include <iostream>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -2906,10 +3825,46 @@ int main() {
 
     return 0;
 }`,
-    quiz:[
-      {id:"q1", question:"What is constexpr used for?", options:["Runtime constants only","Values and functions computed at compile time","Making variables thread-safe","Preventing copy construction"], correct:1, explanation:"constexpr declares that a value or function can be evaluated at compile time, enabling zero-cost abstractions and compile-time computation."},
-      {id:"q2", question:"What does std::optional<T> represent?", options:["A pointer to T","A value that may or may not be present","A nullable reference","A thread-safe value"], correct:1, explanation:"std::optional<T> represents an optional value — it either contains a T or is empty (nullopt). It's safer than using -1 or nullptr as sentinel values."},
-      {id:"q3", question:"What is the benefit of structured bindings in C++17?", options:["Faster code","Ability to unpack pairs/tuples/structs directly into named variables","Better memory usage","Automatic type conversion"], correct:1, explanation:"Structured bindings allow auto [a, b] = pair; syntax to unpack compound objects into individual named variables, making code cleaner especially with map iteration."},
+    quiz: [
+      {
+        id: "q1",
+        question: "What is constexpr used for?",
+        options: [
+          "Runtime constants only",
+          "Values and functions computed at compile time",
+          "Making variables thread-safe",
+          "Preventing copy construction",
+        ],
+        correct: 1,
+        explanation:
+          "constexpr declares that a value or function can be evaluated at compile time, enabling zero-cost abstractions and compile-time computation.",
+      },
+      {
+        id: "q2",
+        question: "What does std::optional<T> represent?",
+        options: [
+          "A pointer to T",
+          "A value that may or may not be present",
+          "A nullable reference",
+          "A thread-safe value",
+        ],
+        correct: 1,
+        explanation:
+          "std::optional<T> represents an optional value — it either contains a T or is empty (nullopt). It's safer than using -1 or nullptr as sentinel values.",
+      },
+      {
+        id: "q3",
+        question: "What is the benefit of structured bindings in C++17?",
+        options: [
+          "Faster code",
+          "Ability to unpack pairs/tuples/structs directly into named variables",
+          "Better memory usage",
+          "Automatic type conversion",
+        ],
+        correct: 1,
+        explanation:
+          "Structured bindings allow auto [a, b] = pair; syntax to unpack compound objects into individual named variables, making code cleaner especially with map iteration.",
+      },
     ],
   },
 ];
@@ -2923,26 +3878,206 @@ function dateStr(daysFromNow) {
 }
 
 const challenges = [
-  { title:"Reverse a String in C++", description:"Write a function that takes a std::string and returns it reversed without using any STL reverse algorithms.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <string>\nusing namespace std;\n\nstring reverseStr(string s) {\n    // Write your solution\n    return "";\n}\n\nint main() {\n    cout << reverseStr("Hello")    << endl; // olleH\n    cout << reverseStr("C++")      << endl; // ++C\n    cout << reverseStr("racecar")  << endl; // racecar\n    return 0;\n}`, hint:"Use two pointers — one at the start and one at the end — swapping characters as they move toward the center." },
-  { title:"Count Vowels in C++", description:"Write a function that counts the number of vowels (a,e,i,o,u — case insensitive) in a given string.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <string>\nusing namespace std;\n\nint countVowels(string s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countVowels("Hello World") << endl; // 3\n    cout << countVowels("AEIOU")       << endl; // 5\n    cout << countVowels("rhythm")      << endl; // 0\n    return 0;\n}`, hint:"Convert each character to lowercase and check if it's in the string \"aeiou\"." },
-  { title:"Sum of Digits", description:"Write a C++ function that takes an integer and returns the sum of its digits.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\nusing namespace std;\n\nint digitSum(int n) {\n    n = abs(n);\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << digitSum(12345) << endl; // 15\n    cout << digitSum(999)   << endl; // 27\n    cout << digitSum(0)     << endl; // 0\n    return 0;\n}`, hint:"Repeatedly take n % 10 to get the last digit, add it to sum, then do n /= 10 to remove it." },
-  { title:"Check Palindrome", description:"Write a C++ function that checks if a string is a palindrome (reads the same forwards and backwards), ignoring spaces and case.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    // Write your solution\n    return false;\n}\n\nint main() {\n    cout << isPalindrome("racecar")              << endl; // 1\n    cout << isPalindrome("hello")                << endl; // 0\n    cout << isPalindrome("A man a plan a canal Panama") << endl; // 1\n    return 0;\n}`, hint:"Remove spaces, convert to lowercase, then compare the string with its reverse." },
-  { title:"FizzBuzz in C++", description:"Print numbers 1 to 50. For multiples of 3 print Fizz, multiples of 5 print Buzz, both print FizzBuzz. Return result as a vector of strings.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nvector<string> fizzBuzz(int n) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto result = fizzBuzz(20);\n    for (const auto& s : result)\n        cout << s << endl;\n    return 0;\n}`, hint:"Check divisibility by 15 first (FizzBuzz), then 3 (Fizz), then 5 (Buzz), else convert number to string." },
-  { title:"Find Max in Array", description:"Write a C++ function that finds the maximum value in a vector of integers without using std::max_element.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <vector>\nusing namespace std;\n\nint findMax(const vector<int>& nums) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << findMax({3,1,9,2,7})    << endl; // 9\n    cout << findMax({-5,-1,-3})     << endl; // -1\n    cout << findMax({42})           << endl; // 42\n    return 0;\n}`, hint:"Start with the first element as max, then loop through comparing each element." },
-  { title:"Count Words in a String", description:"Write a C++ function that counts the number of words in a string. Words are separated by one or more spaces.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <string>\n#include <sstream>\nusing namespace std;\n\nint countWords(const string& s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countWords("Hello World")          << endl; // 2\n    cout << countWords("  spaces   between  ") << endl; // 2\n    cout << countWords("one")                  << endl; // 1\n    cout << countWords("")                     << endl; // 0\n    return 0;\n}`, hint:"Use a stringstream and extract words with >>. Each successful extraction is one word." },
-  { title:"Bubble Sort Implementation", description:"Implement the bubble sort algorithm in C++ to sort a vector of integers in ascending order.", language:"cpp", difficulty:"Easy", xpReward:75, starterCode:`#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid bubbleSort(vector<int>& arr) {\n    // Write your solution\n}\n\nint main() {\n    vector<int> v = {64,34,25,12,22,11,90};\n    bubbleSort(v);\n    for (int n : v) cout << n << " ";\n    cout << endl; // 11 12 22 25 34 64 90\n    return 0;\n}`, hint:"Use two nested loops. The inner loop compares adjacent elements and swaps them if out of order. After each pass, the largest unsorted element is in its place." },
-  { title:"Implement a Generic Stack", description:"Implement a template Stack class with push(), pop(), top(), isEmpty(), and size() methods.", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\n#include <stdexcept>\nusing namespace std;\n\ntemplate <typename T>\nclass Stack {\n    // Write your implementation\npublic:\n    void push(T val) {}\n    void pop()       {}\n    T    top()       { return T{}; }\n    bool isEmpty()   { return true; }\n    int  size()      { return 0; }\n};\n\nint main() {\n    Stack<int> s;\n    s.push(1); s.push(2); s.push(3);\n    cout << s.top()  << endl; // 3\n    cout << s.size() << endl; // 3\n    s.pop();\n    cout << s.top()  << endl; // 2\n\n    Stack<string> ss;\n    ss.push("hello"); ss.push("world");\n    cout << ss.top() << endl; // world\n    return 0;\n}`, hint:"Use a private std::vector<T> as the underlying storage. push uses push_back, pop uses pop_back, top returns back()." },
-  { title:"Matrix Multiplication", description:"Write a C++ function that multiplies two n×n matrices represented as 2D vectors.", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\n#include <vector>\nusing namespace std;\n\nusing Matrix = vector<vector<int>>;\n\nMatrix multiply(const Matrix& A, const Matrix& B) {\n    // Write your solution\n    return {};\n}\n\nvoid printMatrix(const Matrix& m) {\n    for (const auto& row : m) {\n        for (int v : row) cout << v << "\\t";\n        cout << endl;\n    }\n}\n\nint main() {\n    Matrix A = {{1,2},{3,4}};\n    Matrix B = {{5,6},{7,8}};\n    printMatrix(multiply(A, B));\n    // Expected: 19 22 / 43 50\n    return 0;\n}`, hint:"For result[i][j], sum the products of row i from A and column j from B: result[i][j] += A[i][k] * B[k][j] for each k." },
-  { title:"Binary Search Tree Insert & Search", description:"Implement a BST class with insert() and search() methods. insert adds a value; search returns true if the value exists.", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\nusing namespace std;\n\nstruct Node {\n    int   val;\n    Node* left  = nullptr;\n    Node* right = nullptr;\n    Node(int v) : val(v) {}\n};\n\nclass BST {\n    Node* root = nullptr;\n    // Add helper methods as needed\npublic:\n    void insert(int val) {}\n    bool search(int val) { return false; }\n};\n\nint main() {\n    BST tree;\n    for (int v : {5,3,7,1,4,6,8}) tree.insert(v);\n    cout << tree.search(4)  << endl; // 1\n    cout << tree.search(9)  << endl; // 0\n    cout << tree.search(1)  << endl; // 1\n    cout << tree.search(10) << endl; // 0\n    return 0;\n}`, hint:"For insert: if val < node->val go left, else go right. Create a new node when you reach nullptr. Search follows the same logic returning true on a match." },
-  { title:"Sort by Custom Comparator", description:"Given a vector of strings, sort them by length (shortest first). If two strings have the same length, sort alphabetically.", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nvector<string> sortByLength(vector<string> words) {\n    // Write your solution using std::sort with a custom comparator\n    return words;\n}\n\nint main() {\n    auto r = sortByLength({"banana","apple","kiwi","fig","cherry","date","pear"});\n    for (const auto& w : r) cout << w << endl;\n    // fig, date, kiwi, pear, apple, banana, cherry\n    return 0;\n}`, hint:"Pass a lambda to std::sort. Return true if a should come before b. Compare lengths first, and if equal, compare alphabetically with <." },
-  { title:"Unique Elements Using Set", description:"Write a C++ function that takes a vector of integers and returns a new vector containing only the unique elements, preserving their first appearance order.", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\n#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nvector<int> uniqueElements(const vector<int>& nums) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto r = uniqueElements({1,2,3,2,1,4,3,5});\n    for (int n : r) cout << n << " ";\n    cout << endl; // 1 2 3 4 5\n    return 0;\n}`, hint:"Use an unordered_set to track seen elements. For each element, only add it to the result vector if it's not in the set yet." },
-  { title:"Word Frequency Map", description:"Write a C++ function that takes a sentence and returns a map<string,int> with each word as a key and its frequency as the value (case-insensitive).", language:"cpp", difficulty:"Medium", xpReward:100, starterCode:`#include <iostream>\n#include <map>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nmap<string,int> wordFrequency(const string& sentence) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto freq = wordFrequency("the cat sat on the mat the cat");\n    for (const auto& [w,c] : freq)\n        cout << w << ": " << c << endl;\n    return 0;\n}`, hint:"Use a stringstream to split words. Convert each word to lowercase with transform+tolower. Then use map[word]++ to count." },
-  { title:"Implement shared_ptr Reference Counting", description:"Implement a simple SharedPtr<T> class that mimics std::shared_ptr — with a reference count, automatic deletion when count reaches zero, copy/move semantics.", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\nusing namespace std;\n\ntemplate <typename T>\nclass SharedPtr {\n    T*   ptr   = nullptr;\n    int* count = nullptr;\n\npublic:\n    explicit SharedPtr(T* p = nullptr) {\n        // Initialize ptr and count\n    }\n\n    SharedPtr(const SharedPtr& other) {\n        // Copy — increment count\n    }\n\n    ~SharedPtr() {\n        // Decrement count, delete if zero\n    }\n\n    T& operator*()  const { return *ptr;  }\n    T* operator->() const { return ptr;   }\n    int useCount()  const { return count ? *count : 0; }\n};\n\nint main() {\n    SharedPtr<int> sp1(new int(42));\n    cout << *sp1 << " count=" << sp1.useCount() << endl; // 42 count=1\n    {\n        SharedPtr<int> sp2 = sp1;\n        cout << "count=" << sp1.useCount() << endl;     // count=2\n    }\n    cout << "count=" << sp1.useCount() << endl;         // count=1\n    return 0;\n}`, hint:"Allocate count as a new int(1) in the constructor. Copy increments *count. Destructor decrements *count and deletes ptr if *count reaches 0." },
-  { title:"Expression Evaluator", description:"Write a C++ function that evaluates a simple mathematical expression string with +, -, *, / and integers, respecting operator precedence.", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\n#include <string>\n#include <stack>\nusing namespace std;\n\nint evaluate(const string& expr) {\n    // Handle +, -, *, / with integer operands\n    // Respect * and / precedence over + and -\n    return 0;\n}\n\nint main() {\n    cout << evaluate("3 + 5")        << endl; // 8\n    cout << evaluate("10 - 3")       << endl; // 7\n    cout << evaluate("2 * 6")        << endl; // 12\n    cout << evaluate("10 + 5 * 2")   << endl; // 20\n    cout << evaluate("20 - 4 * 3")   << endl; // 8\n    return 0;\n}`, hint:"Use two stacks: one for numbers and one for operators. When you see an operator with lower/equal precedence to the top of the stack, pop and compute first." },
-  { title:"LRU Cache", description:"Implement an LRU (Least Recently Used) cache with get(key) and put(key, value). The cache has a fixed capacity. When full, evict the least recently used item.", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\n#include <unordered_map>\n#include <list>\nusing namespace std;\n\nclass LRUCache {\n    int capacity;\n    // Hint: use list for O(1) move-to-front\n    //       unordered_map<int, list<pair<int,int>>::iterator> for O(1) lookup\npublic:\n    LRUCache(int cap) : capacity(cap) {}\n    int  get(int key)              { return -1; }\n    void put(int key, int value)   {}\n};\n\nint main() {\n    LRUCache cache(2);\n    cache.put(1, 1);\n    cache.put(2, 2);\n    cout << cache.get(1)    << endl; // 1\n    cache.put(3, 3);                 // evicts 2\n    cout << cache.get(2)    << endl; // -1 (evicted)\n    cout << cache.get(3)    << endl; // 3\n    return 0;\n}`, hint:"Use a doubly linked list (std::list) where the front is most recent. Store iterators in an unordered_map for O(1) access. On get/put, move accessed item to front." },
-  { title:"Thread-Safe Counter", description:"Implement a ThreadSafeCounter class that can be safely incremented by multiple threads simultaneously. Verify the final count is always correct.", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\n#include <thread>\n#include <mutex>\n#include <vector>\nusing namespace std;\n\nclass ThreadSafeCounter {\n    // Write your implementation\npublic:\n    void increment()  {}\n    void decrement()  {}\n    int  getValue()   { return 0; }\n};\n\nint main() {\n    ThreadSafeCounter counter;\n    vector<thread> threads;\n\n    for (int i = 0; i < 10; i++)\n        threads.emplace_back([&](){ for(int j=0;j<1000;j++) counter.increment(); });\n\n    for (auto& t : threads) t.join();\n    cout << "Final: " << counter.getValue() << endl; // always 10000\n    return 0;\n}`, hint:"Use a private std::mutex and lock_guard<mutex> in each method. Without the mutex, concurrent increments will produce values less than 10000 due to race conditions." },
-  { title:"Variadic Template Sum", description:"Write a variadic template function sum() that accepts any number of arguments of any numeric type and returns their sum.", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\nusing namespace std;\n\n// Write your variadic template here\n// Hint: use parameter pack (typename... Args)\n\nint main() {\n    cout << sum(1, 2, 3)           << endl; // 6\n    cout << sum(1.5, 2.5, 3.0)     << endl; // 7.0\n    cout << sum(1, 2.5, 3, 4.5)    << endl; // 11.0\n    cout << sum(10)                << endl; // 10\n    return 0;\n}`, hint:"Define a base case: sum(T x) returns x. Define the recursive case: sum(T first, Args... rest) returns first + sum(rest...). The compiler expands the pack." },
-  { title:"Iterator Pattern", description:"Implement a custom Range class that generates integers from start to end (exclusive) and supports range-based for loops by implementing begin() and end().", language:"cpp", difficulty:"Hard", xpReward:150, starterCode:`#include <iostream>\nusing namespace std;\n\nclass Range {\n    // Implement iterator support for range-based for\npublic:\n    Range(int start, int end) {}\n};\n\nint main() {\n    for (int i : Range(1, 6))\n        cout << i << " ";  // 1 2 3 4 5\n    cout << endl;\n\n    for (int i : Range(0, 10))\n        if (i % 2 == 0) cout << i << " ";  // 0 2 4 6 8\n    cout << endl;\n    return 0;\n}`, hint:"Create a nested Iterator struct with int current. Implement operator!=, operator++, operator*. Range::begin() returns Iterator(start), Range::end() returns Iterator(end)." },
+  {
+    title: "Reverse a String in C++",
+    description:
+      "Write a function that takes a std::string and returns it reversed without using any STL reverse algorithms.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <string>\nusing namespace std;\n\nstring reverseStr(string s) {\n    // Write your solution\n    return "";\n}\n\nint main() {\n    cout << reverseStr("Hello")    << endl; // olleH\n    cout << reverseStr("C++")      << endl; // ++C\n    cout << reverseStr("racecar")  << endl; // racecar\n    return 0;\n}`,
+    hint: "Use two pointers — one at the start and one at the end — swapping characters as they move toward the center.",
+  },
+  {
+    title: "Count Vowels in C++",
+    description:
+      "Write a function that counts the number of vowels (a,e,i,o,u — case insensitive) in a given string.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint countVowels(string s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countVowels("Hello World") << endl; // 3\n    cout << countVowels("AEIOU")       << endl; // 5\n    cout << countVowels("rhythm")      << endl; // 0\n    return 0;\n}`,
+    hint: 'Convert each character to lowercase and check if it\'s in the string "aeiou".',
+  },
+  {
+    title: "Sum of Digits",
+    description:
+      "Write a C++ function that takes an integer and returns the sum of its digits.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\nusing namespace std;\n\nint digitSum(int n) {\n    n = abs(n);\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << digitSum(12345) << endl; // 15\n    cout << digitSum(999)   << endl; // 27\n    cout << digitSum(0)     << endl; // 0\n    return 0;\n}`,
+    hint: "Repeatedly take n % 10 to get the last digit, add it to sum, then do n /= 10 to remove it.",
+  },
+  {
+    title: "Check Palindrome",
+    description:
+      "Write a C++ function that checks if a string is a palindrome (reads the same forwards and backwards), ignoring spaces and case.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    // Write your solution\n    return false;\n}\n\nint main() {\n    cout << isPalindrome("racecar")              << endl; // 1\n    cout << isPalindrome("hello")                << endl; // 0\n    cout << isPalindrome("A man a plan a canal Panama") << endl; // 1\n    return 0;\n}`,
+    hint: "Remove spaces, convert to lowercase, then compare the string with its reverse.",
+  },
+  {
+    title: "FizzBuzz in C++",
+    description:
+      "Print numbers 1 to 50. For multiples of 3 print Fizz, multiples of 5 print Buzz, both print FizzBuzz. Return result as a vector of strings.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nvector<string> fizzBuzz(int n) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto result = fizzBuzz(20);\n    for (const auto& s : result)\n        cout << s << endl;\n    return 0;\n}`,
+    hint: "Check divisibility by 15 first (FizzBuzz), then 3 (Fizz), then 5 (Buzz), else convert number to string.",
+  },
+  {
+    title: "Find Max in Array",
+    description:
+      "Write a C++ function that finds the maximum value in a vector of integers without using std::max_element.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nint findMax(const vector<int>& nums) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << findMax({3,1,9,2,7})    << endl; // 9\n    cout << findMax({-5,-1,-3})     << endl; // -1\n    cout << findMax({42})           << endl; // 42\n    return 0;\n}`,
+    hint: "Start with the first element as max, then loop through comparing each element.",
+  },
+  {
+    title: "Count Words in a String",
+    description:
+      "Write a C++ function that counts the number of words in a string. Words are separated by one or more spaces.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <string>\n#include <sstream>\nusing namespace std;\n\nint countWords(const string& s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countWords("Hello World")          << endl; // 2\n    cout << countWords("  spaces   between  ") << endl; // 2\n    cout << countWords("one")                  << endl; // 1\n    cout << countWords("")                     << endl; // 0\n    return 0;\n}`,
+    hint: "Use a stringstream and extract words with >>. Each successful extraction is one word.",
+  },
+  {
+    title: "Bubble Sort Implementation",
+    description:
+      "Implement the bubble sort algorithm in C++ to sort a vector of integers in ascending order.",
+    language: "cpp",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid bubbleSort(vector<int>& arr) {\n    // Write your solution\n}\n\nint main() {\n    vector<int> v = {64,34,25,12,22,11,90};\n    bubbleSort(v);\n    for (int n : v) cout << n << " ";\n    cout << endl; // 11 12 22 25 34 64 90\n    return 0;\n}`,
+    hint: "Use two nested loops. The inner loop compares adjacent elements and swaps them if out of order. After each pass, the largest unsorted element is in its place.",
+  },
+  {
+    title: "Implement a Generic Stack",
+    description:
+      "Implement a template Stack class with push(), pop(), top(), isEmpty(), and size() methods.",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\n#include <stdexcept>\nusing namespace std;\n\ntemplate <typename T>\nclass Stack {\n    // Write your implementation\npublic:\n    void push(T val) {}\n    void pop()       {}\n    T    top()       { return T{}; }\n    bool isEmpty()   { return true; }\n    int  size()      { return 0; }\n};\n\nint main() {\n    Stack<int> s;\n    s.push(1); s.push(2); s.push(3);\n    cout << s.top()  << endl; // 3\n    cout << s.size() << endl; // 3\n    s.pop();\n    cout << s.top()  << endl; // 2\n\n    Stack<string> ss;\n    ss.push("hello"); ss.push("world");\n    cout << ss.top() << endl; // world\n    return 0;\n}`,
+    hint: "Use a private std::vector<T> as the underlying storage. push uses push_back, pop uses pop_back, top returns back().",
+  },
+  {
+    title: "Matrix Multiplication",
+    description:
+      "Write a C++ function that multiplies two n×n matrices represented as 2D vectors.",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nusing Matrix = vector<vector<int>>;\n\nMatrix multiply(const Matrix& A, const Matrix& B) {\n    // Write your solution\n    return {};\n}\n\nvoid printMatrix(const Matrix& m) {\n    for (const auto& row : m) {\n        for (int v : row) cout << v << "\\t";\n        cout << endl;\n    }\n}\n\nint main() {\n    Matrix A = {{1,2},{3,4}};\n    Matrix B = {{5,6},{7,8}};\n    printMatrix(multiply(A, B));\n    // Expected: 19 22 / 43 50\n    return 0;\n}`,
+    hint: "For result[i][j], sum the products of row i from A and column j from B: result[i][j] += A[i][k] * B[k][j] for each k.",
+  },
+  {
+    title: "Binary Search Tree Insert & Search",
+    description:
+      "Implement a BST class with insert() and search() methods. insert adds a value; search returns true if the value exists.",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\nusing namespace std;\n\nstruct Node {\n    int   val;\n    Node* left  = nullptr;\n    Node* right = nullptr;\n    Node(int v) : val(v) {}\n};\n\nclass BST {\n    Node* root = nullptr;\n    // Add helper methods as needed\npublic:\n    void insert(int val) {}\n    bool search(int val) { return false; }\n};\n\nint main() {\n    BST tree;\n    for (int v : {5,3,7,1,4,6,8}) tree.insert(v);\n    cout << tree.search(4)  << endl; // 1\n    cout << tree.search(9)  << endl; // 0\n    cout << tree.search(1)  << endl; // 1\n    cout << tree.search(10) << endl; // 0\n    return 0;\n}`,
+    hint: "For insert: if val < node->val go left, else go right. Create a new node when you reach nullptr. Search follows the same logic returning true on a match.",
+  },
+  {
+    title: "Sort by Custom Comparator",
+    description:
+      "Given a vector of strings, sort them by length (shortest first). If two strings have the same length, sort alphabetically.",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nvector<string> sortByLength(vector<string> words) {\n    // Write your solution using std::sort with a custom comparator\n    return words;\n}\n\nint main() {\n    auto r = sortByLength({"banana","apple","kiwi","fig","cherry","date","pear"});\n    for (const auto& w : r) cout << w << endl;\n    // fig, date, kiwi, pear, apple, banana, cherry\n    return 0;\n}`,
+    hint: "Pass a lambda to std::sort. Return true if a should come before b. Compare lengths first, and if equal, compare alphabetically with <.",
+  },
+  {
+    title: "Unique Elements Using Set",
+    description:
+      "Write a C++ function that takes a vector of integers and returns a new vector containing only the unique elements, preserving their first appearance order.",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\n#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nvector<int> uniqueElements(const vector<int>& nums) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto r = uniqueElements({1,2,3,2,1,4,3,5});\n    for (int n : r) cout << n << " ";\n    cout << endl; // 1 2 3 4 5\n    return 0;\n}`,
+    hint: "Use an unordered_set to track seen elements. For each element, only add it to the result vector if it's not in the set yet.",
+  },
+  {
+    title: "Word Frequency Map",
+    description:
+      "Write a C++ function that takes a sentence and returns a map<string,int> with each word as a key and its frequency as the value (case-insensitive).",
+    language: "cpp",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `#include <iostream>\n#include <map>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nmap<string,int> wordFrequency(const string& sentence) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto freq = wordFrequency("the cat sat on the mat the cat");\n    for (const auto& [w,c] : freq)\n        cout << w << ": " << c << endl;\n    return 0;\n}`,
+    hint: "Use a stringstream to split words. Convert each word to lowercase with transform+tolower. Then use map[word]++ to count.",
+  },
+  {
+    title: "Implement shared_ptr Reference Counting",
+    description:
+      "Implement a simple SharedPtr<T> class that mimics std::shared_ptr — with a reference count, automatic deletion when count reaches zero, copy/move semantics.",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\nusing namespace std;\n\ntemplate <typename T>\nclass SharedPtr {\n    T*   ptr   = nullptr;\n    int* count = nullptr;\n\npublic:\n    explicit SharedPtr(T* p = nullptr) {\n        // Initialize ptr and count\n    }\n\n    SharedPtr(const SharedPtr& other) {\n        // Copy — increment count\n    }\n\n    ~SharedPtr() {\n        // Decrement count, delete if zero\n    }\n\n    T& operator*()  const { return *ptr;  }\n    T* operator->() const { return ptr;   }\n    int useCount()  const { return count ? *count : 0; }\n};\n\nint main() {\n    SharedPtr<int> sp1(new int(42));\n    cout << *sp1 << " count=" << sp1.useCount() << endl; // 42 count=1\n    {\n        SharedPtr<int> sp2 = sp1;\n        cout << "count=" << sp1.useCount() << endl;     // count=2\n    }\n    cout << "count=" << sp1.useCount() << endl;         // count=1\n    return 0;\n}`,
+    hint: "Allocate count as a new int(1) in the constructor. Copy increments *count. Destructor decrements *count and deletes ptr if *count reaches 0.",
+  },
+  {
+    title: "Expression Evaluator",
+    description:
+      "Write a C++ function that evaluates a simple mathematical expression string with +, -, *, / and integers, respecting operator precedence.",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\n#include <string>\n#include <stack>\nusing namespace std;\n\nint evaluate(const string& expr) {\n    // Handle +, -, *, / with integer operands\n    // Respect * and / precedence over + and -\n    return 0;\n}\n\nint main() {\n    cout << evaluate("3 + 5")        << endl; // 8\n    cout << evaluate("10 - 3")       << endl; // 7\n    cout << evaluate("2 * 6")        << endl; // 12\n    cout << evaluate("10 + 5 * 2")   << endl; // 20\n    cout << evaluate("20 - 4 * 3")   << endl; // 8\n    return 0;\n}`,
+    hint: "Use two stacks: one for numbers and one for operators. When you see an operator with lower/equal precedence to the top of the stack, pop and compute first.",
+  },
+  {
+    title: "LRU Cache",
+    description:
+      "Implement an LRU (Least Recently Used) cache with get(key) and put(key, value). The cache has a fixed capacity. When full, evict the least recently used item.",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\n#include <unordered_map>\n#include <list>\nusing namespace std;\n\nclass LRUCache {\n    int capacity;\n    // Hint: use list for O(1) move-to-front\n    //       unordered_map<int, list<pair<int,int>>::iterator> for O(1) lookup\npublic:\n    LRUCache(int cap) : capacity(cap) {}\n    int  get(int key)              { return -1; }\n    void put(int key, int value)   {}\n};\n\nint main() {\n    LRUCache cache(2);\n    cache.put(1, 1);\n    cache.put(2, 2);\n    cout << cache.get(1)    << endl; // 1\n    cache.put(3, 3);                 // evicts 2\n    cout << cache.get(2)    << endl; // -1 (evicted)\n    cout << cache.get(3)    << endl; // 3\n    return 0;\n}`,
+    hint: "Use a doubly linked list (std::list) where the front is most recent. Store iterators in an unordered_map for O(1) access. On get/put, move accessed item to front.",
+  },
+  {
+    title: "Thread-Safe Counter",
+    description:
+      "Implement a ThreadSafeCounter class that can be safely incremented by multiple threads simultaneously. Verify the final count is always correct.",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\n#include <thread>\n#include <mutex>\n#include <vector>\nusing namespace std;\n\nclass ThreadSafeCounter {\n    // Write your implementation\npublic:\n    void increment()  {}\n    void decrement()  {}\n    int  getValue()   { return 0; }\n};\n\nint main() {\n    ThreadSafeCounter counter;\n    vector<thread> threads;\n\n    for (int i = 0; i < 10; i++)\n        threads.emplace_back([&](){ for(int j=0;j<1000;j++) counter.increment(); });\n\n    for (auto& t : threads) t.join();\n    cout << "Final: " << counter.getValue() << endl; // always 10000\n    return 0;\n}`,
+    hint: "Use a private std::mutex and lock_guard<mutex> in each method. Without the mutex, concurrent increments will produce values less than 10000 due to race conditions.",
+  },
+  {
+    title: "Variadic Template Sum",
+    description:
+      "Write a variadic template function sum() that accepts any number of arguments of any numeric type and returns their sum.",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\nusing namespace std;\n\n// Write your variadic template here\n// Hint: use parameter pack (typename... Args)\n\nint main() {\n    cout << sum(1, 2, 3)           << endl; // 6\n    cout << sum(1.5, 2.5, 3.0)     << endl; // 7.0\n    cout << sum(1, 2.5, 3, 4.5)    << endl; // 11.0\n    cout << sum(10)                << endl; // 10\n    return 0;\n}`,
+    hint: "Define a base case: sum(T x) returns x. Define the recursive case: sum(T first, Args... rest) returns first + sum(rest...). The compiler expands the pack.",
+  },
+  {
+    title: "Iterator Pattern",
+    description:
+      "Implement a custom Range class that generates integers from start to end (exclusive) and supports range-based for loops by implementing begin() and end().",
+    language: "cpp",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `#include <iostream>\nusing namespace std;\n\nclass Range {\n    // Implement iterator support for range-based for\npublic:\n    Range(int start, int end) {}\n};\n\nint main() {\n    for (int i : Range(1, 6))\n        cout << i << " ";  // 1 2 3 4 5\n    cout << endl;\n\n    for (int i : Range(0, 10))\n        if (i % 2 == 0) cout << i << " ";  // 0 2 4 6 8\n    cout << endl;\n    return 0;\n}`,
+    hint: "Create a nested Iterator struct with int current. Implement operator!=, operator++, operator*. Range::begin() returns Iterator(start), Range::end() returns Iterator(end).",
+  },
 ];
 
 // ── Seed ─────────────────────────────────────────────────────────────────────
@@ -2952,10 +4087,17 @@ async function seed() {
 
   // Update course
   await setDoc(doc(db, "courses", "cpp"), {
-    id:"cpp", title:"C++ Programming", emoji:"🔷", color:"purple",
-    tagline:"From beginner to modern C++ — complete foundations",
-    description:"A complete C++ course for beginners covering all fundamentals through advanced topics including OOP, templates, STL, memory management, and modern C++17 features.",
-    level:"Beginner → Advanced", totalLessons:25, xpReward:75, order:4,
+    id: "cpp",
+    title: "C++ Programming",
+    emoji: "🔷",
+    color: "purple",
+    tagline: "From beginner to modern C++ — complete foundations",
+    description:
+      "A complete C++ course for beginners covering all fundamentals through advanced topics including OOP, templates, STL, memory management, and modern C++17 features.",
+    level: "Beginner → Advanced",
+    totalLessons: 25,
+    xpReward: 75,
+    order: 4,
   });
   console.log("✅ Updated C++ course (25 lessons)\n");
 
@@ -2970,7 +4112,11 @@ async function seed() {
   console.log("\n⚔️  Adding C++ daily challenges...");
   for (let i = 0; i < challenges.length; i++) {
     const date = dateStr(i + 30); // start 30 days from now
-    await setDoc(doc(db, "challenges", date), { ...challenges[i], date, id: date });
+    await setDoc(doc(db, "challenges", date), {
+      ...challenges[i],
+      date,
+      id: date,
+    });
     console.log(`  ✅ ${date}: ${challenges[i].title}`);
   }
 
@@ -2980,4 +4126,7 @@ async function seed() {
   process.exit(0);
 }
 
-seed().catch(e => { console.error("❌", e); process.exit(1); });
+seed().catch((e) => {
+  console.error("❌", e);
+  process.exit(1);
+});
