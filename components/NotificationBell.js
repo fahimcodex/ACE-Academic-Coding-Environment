@@ -6,38 +6,53 @@
 
 import { useState, useEffect, useRef } from "react";
 import {
-  collection, query, where, orderBy, limit,
-  onSnapshot, updateDoc, doc, writeBatch,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  onSnapshot,
+  updateDoc,
+  doc,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
-import { Bell, Zap, Trophy, MessageCircle, UserPlus, Flame, X } from "lucide-react";
+import {
+  Bell,
+  Zap,
+  Trophy,
+  MessageCircle,
+  UserPlus,
+  Flame,
+  X,
+} from "lucide-react";
 
 // Map notification type to icon + color
 const NOTIF_STYLES = {
-  xp:        { icon: Zap,           color: "text-yellow-400 bg-yellow-400/10"  },
-  badge:     { icon: Trophy,        color: "text-purple-400 bg-purple-400/10"  },
-  comment:   { icon: MessageCircle, color: "text-blue-400   bg-blue-400/10"    },
-  follow:    { icon: UserPlus,      color: "text-green-400  bg-green-400/10"   },
-  streak:    { icon: Flame,         color: "text-orange-400 bg-orange-400/10"  },
-  challenge: { icon: Trophy,        color: "text-teal-400   bg-teal-400/10"    },
+  xp: { icon: Zap, color: "text-yellow-400 bg-yellow-400/10" },
+  badge: { icon: Trophy, color: "text-purple-400 bg-purple-400/10" },
+  comment: { icon: MessageCircle, color: "text-blue-400   bg-blue-400/10" },
+  follow: { icon: UserPlus, color: "text-green-400  bg-green-400/10" },
+  streak: { icon: Flame, color: "text-orange-400 bg-orange-400/10" },
+  challenge: { icon: Trophy, color: "text-teal-400   bg-teal-400/10" },
 };
 
 function timeAgo(isoString) {
   if (!isoString) return "";
   const diff = Math.floor((Date.now() - new Date(isoString).getTime()) / 1000);
-  if (diff <    60) return "just now";
-  if (diff <  3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
 export default function NotificationBell() {
-  const { user }                    = useAuth();
-  const [open,         setOpen]     = useState(false);
-  const [notifications, setNotifs]  = useState([]);
-  const [unread,       setUnread]   = useState(0);
-  const dropdownRef                 = useRef(null);
+  const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [notifications, setNotifs] = useState([]);
+  const [unread, setUnread] = useState(0);
+  const dropdownRef = useRef(null);
 
   // ── Real-time listener ──────────────────────────────────────────────────
   useEffect(() => {
@@ -46,13 +61,24 @@ export default function NotificationBell() {
       collection(db, "notifications"),
       where("userId", "==", user.uid),
       orderBy("createdAt", "desc"),
-      limit(20)
+      limit(20),
     );
-    const unsub = onSnapshot(q, snap => {
-      const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      setNotifs(data);
-      setUnread(data.filter(n => !n.read).length);
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setNotifs(data);
+        setUnread(data.filter((n) => !n.read).length);
+      },
+      (err) => {
+        if (err?.code === "permission-denied") {
+          setNotifs([]);
+          setUnread(0);
+          return;
+        }
+        console.error("Notifications listener error:", err);
+      },
+    );
     return () => unsub();
   }, [user]);
 
@@ -69,11 +95,13 @@ export default function NotificationBell() {
 
   // ── Mark all as read when opening ──────────────────────────────────────
   async function openDropdown() {
-    setOpen(v => !v);
+    setOpen((v) => !v);
     if (!open && unread > 0 && user) {
-      const batch   = writeBatch(db);
-      const unreadItems = notifications.filter(n => !n.read);
-      unreadItems.forEach(n => batch.update(doc(db, "notifications", n.id), { read: true }));
+      const batch = writeBatch(db);
+      const unreadItems = notifications.filter((n) => !n.read);
+      unreadItems.forEach((n) =>
+        batch.update(doc(db, "notifications", n.id), { read: true }),
+      );
       await batch.commit();
     }
   }
@@ -83,8 +111,10 @@ export default function NotificationBell() {
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Bell button */}
-      <button onClick={openDropdown}
-        className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+      <button
+        onClick={openDropdown}
+        className="relative p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+      >
         <Bell className="w-5 h-5" />
         {unread > 0 && (
           <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
@@ -99,7 +129,10 @@ export default function NotificationBell() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <p className="font-semibold text-sm">Notifications</p>
-            <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+            <button
+              onClick={() => setOpen(false)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -111,20 +144,28 @@ export default function NotificationBell() {
                 No notifications yet.
               </div>
             ) : (
-              notifications.map(notif => {
-                const style   = NOTIF_STYLES[notif.type] ?? NOTIF_STYLES.xp;
-                const Icon    = style.icon;
+              notifications.map((notif) => {
+                const style = NOTIF_STYLES[notif.type] ?? NOTIF_STYLES.xp;
+                const Icon = style.icon;
                 return (
-                  <div key={notif.id}
+                  <div
+                    key={notif.id}
                     className={`flex items-start gap-3 px-4 py-3 transition-colors ${
                       !notif.read ? "bg-white/[0.03]" : ""
-                    }`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${style.color}`}>
+                    }`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${style.color}`}
+                    >
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white leading-snug">{notif.message}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{timeAgo(notif.createdAt)}</p>
+                      <p className="text-sm text-white leading-snug">
+                        {notif.message}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {timeAgo(notif.createdAt)}
+                      </p>
                     </div>
                     {!notif.read && (
                       <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1.5" />
@@ -137,7 +178,9 @@ export default function NotificationBell() {
 
           {notifications.length > 0 && (
             <div className="px-4 py-2 border-t border-white/10 text-center">
-              <p className="text-xs text-gray-500">Showing last 20 notifications</p>
+              <p className="text-xs text-gray-500">
+                Showing last 20 notifications
+              </p>
             </div>
           )}
         </div>

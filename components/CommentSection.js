@@ -91,17 +91,31 @@ function CommentCard({ comment, lessonId, depth = 0 }) {
   // Load replies for this comment
   useEffect(() => {
     if (depth >= 2) return; // max 2 levels deep
+    if (!user) {
+      setReplies([]);
+      return;
+    }
     const q = query(
       collection(db, "comments"),
       where("lessonId", "==", lessonId),
       where("parentId", "==", comment.id),
       orderBy("createdAt", "asc"),
     );
-    const unsub = onSnapshot(q, (snap) => {
-      setReplies(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setReplies(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      },
+      (err) => {
+        if (err?.code === "permission-denied") {
+          setReplies([]);
+          return;
+        }
+        console.error("Replies listener error:", err);
+      },
+    );
     return () => unsub();
-  }, [comment.id, lessonId, depth]);
+  }, [comment.id, lessonId, depth, user]);
 
   async function handleUpvote() {
     if (!user || upvoted) return;
@@ -248,6 +262,10 @@ export default function CommentSection({ lessonId }) {
 
   // Load top-level comments (no parentId)
   useEffect(() => {
+    if (!user) {
+      setComments([]);
+      return;
+    }
     const q = query(
       collection(db, "comments"),
       where("lessonId", "==", lessonId),
@@ -255,11 +273,21 @@ export default function CommentSection({ lessonId }) {
       orderBy("upvotes", "desc"),
       orderBy("createdAt", "desc"),
     );
-    const unsub = onSnapshot(q, (snap) => {
-      setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      },
+      (err) => {
+        if (err?.code === "permission-denied") {
+          setComments([]);
+          return;
+        }
+        console.error("Comments listener error:", err);
+      },
+    );
     return () => unsub();
-  }, [lessonId]);
+  }, [lessonId, user]);
 
   async function postComment() {
     if (!newComment.trim() || !user || posting) return;
