@@ -110,18 +110,6 @@ export default function DashboardPage() {
     load();
   }, [user]);
 
-  try {
-    await ensureProfileExists(user);
-    const ref = doc(db, "users", user.uid);
-    unsubscribeProfile = onSnapshot(ref, (snap) => {
-      if (snap.exists()) setProfile(snap.data());
-    });
-  } catch (error) {
-    console.error("Error loading profile:", error);
-  } finally {
-    setLoading(false);
-  }
-
   if (loading || !profile)
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
