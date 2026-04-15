@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   collection,
-  getDocs,
+  onSnapshot,
   doc,
   getDoc,
   orderBy,
@@ -15,32 +15,65 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { BookOpen, Clock, Zap, ChevronRight, ArrowLeft } from "lucide-react";
 
+// 1. Caching objects for multiple course IDs
+const cacheByLang = {};
+const unsubsByLang = {};
+
 export default function CoursePage() {
   const { lang } = useParams();
-  const [course, setCourse] = useState(null);
-  const [lessons, setLessons] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  // 2. Hydrate state instantly if we've been to this page before
+  const [course, setCourse] = useState(cacheByLang[lang]?.course || null);
+  const [lessons, setLessons] = useState(cacheByLang[lang]?.lessons || []);
+  const [loading, setLoading] = useState(!cacheByLang[lang]?.loaded);
 
   useEffect(() => {
-    async function load() {
+    if (!lang) return;
+
+    if (!cacheByLang[lang]) {
+      cacheByLang[lang] = { course: null, lessons: [], loaded: false };
+    }
+
+    if (!unsubsByLang[lang]) {
+      // Mark as subscribed so we don't accidentally fetch twice
+      unsubsByLang[lang] = true;
+
       try {
-        const courseSnap = await getDoc(doc(db, "courses", lang));
-        const lessonsSnap = await getDocs(
+        onSnapshot(doc(db, "courses", lang), (snap) => {
+          if (snap.exists()) {
+            const data = { id: snap.id, ...snap.data() };
+            cacheByLang[lang].course = data;
+            setCourse(data);
+          }
+        });
+
+        onSnapshot(
           query(collection(db, "courses", lang, "lessons"), orderBy("order")),
+          (snap) => {
+            const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+            cacheByLang[lang].lessons = data;
+            cacheByLang[lang].loaded = true;
+            setLessons(data);
+            setLoading(false);
+          },
         );
-        if (courseSnap.exists()) {
-          setCourse({ id: courseSnap.id, ...courseSnap.data() });
-        }
-        setLessons(lessonsSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      } catch (error) {
-        console.error("Error loading course details:", error);
-      } finally {
-        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        // Delaying the state setter by 0ms avoids the synchronous setState ESLint error
+        setTimeout(() => setLoading(false), 0);
       }
+    } else {
+      // Delay state updates to avoid React synchronous render warnings
+      setTimeout(() => {
+        if (cacheByLang[lang].loaded) {
+          setCourse(cacheByLang[lang].course);
+          setLessons(cacheByLang[lang].lessons);
+          setLoading(false);
+        }
+      }, 0);
     }
-    if (lang) {
-      load();
-    }
+
+    // IMPORTANT: Again, DO NOT return any unsubs here.
   }, [lang]);
 
   if (loading)

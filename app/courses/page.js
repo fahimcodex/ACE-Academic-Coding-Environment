@@ -34,27 +34,39 @@ const COLOR = {
   },
 };
 
+let cachedCourses = [];
+let hasLoaded = false;
+let globalUnsubscribe = null;
+
 export default function CoursesPage() {
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [courses, setCourses] = useState(cachedCourses);
+  const [loading, setLoading] = useState(!hasLoaded);
 
   useEffect(() => {
-    const q = query(collection(db, "courses"), orderBy("order"));
+    // Only subscribe to Firebase once across your entire session
+    if (!globalUnsubscribe) {
+      const q = query(collection(db, "courses"), orderBy("order"));
+      globalUnsubscribe = onSnapshot(
+        q,
+        (snap) => {
+          cachedCourses = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          hasLoaded = true;
+          setCourses([...cachedCourses]);
+          setLoading(false);
+        },
+        (error) => {
+          console.error("Failed to load courses:", error);
+          setLoading(false);
+        },
+      );
+    } else if (hasLoaded) {
+      // Pull immediately from memory on routing back to this page
+      setCourses([...cachedCourses]);
+      setLoading(false);
+    }
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snap) => {
-        setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Failed to load courses:", error);
-        setLoading(false);
-      },
-    );
-
-    // Clean up the listener when the component unmounts
-    return () => unsubscribe();
+    // IMPORTANT: We do NOT return a cleanup function.
+    // This keeps the websocket permanently alive and bypasses the Next.js routing bug.
   }, []);
 
   return (
