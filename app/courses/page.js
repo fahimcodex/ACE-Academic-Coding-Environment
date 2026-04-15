@@ -40,10 +40,15 @@ export default function CoursesPage() {
 
   useEffect(() => {
     async function load() {
-      const q = query(collection(db, "courses"), orderBy("order"));
-      const snap = await getDocs(q);
-      setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      setLoading(false);
+      try {
+        const q = query(collection(db, "courses"), orderBy("order"));
+        const snap = await getDocs(q);
+        setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.error("Failed to load courses:", error);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, []);
@@ -71,7 +76,7 @@ export default function CoursesPage() {
                 <Link
                   key={course.id}
                   href={`/courses/${course.id}`}
-                  className={`glass rounded-2xl p-6 border ${c.border} bg-gradient-to-br ${c.bg} card-hover group block`}
+                  className={`glass rounded-2xl p-6 border ${c.border} bg-linear-to-br ${c.bg} card-hover group block`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <span className="text-4xl">{course.emoji}</span>
