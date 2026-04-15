@@ -289,9 +289,8 @@ export default function DashboardPage() {
                   </p>
                   <div className="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-current rounded-full transition-all duration-500"
-                      style={{ width: `${pct}%` }}
                       className={`h-full rounded-full ${course.color.replace("text-", "bg-")} transition-all`}
+                      style={{ width: `${pct}%` }}
                     />
                   </div>
                   <div className="flex items-center justify-between mt-3">
