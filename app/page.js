@@ -295,9 +295,9 @@ export default function HomePage() {
           </div>
 
           {/* Trust line */}
-          <p className="mt-6 text-sm text-gray-500">
+          {/* <p className="mt-6 text-sm text-gray-500">
             No credit card required • Free forever • All AI features included
-          </p>
+          </p> */}
         </div>
       </section>
 
