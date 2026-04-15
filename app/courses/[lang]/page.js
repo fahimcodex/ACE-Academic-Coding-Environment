@@ -23,16 +23,24 @@ export default function CoursePage() {
 
   useEffect(() => {
     async function load() {
-      const courseSnap = await getDoc(doc(db, "courses", lang));
-      const lessonsSnap = await getDocs(
-        query(collection(db, "courses", lang, "lessons"), orderBy("order")),
-      );
-      if (courseSnap.exists())
-        setCourse({ id: courseSnap.id, ...courseSnap.data() });
-      setLessons(lessonsSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      setLoading(false);
+      try {
+        const courseSnap = await getDoc(doc(db, "courses", lang));
+        const lessonsSnap = await getDocs(
+          query(collection(db, "courses", lang, "lessons"), orderBy("order")),
+        );
+        if (courseSnap.exists()) {
+          setCourse({ id: courseSnap.id, ...courseSnap.data() });
+        }
+        setLessons(lessonsSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } catch (error) {
+        console.error("Error loading course details:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    load();
+    if (lang) {
+      load();
+    }
   }, [lang]);
 
   if (loading)
@@ -90,10 +98,10 @@ export default function CoursePage() {
             <Link
               key={lesson.id}
               href={`/courses/${lang}/${lesson.id}`}
-              className="glass rounded-xl p-5 border border-white/5 hover:border-blue-500/30 flex items-center justify-between group transition-all block"
+              className="glass rounded-xl p-5 border border-white/5 hover:border-blue-500/30 flex items-center justify-between group transition-all"
             >
               <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold shrink-0">
                   {i + 1}
                 </div>
                 <div>

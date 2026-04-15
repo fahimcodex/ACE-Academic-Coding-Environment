@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
@@ -39,18 +39,22 @@ export default function CoursesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function load() {
-      try {
-        const q = query(collection(db, "courses"), orderBy("order"));
-        const snap = await getDocs(q);
+    const q = query(collection(db, "courses"), orderBy("order"));
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
         setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      } catch (error) {
-        console.error("Failed to load courses:", error);
-      } finally {
         setLoading(false);
-      }
-    }
-    load();
+      },
+      (error) => {
+        console.error("Failed to load courses:", error);
+        setLoading(false);
+      },
+    );
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   return (
