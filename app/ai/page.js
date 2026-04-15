@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { getLearningPath, generatePractice } from "@/lib/aiClient";
 import ReactMarkdown from "react-markdown";
@@ -523,7 +524,7 @@ function SignedInAiPage({ user, profile }) {
             </div>
             <div className="glass rounded-2xl p-6 border border-white/10">
               <p className="text-sm text-gray-400 mb-4">
-                Based on your{" "}
+                Based on your
                 <span className="text-yellow-400 font-semibold">
                   {profile?.xp ?? 0} XP
                 </span>
@@ -703,12 +704,12 @@ function SignedInAiPage({ user, profile }) {
                     <div className="px-4 py-3 bg-white/2 border-t border-white/10 text-center">
                       <p className="text-xs text-gray-500">
                         To run your code, paste it into a{" "}
-                        <link
+                        <Link
                           href="/courses/python"
                           className="text-blue-400 hover:underline"
                         >
                           lesson editor
-                        </link>
+                        </Link>
                         .
                       </p>
                     </div>
