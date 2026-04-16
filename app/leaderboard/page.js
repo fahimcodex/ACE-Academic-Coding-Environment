@@ -10,6 +10,7 @@ import {
   where,
   doc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
@@ -49,70 +50,101 @@ export default function LeaderboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadLeaderboard(tab);
-  }, [tab, user]);
-
-  async function loadLeaderboard(activeTab) {
     setLoading(true);
-    try {
-      let q;
-      if (activeTab === "Global") {
-        // Rank all users by total XP
-        q = query(
-          collection(db, "users"),
-          orderBy("xp", "desc"),
-          limit(LIMITS),
-        );
-      } else {
-        // Rank by lessons completed in that language
-        // We read progress docs and aggregate
-        const langId = activeTab.toLowerCase().replace("++", "pp");
-        const progSnap = await getDocs(
-          query(collection(db, "progress"), where("courseId", "==", langId)),
+    let unsubscribeProgress = null;
+    let unsubscribeGlobal = null;
+
+    async function loadCustomTab() {
+      try {
+        const langId = tab.toLowerCase().replace("++", "pp");
+        const progQuery = query(
+          collection(db, "progress"),
+          where("courseId", "==", langId),
         );
 
-        // Group by userId → count completions
-        const counts = {};
-        progSnap.docs.forEach((d) => {
-          const uid = d.data().userId;
-          counts[uid] = (counts[uid] ?? 0) + 1;
-        });
+        unsubscribeProgress = onSnapshot(
+          progQuery,
+          async (progSnap) => {
+            const counts = {};
+            progSnap.docs.forEach((d) => {
+              const uid = d.data().userId;
+              counts[uid] = (counts[uid] ?? 0) + 1;
+            });
 
-        // Fetch user docs for those uids
-        const uids = Object.keys(counts).slice(0, LIMITS);
-        const users = await Promise.all(
-          uids.map((uid) => getDoc(doc(db, "users", uid))),
+            const uids = Object.keys(counts).slice(0, LIMITS);
+            if (uids.length === 0) {
+              setEntries([]);
+              setMyRank(null);
+              setLoading(false);
+              return;
+            }
+
+            // We can just fetch user docs once since this updates infrequently, or rely on snapshot for user docs too. GetDoc is fine here since the getDocs issue was the main problem, but we could also wrap it. We'll use getDoc for now to keep it simple, or Promise.all(getDoc).
+            try {
+              const users = await Promise.all(
+                uids.map((uid) => getDoc(doc(db, "users", uid))),
+              );
+              const result = users
+                .filter((s) => s.exists())
+                .map((s) => ({
+                  id: s.id,
+                  ...s.data(),
+                  langLessons: counts[s.id] ?? 0,
+                }))
+                .sort((a, b) => b.langLessons - a.langLessons);
+
+              setEntries(result);
+              if (user) {
+                const idx = result.findIndex((e) => e.id === user.uid);
+                setMyRank(idx >= 0 ? idx + 1 : null);
+              }
+            } catch (err) {
+              console.error(err);
+            }
+            setLoading(false);
+          },
+          (error) => {
+            console.error(error);
+            setLoading(false);
+          },
         );
-        const result = users
-          .filter((s) => s.exists())
-          .map((s) => ({
-            id: s.id,
-            ...s.data(),
-            langLessons: counts[s.id] ?? 0,
-          }))
-          .sort((a, b) => b.langLessons - a.langLessons);
-
-        setEntries(result);
-        if (user) {
-          const idx = result.findIndex((e) => e.id === user.uid);
-          setMyRank(idx >= 0 ? idx + 1 : null);
-        }
+      } catch (err) {
+        console.error(err);
         setLoading(false);
-        return;
       }
-
-      const snap = await getDocs(q);
-      const result = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      setEntries(result);
-      if (user) {
-        const idx = result.findIndex((e) => e.id === user.uid);
-        setMyRank(idx >= 0 ? idx + 1 : null);
-      }
-    } catch (err) {
-      console.error(err);
     }
-    setLoading(false);
-  }
+
+    if (tab === "Global") {
+      const q = query(
+        collection(db, "users"),
+        orderBy("xp", "desc"),
+        limit(LIMITS),
+      );
+      unsubscribeGlobal = onSnapshot(
+        q,
+        (snap) => {
+          const result = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          setEntries(result);
+          if (user) {
+            const idx = result.findIndex((e) => e.id === user.uid);
+            setMyRank(idx >= 0 ? idx + 1 : null);
+          }
+          setLoading(false);
+        },
+        (error) => {
+          console.error(error);
+          setLoading(false);
+        },
+      );
+    } else {
+      loadCustomTab();
+    }
+
+    return () => {
+      if (unsubscribeProgress) unsubscribeProgress();
+      if (unsubscribeGlobal) unsubscribeGlobal();
+    };
+  }, [tab, user]);
 
   return (
     <div className="min-h-screen bg-gray-950">
