@@ -6,26 +6,31 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyBeCUpoOfSyEO_i7hBcoSd-pRq95TTpi9A",
-  authDomain:        "academic-coding-environment.firebaseapp.com",
-  projectId:         "academic-coding-environment",
-  storageBucket:     "academic-coding-environment.firebasestorage.app",
-  messagingSenderId: "575762500824",
-  appId:             "1:575762500824:web:87c159931942ed565d1bad",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const db = getFirestore(app);
 
 // ── LESSONS ───────────────────────────────────────────────────────────────────
 
 const newLessons = [
-
   // ── BEGINNER (5–10) ──────────────────────────────────────────────────────
 
   {
-    id:"py-05", courseId:"python", order:5, title:"Functions", duration:"15 min", xpReward:25, language:"python",
-    theory:`# Functions
+    id: "py-05",
+    courseId: "python",
+    order: 5,
+    title: "Functions",
+    duration: "15 min",
+    xpReward: 25,
+    language: "python",
+    theory: `# Functions
 
 Functions let you group reusable code under a name and call it whenever needed.
 
@@ -87,7 +92,7 @@ def min_max(numbers):
 low, high = min_max([3, 1, 9, 2, 7])
 print(low, high)   # 1 9
 \`\`\``,
-    starterCode:`# Functions Practice
+    starterCode: `# Functions Practice
 
 def greet(name, greeting="Hello"):
     return f"{greeting}, {name}!"
@@ -112,16 +117,53 @@ def powers(n):
 square, cube = powers(3)
 print(square, cube)   # Expected: 9 27
 `,
-    quiz:[
-      { id:"q1", question:"What keyword is used to define a function in Python?", options:["function","define","def","func"], correct:2, explanation:"def is the keyword used to define a function in Python." },
-      { id:"q2", question:"What does the return statement do?", options:["Prints a value","Ends the program","Sends a value back to the caller","Repeats the function"], correct:2, explanation:"return sends a value back to wherever the function was called from." },
-      { id:"q3", question:"What happens to a local variable after the function finishes?", options:["It becomes global","It is saved for next call","It is deleted","It returns 0"], correct:2, explanation:"Local variables only exist while the function is running and are destroyed afterwards." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What keyword is used to define a function in Python?",
+        options: ["function", "define", "def", "func"],
+        correct: 2,
+        explanation: "def is the keyword used to define a function in Python.",
+      },
+      {
+        id: "q2",
+        question: "What does the return statement do?",
+        options: [
+          "Prints a value",
+          "Ends the program",
+          "Sends a value back to the caller",
+          "Repeats the function",
+        ],
+        correct: 2,
+        explanation:
+          "return sends a value back to wherever the function was called from.",
+      },
+      {
+        id: "q3",
+        question:
+          "What happens to a local variable after the function finishes?",
+        options: [
+          "It becomes global",
+          "It is saved for next call",
+          "It is deleted",
+          "It returns 0",
+        ],
+        correct: 2,
+        explanation:
+          "Local variables only exist while the function is running and are destroyed afterwards.",
+      },
     ],
   },
 
   {
-    id:"py-06", courseId:"python", order:6, title:"Lists & Tuples", duration:"15 min", xpReward:25, language:"python",
-    theory:`# Lists & Tuples
+    id: "py-06",
+    courseId: "python",
+    order: 6,
+    title: "Lists & Tuples",
+    duration: "15 min",
+    xpReward: 25,
+    language: "python",
+    theory: `# Lists & Tuples
 
 Lists and tuples store multiple values in a single variable.
 
@@ -169,7 +211,7 @@ print(x, y)    # 3 7
 \`\`\`
 
 Use tuples for data that shouldn't change, like coordinates or RGB colors.`,
-    starterCode:`# Lists & Tuples
+    starterCode: `# Lists & Tuples
 
 # List operations
 scores = [85, 92, 78, 96, 88]
@@ -192,16 +234,49 @@ print(f"{name} is {age} years old studying {major}")
 
 # Try: create a list of your 5 favourite numbers and print them in reverse
 `,
-    quiz:[
-      { id:"q1", question:"What is the index of the first element in a Python list?", options:["1","-1","0","None"], correct:2, explanation:"Python lists are zero-indexed, so the first element is at index 0." },
-      { id:"q2", question:"What is the key difference between a list and a tuple?", options:["Lists use () and tuples use []","Tuples can store more items","Lists are mutable; tuples are immutable","Tuples are faster to create"], correct:2, explanation:"Lists are mutable (can be changed); tuples are immutable (cannot be changed after creation)." },
-      { id:"q3", question:"What does letters[1:3] return for letters = ['a','b','c','d']?", options:["['a','b']","['b','c','d']","['b','c']","['a','b','c']"], correct:2, explanation:"Slicing [1:3] returns elements at index 1 and 2 (not including 3), so ['b','c']." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What is the index of the first element in a Python list?",
+        options: ["1", "-1", "0", "None"],
+        correct: 2,
+        explanation:
+          "Python lists are zero-indexed, so the first element is at index 0.",
+      },
+      {
+        id: "q2",
+        question: "What is the key difference between a list and a tuple?",
+        options: [
+          "Lists use () and tuples use []",
+          "Tuples can store more items",
+          "Lists are mutable; tuples are immutable",
+          "Tuples are faster to create",
+        ],
+        correct: 2,
+        explanation:
+          "Lists are mutable (can be changed); tuples are immutable (cannot be changed after creation).",
+      },
+      {
+        id: "q3",
+        question:
+          "What does letters[1:3] return for letters = ['a','b','c','d']?",
+        options: ["['a','b']", "['b','c','d']", "['b','c']", "['a','b','c']"],
+        correct: 2,
+        explanation:
+          "Slicing [1:3] returns elements at index 1 and 2 (not including 3), so ['b','c'].",
+      },
     ],
   },
 
   {
-    id:"py-07", courseId:"python", order:7, title:"Dictionaries & Sets", duration:"15 min", xpReward:25, language:"python",
-    theory:`# Dictionaries & Sets
+    id: "py-07",
+    courseId: "python",
+    order: 7,
+    title: "Dictionaries & Sets",
+    duration: "15 min",
+    xpReward: 25,
+    language: "python",
+    theory: `# Dictionaries & Sets
 
 ## Dictionaries
 
@@ -252,7 +327,7 @@ print(a | b)   # union:        {1,2,3,4,5,6}
 print(a & b)   # intersection: {3,4}
 print(a - b)   # difference:   {1,2}
 \`\`\``,
-    starterCode:`# Dictionaries & Sets
+    starterCode: `# Dictionaries & Sets
 
 # Create and use a dictionary
 person = {
@@ -283,16 +358,59 @@ numbers = [1, 2, 2, 3, 3, 3, 4]
 unique = set(numbers)
 print("\\nUnique numbers:", unique)
 `,
-    quiz:[
-      { id:"q1", question:"How do you safely access a dictionary key that might not exist?", options:["dict[key]","dict.find(key)","dict.get(key)","dict.fetch(key)"], correct:2, explanation:".get() returns None (or a default value) instead of raising a KeyError if the key doesn't exist." },
-      { id:"q2", question:"What does a Python set guarantee about its elements?", options:["They are sorted","They are unique","They are immutable","They are indexed"], correct:1, explanation:"Sets automatically remove duplicates — every element appears exactly once." },
-      { id:"q3", question:"What does d.items() return?", options:["Just the keys","Just the values","Key-value pairs","The length"], correct:2, explanation:"d.items() returns all key-value pairs as tuples, useful for looping over a dictionary." },
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "How do you safely access a dictionary key that might not exist?",
+        options: [
+          "dict[key]",
+          "dict.find(key)",
+          "dict.get(key)",
+          "dict.fetch(key)",
+        ],
+        correct: 2,
+        explanation:
+          ".get() returns None (or a default value) instead of raising a KeyError if the key doesn't exist.",
+      },
+      {
+        id: "q2",
+        question: "What does a Python set guarantee about its elements?",
+        options: [
+          "They are sorted",
+          "They are unique",
+          "They are immutable",
+          "They are indexed",
+        ],
+        correct: 1,
+        explanation:
+          "Sets automatically remove duplicates — every element appears exactly once.",
+      },
+      {
+        id: "q3",
+        question: "What does d.items() return?",
+        options: [
+          "Just the keys",
+          "Just the values",
+          "Key-value pairs",
+          "The length",
+        ],
+        correct: 2,
+        explanation:
+          "d.items() returns all key-value pairs as tuples, useful for looping over a dictionary.",
+      },
     ],
   },
 
   {
-    id:"py-08", courseId:"python", order:8, title:"String Methods", duration:"12 min", xpReward:25, language:"python",
-    theory:`# String Methods
+    id: "py-08",
+    courseId: "python",
+    order: 8,
+    title: "String Methods",
+    duration: "12 min",
+    xpReward: 25,
+    language: "python",
+    theory: `# String Methods
 
 Strings in Python come with many built-in methods for manipulation.
 
@@ -339,7 +457,7 @@ score = 95.5
 print(f"Hello {name}! Your score is {score:.1f}")
 # Hello Alice! Your score is 95.5
 \`\`\``,
-    starterCode:`# String Methods Practice
+    starterCode: `# String Methods Practice
 
 text = "  Python Programming is Fun!  "
 
@@ -369,16 +487,42 @@ def count_vowels(s):
 
 print(f"\\nVowels in 'Python': {count_vowels('Python')}")
 `,
-    quiz:[
-      { id:"q1", question:"What does 'hello'.upper() return?", options:["hello","Hello","HELLO","HELLO!"], correct:2, explanation:".upper() converts all characters to uppercase." },
-      { id:"q2", question:"What does 'a,b,c'.split(',') return?", options:["'abc'","['a','b','c']","('a','b','c')","{'a','b','c'}"], correct:1, explanation:".split() splits a string into a list by the given separator." },
-      { id:"q3", question:"Which method removes whitespace from both ends of a string?", options:[".clean()",".trim()",".strip()",".remove()"], correct:2, explanation:".strip() removes leading and trailing whitespace characters." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does 'hello'.upper() return?",
+        options: ["hello", "Hello", "HELLO", "HELLO!"],
+        correct: 2,
+        explanation: ".upper() converts all characters to uppercase.",
+      },
+      {
+        id: "q2",
+        question: "What does 'a,b,c'.split(',') return?",
+        options: ["'abc'", "['a','b','c']", "('a','b','c')", "{'a','b','c'}"],
+        correct: 1,
+        explanation:
+          ".split() splits a string into a list by the given separator.",
+      },
+      {
+        id: "q3",
+        question: "Which method removes whitespace from both ends of a string?",
+        options: [".clean()", ".trim()", ".strip()", ".remove()"],
+        correct: 2,
+        explanation:
+          ".strip() removes leading and trailing whitespace characters.",
+      },
     ],
   },
 
   {
-    id:"py-09", courseId:"python", order:9, title:"File Handling", duration:"15 min", xpReward:30, language:"python",
-    theory:`# File Handling
+    id: "py-09",
+    courseId: "python",
+    order: 9,
+    title: "File Handling",
+    duration: "15 min",
+    xpReward: 30,
+    language: "python",
+    theory: `# File Handling
 
 Python makes it easy to read from and write to files.
 
@@ -429,7 +573,7 @@ with open("notes.txt") as f:
 with open("notes.txt", "a") as f:
     f.write("This is appended.\\n")
 \`\`\``,
-    starterCode:`# File Handling
+    starterCode: `# File Handling
 # Note: In this browser environment we simulate file operations
 
 # Simulate writing a file
@@ -461,16 +605,54 @@ for line in simulated_file:
 print("\\nParsed data:", data)
 print("Student name:", data["Name"])
 `,
-    quiz:[
-      { id:"q1", question:"What mode opens a file for writing (creating or overwriting)?", options:['"r"','"a"','"w"','"x"'], correct:2, explanation:'"w" opens for writing. It creates the file if it doesn\'t exist, or overwrites it if it does.' },
-      { id:"q2", question:"Why is the 'with' statement recommended for file handling?", options:["It's faster","It auto-closes the file","It prevents all errors","It reads faster"], correct:1, explanation:"The with statement ensures the file is automatically closed when the block ends, even if an error occurs." },
-      { id:"q3", question:"What does f.readlines() return?", options:["A string","A single line","A list of all lines","The file size"], correct:2, explanation:"readlines() reads all lines and returns them as a list of strings." },
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "What mode opens a file for writing (creating or overwriting)?",
+        options: ['"r"', '"a"', '"w"', '"x"'],
+        correct: 2,
+        explanation:
+          '"w" opens for writing. It creates the file if it doesn\'t exist, or overwrites it if it does.',
+      },
+      {
+        id: "q2",
+        question: "Why is the 'with' statement recommended for file handling?",
+        options: [
+          "It's faster",
+          "It auto-closes the file",
+          "It prevents all errors",
+          "It reads faster",
+        ],
+        correct: 1,
+        explanation:
+          "The with statement ensures the file is automatically closed when the block ends, even if an error occurs.",
+      },
+      {
+        id: "q3",
+        question: "What does f.readlines() return?",
+        options: [
+          "A string",
+          "A single line",
+          "A list of all lines",
+          "The file size",
+        ],
+        correct: 2,
+        explanation:
+          "readlines() reads all lines and returns them as a list of strings.",
+      },
     ],
   },
 
   {
-    id:"py-10", courseId:"python", order:10, title:"Error Handling", duration:"15 min", xpReward:30, language:"python",
-    theory:`# Error Handling
+    id: "py-10",
+    courseId: "python",
+    order: 10,
+    title: "Error Handling",
+    duration: "15 min",
+    xpReward: 30,
+    language: "python",
+    theory: `# Error Handling
 
 Errors (exceptions) crash your program. Error handling lets you respond gracefully.
 
@@ -523,7 +705,7 @@ try:
 except ValueError as e:
     print(f"Error: {e}")
 \`\`\``,
-    starterCode:`# Error Handling
+    starterCode: `# Error Handling
 
 # Basic try/except
 def safe_divide(a, b):
@@ -563,18 +745,51 @@ nums = [10, 20, 30]
 print(read_data(nums, 1))
 print(read_data(nums, 9))
 `,
-    quiz:[
-      { id:"q1", question:"Which block always runs regardless of whether an exception occurred?", options:["try","except","else","finally"], correct:3, explanation:"The finally block always executes, whether an exception occurred or not — useful for cleanup." },
-      { id:"q2", question:"What exception is raised when you try int('hello')?", options:["TypeError","ValueError","SyntaxError","NameError"], correct:1, explanation:"ValueError is raised when a function receives the right type but an inappropriate value, like converting 'hello' to int." },
-      { id:"q3", question:"What does the else block do in a try/except statement?", options:["Runs when exception occurs","Always runs","Runs only if no exception occurred","Catches all exceptions"], correct:2, explanation:"The else block runs only when no exception was raised in the try block." },
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "Which block always runs regardless of whether an exception occurred?",
+        options: ["try", "except", "else", "finally"],
+        correct: 3,
+        explanation:
+          "The finally block always executes, whether an exception occurred or not — useful for cleanup.",
+      },
+      {
+        id: "q2",
+        question: "What exception is raised when you try int('hello')?",
+        options: ["TypeError", "ValueError", "SyntaxError", "NameError"],
+        correct: 1,
+        explanation:
+          "ValueError is raised when a function receives the right type but an inappropriate value, like converting 'hello' to int.",
+      },
+      {
+        id: "q3",
+        question: "What does the else block do in a try/except statement?",
+        options: [
+          "Runs when exception occurs",
+          "Always runs",
+          "Runs only if no exception occurred",
+          "Catches all exceptions",
+        ],
+        correct: 2,
+        explanation:
+          "The else block runs only when no exception was raised in the try block.",
+      },
     ],
   },
 
   // ── INTERMEDIATE (11–20) ────────────────────────────────────────────────
 
   {
-    id:"py-11", courseId:"python", order:11, title:"List Comprehensions", duration:"15 min", xpReward:35, language:"python",
-    theory:`# List Comprehensions
+    id: "py-11",
+    courseId: "python",
+    order: 11,
+    title: "List Comprehensions",
+    duration: "15 min",
+    xpReward: 35,
+    language: "python",
+    theory: `# List Comprehensions
 
 List comprehensions are a concise way to create lists — often replacing a loop in one line.
 
@@ -630,7 +845,7 @@ squares_dict = {i: i**2 for i in range(5)}
 unique_lens = {len(w) for w in ["hi","hello","hey","world"]}
 # {2, 5}
 \`\`\``,
-    starterCode:`# List Comprehensions
+    starterCode: `# List Comprehensions
 
 # 1. Basic: squares of 1-10
 squares = [i**2 for i in range(1, 11)]
@@ -656,16 +871,52 @@ print("Word lengths:", word_lengths)
 
 # Try: create a list of all numbers 1-50 divisible by both 3 and 5
 `,
-    quiz:[
-      { id:"q1", question:"What does [x**2 for x in range(3)] produce?", options:["[1,4,9]","[0,1,4]","[0,1,2]","[1,2,3]"], correct:1, explanation:"range(3) produces 0,1,2 and squaring gives [0, 1, 4]." },
-      { id:"q2", question:"How do you add a filter condition to a list comprehension?", options:["Add 'where' at the end","Add 'if' at the end","Wrap in filter()","Use a second for loop"], correct:1, explanation:"Add 'if condition' at the end: [x for x in items if condition]." },
-      { id:"q3", question:"What is the dict comprehension syntax?", options:["{k,v for ...}","[k:v for ...]","{k:v for ...}","dict(k:v for ...)"], correct:2, explanation:"Dictionary comprehensions use {key: value for item in iterable} syntax." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does [x**2 for x in range(3)] produce?",
+        options: ["[1,4,9]", "[0,1,4]", "[0,1,2]", "[1,2,3]"],
+        correct: 1,
+        explanation: "range(3) produces 0,1,2 and squaring gives [0, 1, 4].",
+      },
+      {
+        id: "q2",
+        question: "How do you add a filter condition to a list comprehension?",
+        options: [
+          "Add 'where' at the end",
+          "Add 'if' at the end",
+          "Wrap in filter()",
+          "Use a second for loop",
+        ],
+        correct: 1,
+        explanation:
+          "Add 'if condition' at the end: [x for x in items if condition].",
+      },
+      {
+        id: "q3",
+        question: "What is the dict comprehension syntax?",
+        options: [
+          "{k,v for ...}",
+          "[k:v for ...]",
+          "{k:v for ...}",
+          "dict(k:v for ...)",
+        ],
+        correct: 2,
+        explanation:
+          "Dictionary comprehensions use {key: value for item in iterable} syntax.",
+      },
     ],
   },
 
   {
-    id:"py-12", courseId:"python", order:12, title:"Advanced Functions", duration:"18 min", xpReward:35, language:"python",
-    theory:`# Advanced Functions
+    id: "py-12",
+    courseId: "python",
+    order: 12,
+    title: "Advanced Functions",
+    duration: "18 min",
+    xpReward: 35,
+    language: "python",
+    theory: `# Advanced Functions
 
 ## *args — Variable Positional Arguments
 
@@ -713,7 +964,7 @@ evens   = list(filter(lambda x: x % 2 == 0, nums))
 print(doubled)  # [2, 4, 6, 8, 10]
 print(evens)    # [2, 4]
 \`\`\``,
-    starterCode:`# Advanced Functions
+    starterCode: `# Advanced Functions
 
 # *args
 def multiply_all(*args):
@@ -749,16 +1000,58 @@ big     = list(filter(lambda x: x > 50, squares))
 print("Squares:", squares)
 print("Squares > 50:", big)
 `,
-    quiz:[
-      { id:"q1", question:"What does *args allow a function to accept?", options:["Only keyword arguments","Any number of positional arguments","Only two arguments","Named arguments"], correct:1, explanation:"*args collects any number of positional arguments into a tuple." },
-      { id:"q2", question:"What is a lambda function?", options:["A function that returns None","A multi-line function","An anonymous one-line function","A built-in function"], correct:2, explanation:"Lambda creates an anonymous function in a single expression: lambda params: expression." },
-      { id:"q3", question:"What does filter() do?", options:["Transforms each element","Removes duplicates","Returns elements where function returns True","Sorts the list"], correct:2, explanation:"filter() returns only the elements for which the function returns True." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does *args allow a function to accept?",
+        options: [
+          "Only keyword arguments",
+          "Any number of positional arguments",
+          "Only two arguments",
+          "Named arguments",
+        ],
+        correct: 1,
+        explanation:
+          "*args collects any number of positional arguments into a tuple.",
+      },
+      {
+        id: "q2",
+        question: "What is a lambda function?",
+        options: [
+          "A function that returns None",
+          "A multi-line function",
+          "An anonymous one-line function",
+          "A built-in function",
+        ],
+        correct: 2,
+        explanation:
+          "Lambda creates an anonymous function in a single expression: lambda params: expression.",
+      },
+      {
+        id: "q3",
+        question: "What does filter() do?",
+        options: [
+          "Transforms each element",
+          "Removes duplicates",
+          "Returns elements where function returns True",
+          "Sorts the list",
+        ],
+        correct: 2,
+        explanation:
+          "filter() returns only the elements for which the function returns True.",
+      },
     ],
   },
 
   {
-    id:"py-13", courseId:"python", order:13, title:"Object Oriented Programming I", duration:"20 min", xpReward:40, language:"python",
-    theory:`# Object Oriented Programming I
+    id: "py-13",
+    courseId: "python",
+    order: 13,
+    title: "Object Oriented Programming I",
+    duration: "20 min",
+    xpReward: 40,
+    language: "python",
+    theory: `# Object Oriented Programming I
 
 OOP organizes code into **objects** that combine data and behavior.
 
@@ -825,7 +1118,7 @@ c2 = Circle(10)
 print(c1.area())   # 78.53975
 print(c2.area())   # 314.159
 \`\`\``,
-    starterCode:`# OOP I — Classes and Objects
+    starterCode: `# OOP I — Classes and Objects
 
 class BankAccount:
     def __init__(self, owner, balance=0):
@@ -864,16 +1157,59 @@ acc2 = BankAccount("Bob")
 acc2.deposit(100)
 print(acc2)
 `,
-    quiz:[
-      { id:"q1", question:"What is __init__ used for in a Python class?", options:["To delete an object","To initialize object attributes when created","To print the object","To copy the object"], correct:1, explanation:"__init__ is the constructor method — it runs automatically when a new object is created and sets up initial attributes." },
-      { id:"q2", question:"What does 'self' refer to inside a class method?", options:["The class itself","The parent class","The current instance (object)","The previous object"], correct:2, explanation:"'self' is a reference to the current object — it allows methods to access and modify the object's own attributes." },
-      { id:"q3", question:"What is the difference between a class attribute and an instance attribute?", options:["No difference","Class attributes are shared; instance attributes are unique per object","Instance attributes are faster","Class attributes can't be changed"], correct:1, explanation:"Class attributes are shared across all instances; instance attributes belong to a specific object." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What is __init__ used for in a Python class?",
+        options: [
+          "To delete an object",
+          "To initialize object attributes when created",
+          "To print the object",
+          "To copy the object",
+        ],
+        correct: 1,
+        explanation:
+          "__init__ is the constructor method — it runs automatically when a new object is created and sets up initial attributes.",
+      },
+      {
+        id: "q2",
+        question: "What does 'self' refer to inside a class method?",
+        options: [
+          "The class itself",
+          "The parent class",
+          "The current instance (object)",
+          "The previous object",
+        ],
+        correct: 2,
+        explanation:
+          "'self' is a reference to the current object — it allows methods to access and modify the object's own attributes.",
+      },
+      {
+        id: "q3",
+        question:
+          "What is the difference between a class attribute and an instance attribute?",
+        options: [
+          "No difference",
+          "Class attributes are shared; instance attributes are unique per object",
+          "Instance attributes are faster",
+          "Class attributes can't be changed",
+        ],
+        correct: 1,
+        explanation:
+          "Class attributes are shared across all instances; instance attributes belong to a specific object.",
+      },
     ],
   },
 
   {
-    id:"py-14", courseId:"python", order:14, title:"OOP II — Inheritance", duration:"20 min", xpReward:40, language:"python",
-    theory:`# OOP II — Inheritance
+    id: "py-14",
+    courseId: "python",
+    order: 14,
+    title: "OOP II — Inheritance",
+    duration: "20 min",
+    xpReward: 40,
+    language: "python",
+    theory: `# OOP II — Inheritance
 
 Inheritance lets a class **reuse and extend** another class.
 
@@ -931,7 +1267,7 @@ print(isinstance(dog, Dog))     # True
 print(isinstance(dog, Animal))  # True — Dog IS an Animal
 print(issubclass(Dog, Animal))  # True
 \`\`\``,
-    starterCode:`# OOP II — Inheritance
+    starterCode: `# OOP II — Inheritance
 
 class Shape:
     def __init__(self, color="black"):
@@ -982,16 +1318,54 @@ for shape in shapes:
     print(shape.describe())
     print(f"  Is a Shape? {isinstance(shape, Shape)}")
 `,
-    quiz:[
-      { id:"q1", question:"What does super().__init__() do?", options:["Creates a new object","Calls the parent class constructor","Deletes the parent","Copies the parent class"], correct:1, explanation:"super().__init__() calls the parent class's __init__ method, allowing you to reuse parent initialization logic." },
-      { id:"q2", question:"If Dog inherits from Animal, what does isinstance(Dog('Rex'), Animal) return?", options:["False","Error","None","True"], correct:3, explanation:"isinstance returns True because Dog IS an Animal — inheritance creates an 'is-a' relationship." },
-      { id:"q3", question:"What is method overriding?", options:["Deleting a method","Calling a method twice","Redefining a parent method in a child class","Adding new parameters"], correct:2, explanation:"Method overriding is when a child class provides its own implementation of a method already defined in the parent." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does super().__init__() do?",
+        options: [
+          "Creates a new object",
+          "Calls the parent class constructor",
+          "Deletes the parent",
+          "Copies the parent class",
+        ],
+        correct: 1,
+        explanation:
+          "super().__init__() calls the parent class's __init__ method, allowing you to reuse parent initialization logic.",
+      },
+      {
+        id: "q2",
+        question:
+          "If Dog inherits from Animal, what does isinstance(Dog('Rex'), Animal) return?",
+        options: ["False", "Error", "None", "True"],
+        correct: 3,
+        explanation:
+          "isinstance returns True because Dog IS an Animal — inheritance creates an 'is-a' relationship.",
+      },
+      {
+        id: "q3",
+        question: "What is method overriding?",
+        options: [
+          "Deleting a method",
+          "Calling a method twice",
+          "Redefining a parent method in a child class",
+          "Adding new parameters",
+        ],
+        correct: 2,
+        explanation:
+          "Method overriding is when a child class provides its own implementation of a method already defined in the parent.",
+      },
     ],
   },
 
   {
-    id:"py-15", courseId:"python", order:15, title:"Modules & the Standard Library", duration:"15 min", xpReward:35, language:"python",
-    theory:`# Modules & the Standard Library
+    id: "py-15",
+    courseId: "python",
+    order: 15,
+    title: "Modules & the Standard Library",
+    duration: "15 min",
+    xpReward: 35,
+    language: "python",
+    theory: `# Modules & the Standard Library
 
 A **module** is a Python file containing functions, classes, and variables you can reuse.
 
@@ -1044,7 +1418,7 @@ counts  = Counter(words)
 print(counts)               # Counter({'apple': 3, 'banana': 2, 'cherry': 1})
 print(counts.most_common(2)) # [('apple', 3), ('banana', 2)]
 \`\`\``,
-    starterCode:`# Modules & Standard Library
+    starterCode: `# Modules & Standard Library
 
 import math
 import random
@@ -1078,16 +1452,53 @@ print("\\n=== Datetime ===")
 now = datetime.now()
 print(f"Now: {now.strftime('%Y-%m-%d %H:%M')}")
 `,
-    quiz:[
-      { id:"q1", question:"What does 'from math import sqrt' allow you to do?", options:["Use sqrt() directly without math. prefix","Import all of math","Create a new function called sqrt","Nothing different"], correct:0, explanation:"'from module import name' lets you use the name directly without the module prefix." },
-      { id:"q2", question:"Which module would you use to generate a random number?", options:["math","os","random","sys"], correct:2, explanation:"The random module provides functions for generating random numbers, choices, and shuffling." },
-      { id:"q3", question:"What does Counter(['a','b','a','c','a']) return?", options:["3","['a','a','a','b','c']","Counter({'a':3,'b':1,'c':1})","{'a','b','c'}"], correct:2, explanation:"Counter counts occurrences of each element and returns a Counter object with element:count pairs." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does 'from math import sqrt' allow you to do?",
+        options: [
+          "Use sqrt() directly without math. prefix",
+          "Import all of math",
+          "Create a new function called sqrt",
+          "Nothing different",
+        ],
+        correct: 0,
+        explanation:
+          "'from module import name' lets you use the name directly without the module prefix.",
+      },
+      {
+        id: "q2",
+        question: "Which module would you use to generate a random number?",
+        options: ["math", "os", "random", "sys"],
+        correct: 2,
+        explanation:
+          "The random module provides functions for generating random numbers, choices, and shuffling.",
+      },
+      {
+        id: "q3",
+        question: "What does Counter(['a','b','a','c','a']) return?",
+        options: [
+          "3",
+          "['a','a','a','b','c']",
+          "Counter({'a':3,'b':1,'c':1})",
+          "{'a','b','c'}",
+        ],
+        correct: 2,
+        explanation:
+          "Counter counts occurrences of each element and returns a Counter object with element:count pairs.",
+      },
     ],
   },
 
   {
-    id:"py-16", courseId:"python", order:16, title:"Iterators & Generators", duration:"18 min", xpReward:40, language:"python",
-    theory:`# Iterators & Generators
+    id: "py-16",
+    courseId: "python",
+    order: 16,
+    title: "Iterators & Generators",
+    duration: "18 min",
+    xpReward: 40,
+    language: "python",
+    theory: `# Iterators & Generators
 
 ## Iterators
 
@@ -1141,7 +1552,7 @@ for _ in range(8):
     print(next(fib), end=" ")
 # 0 1 1 2 3 5 8 13
 \`\`\``,
-    starterCode:`# Iterators & Generators
+    starterCode: `# Iterators & Generators
 
 # Generator function
 def squares(n):
@@ -1179,16 +1590,54 @@ def fibonacci(limit):
 print("\\nFibonacci up to 100:")
 print(list(fibonacci(100)))
 `,
-    quiz:[
-      { id:"q1", question:"What keyword is used to create a generator function?", options:["return","generate","yield","produce"], correct:2, explanation:"yield pauses the function and returns a value, resuming from that point on the next call." },
-      { id:"q2", question:"What is the main advantage of generators over lists?", options:["Faster indexing","Less memory usage","More features","Easier syntax"], correct:1, explanation:"Generators produce values one at a time instead of storing everything in memory, making them ideal for large or infinite sequences." },
-      { id:"q3", question:"What happens when next() is called on an exhausted iterator?", options:["Returns None","Returns 0","Raises StopIteration","Starts over"], correct:2, explanation:"When an iterator has no more values, calling next() raises a StopIteration exception." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What keyword is used to create a generator function?",
+        options: ["return", "generate", "yield", "produce"],
+        correct: 2,
+        explanation:
+          "yield pauses the function and returns a value, resuming from that point on the next call.",
+      },
+      {
+        id: "q2",
+        question: "What is the main advantage of generators over lists?",
+        options: [
+          "Faster indexing",
+          "Less memory usage",
+          "More features",
+          "Easier syntax",
+        ],
+        correct: 1,
+        explanation:
+          "Generators produce values one at a time instead of storing everything in memory, making them ideal for large or infinite sequences.",
+      },
+      {
+        id: "q3",
+        question:
+          "What happens when next() is called on an exhausted iterator?",
+        options: [
+          "Returns None",
+          "Returns 0",
+          "Raises StopIteration",
+          "Starts over",
+        ],
+        correct: 2,
+        explanation:
+          "When an iterator has no more values, calling next() raises a StopIteration exception.",
+      },
     ],
   },
 
   {
-    id:"py-17", courseId:"python", order:17, title:"Decorators", duration:"20 min", xpReward:45, language:"python",
-    theory:`# Decorators
+    id: "py-17",
+    courseId: "python",
+    order: 17,
+    title: "Decorators",
+    duration: "20 min",
+    xpReward: 45,
+    language: "python",
+    theory: `# Decorators
 
 A decorator is a function that **wraps another function** to add behavior without modifying it.
 
@@ -1250,7 +1699,7 @@ def slow_sum(n):
 
 print(slow_sum(1_000_000))
 \`\`\``,
-    starterCode:`# Decorators
+    starterCode: `# Decorators
 import time
 import functools
 
@@ -1293,16 +1742,59 @@ def sum_squares(n):
 result = sum_squares(100000)
 print(f"Sum of squares: {result}")
 `,
-    quiz:[
-      { id:"q1", question:"What does the @ symbol do when used above a function definition?", options:["Comments the line","Applies a decorator","Makes the function private","Imports a module"], correct:1, explanation:"@decorator_name is syntactic sugar for: function = decorator_name(function)." },
-      { id:"q2", question:"Why do we use @functools.wraps(func) inside a decorator?", options:["To make it faster","To preserve the original function's name and docstring","To add error handling","To allow multiple decorators"], correct:1, explanation:"functools.wraps copies metadata (name, docstring) from the original function to the wrapper, so debugging is easier." },
-      { id:"q3", question:"What is the main purpose of a decorator?", options:["To delete functions","To add behavior to a function without modifying it","To copy a function","To rename a function"], correct:1, explanation:"Decorators add functionality (logging, timing, caching) to a function by wrapping it, keeping the original code unchanged." },
+    quiz: [
+      {
+        id: "q1",
+        question:
+          "What does the @ symbol do when used above a function definition?",
+        options: [
+          "Comments the line",
+          "Applies a decorator",
+          "Makes the function private",
+          "Imports a module",
+        ],
+        correct: 1,
+        explanation:
+          "@decorator_name is syntactic sugar for: function = decorator_name(function).",
+      },
+      {
+        id: "q2",
+        question: "Why do we use @functools.wraps(func) inside a decorator?",
+        options: [
+          "To make it faster",
+          "To preserve the original function's name and docstring",
+          "To add error handling",
+          "To allow multiple decorators",
+        ],
+        correct: 1,
+        explanation:
+          "functools.wraps copies metadata (name, docstring) from the original function to the wrapper, so debugging is easier.",
+      },
+      {
+        id: "q3",
+        question: "What is the main purpose of a decorator?",
+        options: [
+          "To delete functions",
+          "To add behavior to a function without modifying it",
+          "To copy a function",
+          "To rename a function",
+        ],
+        correct: 1,
+        explanation:
+          "Decorators add functionality (logging, timing, caching) to a function by wrapping it, keeping the original code unchanged.",
+      },
     ],
   },
 
   {
-    id:"py-18", courseId:"python", order:18, title:"Regular Expressions", duration:"18 min", xpReward:40, language:"python",
-    theory:`# Regular Expressions
+    id: "py-18",
+    courseId: "python",
+    order: 18,
+    title: "Regular Expressions",
+    duration: "18 min",
+    xpReward: 40,
+    language: "python",
+    theory: `# Regular Expressions
 
 Regular expressions (regex) let you search and manipulate text using patterns.
 
@@ -1357,7 +1849,7 @@ print(m.group(0))  # hello@ace.com  (full match)
 print(m.group(1))  # hello          (username)
 print(m.group(2))  # ace            (domain)
 \`\`\``,
-    starterCode:`# Regular Expressions
+    starterCode: `# Regular Expressions
 import re
 
 text = """
@@ -1394,16 +1886,58 @@ test_emails = ["user@ace.com", "bad-email", "ok@test.org", "@missing.com"]
 for e in test_emails:
     print(f"{e}: {'valid' if is_valid_email(e) else 'invalid'}")
 `,
-    quiz:[
-      { id:"q1", question:"What does \\d match in a regex pattern?", options:["Any letter","Any whitespace","Any digit 0-9","Any word character"], correct:2, explanation:"\\d is a shorthand for [0-9] and matches any single digit." },
-      { id:"q2", question:"What does re.findall() return?", options:["First match only","True or False","A list of all matches","A match object"], correct:2, explanation:"re.findall() returns a list of all non-overlapping matches in the string." },
-      { id:"q3", question:"What does the ^ symbol mean at the start of a pattern?", options:["Not/negate","Any character","Start of string","One or more"], correct:2, explanation:"^ anchors the pattern to the start of the string — the pattern must match from the beginning." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does \\d match in a regex pattern?",
+        options: [
+          "Any letter",
+          "Any whitespace",
+          "Any digit 0-9",
+          "Any word character",
+        ],
+        correct: 2,
+        explanation:
+          "\\d is a shorthand for [0-9] and matches any single digit.",
+      },
+      {
+        id: "q2",
+        question: "What does re.findall() return?",
+        options: [
+          "First match only",
+          "True or False",
+          "A list of all matches",
+          "A match object",
+        ],
+        correct: 2,
+        explanation:
+          "re.findall() returns a list of all non-overlapping matches in the string.",
+      },
+      {
+        id: "q3",
+        question: "What does the ^ symbol mean at the start of a pattern?",
+        options: [
+          "Not/negate",
+          "Any character",
+          "Start of string",
+          "One or more",
+        ],
+        correct: 2,
+        explanation:
+          "^ anchors the pattern to the start of the string — the pattern must match from the beginning.",
+      },
     ],
   },
 
   {
-    id:"py-19", courseId:"python", order:19, title:"Working with JSON", duration:"15 min", xpReward:35, language:"python",
-    theory:`# Working with JSON
+    id: "py-19",
+    courseId: "python",
+    order: 19,
+    title: "Working with JSON",
+    duration: "15 min",
+    xpReward: 35,
+    language: "python",
+    theory: `# Working with JSON
 
 JSON (JavaScript Object Notation) is the most common format for exchanging data between systems and APIs.
 
@@ -1454,7 +1988,7 @@ with open("data.json", "w") as f:
 with open("data.json", "r") as f:
     loaded = json.load(f)
 \`\`\``,
-    starterCode:`# Working with JSON
+    starterCode: `# Working with JSON
 import json
 
 # 1. Python dict to JSON string
@@ -1496,16 +2030,54 @@ if result["status"] == "success":
     print(f"  Lessons completed: {d['lessons_completed']:,}")
     print(f"  Top language: {d['top_language']}")
 `,
-    quiz:[
-      { id:"q1", question:"What does json.dumps() do?", options:["Reads a JSON file","Converts Python object to JSON string","Validates JSON","Parses JSON string"], correct:1, explanation:"json.dumps() serializes (converts) a Python object into a JSON-formatted string." },
-      { id:"q2", question:"What Python type does a JSON object {} become after json.loads()?", options:["list","tuple","dict","set"], correct:2, explanation:"JSON objects {} are converted to Python dictionaries by json.loads()." },
-      { id:"q3", question:"What does the indent=2 parameter in json.dumps() do?", options:["Adds 2 spaces of margin","Pretty-prints with 2-space indentation","Limits output to 2 lines","Compresses the output"], correct:1, explanation:"indent=2 formats the JSON with 2-space indentation making it human-readable." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does json.dumps() do?",
+        options: [
+          "Reads a JSON file",
+          "Converts Python object to JSON string",
+          "Validates JSON",
+          "Parses JSON string",
+        ],
+        correct: 1,
+        explanation:
+          "json.dumps() serializes (converts) a Python object into a JSON-formatted string.",
+      },
+      {
+        id: "q2",
+        question:
+          "What Python type does a JSON object {} become after json.loads()?",
+        options: ["list", "tuple", "dict", "set"],
+        correct: 2,
+        explanation:
+          "JSON objects {} are converted to Python dictionaries by json.loads().",
+      },
+      {
+        id: "q3",
+        question: "What does the indent=2 parameter in json.dumps() do?",
+        options: [
+          "Adds 2 spaces of margin",
+          "Pretty-prints with 2-space indentation",
+          "Limits output to 2 lines",
+          "Compresses the output",
+        ],
+        correct: 1,
+        explanation:
+          "indent=2 formats the JSON with 2-space indentation making it human-readable.",
+      },
     ],
   },
 
   {
-    id:"py-20", courseId:"python", order:20, title:"Sorting & Searching Algorithms", duration:"20 min", xpReward:45, language:"python",
-    theory:`# Sorting & Searching Algorithms
+    id: "py-20",
+    courseId: "python",
+    order: 20,
+    title: "Sorting & Searching Algorithms",
+    duration: "20 min",
+    xpReward: 45,
+    language: "python",
+    theory: `# Sorting & Searching Algorithms
 
 Understanding algorithms is fundamental to becoming a strong developer.
 
@@ -1567,7 +2139,7 @@ def binary_search(arr, target):
             right = mid - 1
     return -1
 \`\`\``,
-    starterCode:`# Sorting & Searching Algorithms
+    starterCode: `# Sorting & Searching Algorithms
 
 def bubble_sort(arr):
     arr = arr[:]  # don't modify original
@@ -1616,18 +2188,50 @@ print(f"\\nSearching for {target} in 100 items:")
 print(f"  Linear: found at index {idx_l} in {steps_l} steps")
 print(f"  Binary: found at index {idx_b} in {steps_b} steps")
 `,
-    quiz:[
-      { id:"q1", question:"What is the time complexity of binary search?", options:["O(n)","O(n²)","O(log n)","O(1)"], correct:2, explanation:"Binary search halves the search space each step, giving O(log n) time complexity." },
-      { id:"q2", question:"What is required for binary search to work correctly?", options:["The array must have even length","The array must be sorted","The array must contain unique values","The target must be in the array"], correct:1, explanation:"Binary search only works on sorted arrays — it relies on the ordering to decide which half to search." },
-      { id:"q3", question:"What is bubble sort's worst-case time complexity?", options:["O(n)","O(log n)","O(n log n)","O(n²)"], correct:3, explanation:"Bubble sort has O(n²) worst-case complexity because it uses two nested loops each iterating up to n times." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What is the time complexity of binary search?",
+        options: ["O(n)", "O(n²)", "O(log n)", "O(1)"],
+        correct: 2,
+        explanation:
+          "Binary search halves the search space each step, giving O(log n) time complexity.",
+      },
+      {
+        id: "q2",
+        question: "What is required for binary search to work correctly?",
+        options: [
+          "The array must have even length",
+          "The array must be sorted",
+          "The array must contain unique values",
+          "The target must be in the array",
+        ],
+        correct: 1,
+        explanation:
+          "Binary search only works on sorted arrays — it relies on the ordering to decide which half to search.",
+      },
+      {
+        id: "q3",
+        question: "What is bubble sort's worst-case time complexity?",
+        options: ["O(n)", "O(log n)", "O(n log n)", "O(n²)"],
+        correct: 3,
+        explanation:
+          "Bubble sort has O(n²) worst-case complexity because it uses two nested loops each iterating up to n times.",
+      },
     ],
   },
 
   // ── ADVANCED (21–30) ──────────────────────────────────────────────────────
 
   {
-    id:"py-21", courseId:"python", order:21, title:"Recursion", duration:"20 min", xpReward:50, language:"python",
-    theory:`# Recursion
+    id: "py-21",
+    courseId: "python",
+    order: 21,
+    title: "Recursion",
+    duration: "20 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Recursion
 
 A function that **calls itself** is recursive. Every recursive solution needs a **base case** to stop.
 
@@ -1679,7 +2283,7 @@ def fib(n):
 
 print(fib(50))  # Fast! Without cache this would take forever
 \`\`\``,
-    starterCode:`# Recursion
+    starterCode: `# Recursion
 from functools import lru_cache
 
 # 1. Factorial
@@ -1725,16 +2329,58 @@ def fib(n):
 
 print(f"\\nFib(30) = {fib(30)}")
 `,
-    quiz:[
-      { id:"q1", question:"What is the base case in recursion?", options:["The first function call","The condition that stops recursion","The recursive call","The return value"], correct:1, explanation:"The base case is the condition where the function stops calling itself and returns a direct result." },
-      { id:"q2", question:"What happens if a recursive function has no base case?", options:["It returns None","It runs forever and causes a stack overflow","It returns 0","It works normally"], correct:1, explanation:"Without a base case, the function calls itself indefinitely until Python hits its recursion limit and raises RecursionError." },
-      { id:"q3", question:"What does @lru_cache do for a recursive function?", options:["Makes it recursive","Stores results so they aren't recalculated","Limits recursion depth","Makes it faster by removing recursion"], correct:1, explanation:"lru_cache memoizes (caches) results so the function doesn't recalculate the same inputs, dramatically speeding up recursive functions." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What is the base case in recursion?",
+        options: [
+          "The first function call",
+          "The condition that stops recursion",
+          "The recursive call",
+          "The return value",
+        ],
+        correct: 1,
+        explanation:
+          "The base case is the condition where the function stops calling itself and returns a direct result.",
+      },
+      {
+        id: "q2",
+        question: "What happens if a recursive function has no base case?",
+        options: [
+          "It returns None",
+          "It runs forever and causes a stack overflow",
+          "It returns 0",
+          "It works normally",
+        ],
+        correct: 1,
+        explanation:
+          "Without a base case, the function calls itself indefinitely until Python hits its recursion limit and raises RecursionError.",
+      },
+      {
+        id: "q3",
+        question: "What does @lru_cache do for a recursive function?",
+        options: [
+          "Makes it recursive",
+          "Stores results so they aren't recalculated",
+          "Limits recursion depth",
+          "Makes it faster by removing recursion",
+        ],
+        correct: 1,
+        explanation:
+          "lru_cache memoizes (caches) results so the function doesn't recalculate the same inputs, dramatically speeding up recursive functions.",
+      },
     ],
   },
 
   {
-    id:"py-22", courseId:"python", order:22, title:"Data Structures: Stacks & Queues", duration:"18 min", xpReward:50, language:"python",
-    theory:`# Stacks & Queues
+    id: "py-22",
+    courseId: "python",
+    order: 22,
+    title: "Data Structures: Stacks & Queues",
+    duration: "18 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Stacks & Queues
 
 ## Stack — Last In, First Out (LIFO)
 
@@ -1788,7 +2434,7 @@ queue.append("Bob")
 queue.append("Charlie")
 print(queue.popleft())   # "Alice" (first in, first out)
 \`\`\``,
-    starterCode:`# Stacks & Queues
+    starterCode: `# Stacks & Queues
 from collections import deque
 
 class Stack:
@@ -1838,16 +2484,49 @@ print("\\nServing customers:")
 while not desk.is_empty():
     print(f"  Serving: {desk.dequeue()}")
 `,
-    quiz:[
-      { id:"q1", question:"What principle does a Stack follow?", options:["FIFO","FILO","LIFO","LILO"], correct:2, explanation:"Stack follows LIFO — Last In, First Out. The most recently added item is removed first." },
-      { id:"q2", question:"Which Python data structure is best for implementing a Queue efficiently?", options:["list","set","deque","dict"], correct:2, explanation:"collections.deque is optimized for O(1) appends and poplefts, making it ideal for queues. Lists are O(n) for popleft." },
-      { id:"q3", question:"What is a practical use case for a Stack?", options:["Print queue","Undo/redo functionality","Breadth-first search","Task scheduling"], correct:1, explanation:"Undo/redo uses a stack — each action is pushed on, and undoing pops the last action." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What principle does a Stack follow?",
+        options: ["FIFO", "FILO", "LIFO", "LILO"],
+        correct: 2,
+        explanation:
+          "Stack follows LIFO — Last In, First Out. The most recently added item is removed first.",
+      },
+      {
+        id: "q2",
+        question:
+          "Which Python data structure is best for implementing a Queue efficiently?",
+        options: ["list", "set", "deque", "dict"],
+        correct: 2,
+        explanation:
+          "collections.deque is optimized for O(1) appends and poplefts, making it ideal for queues. Lists are O(n) for popleft.",
+      },
+      {
+        id: "q3",
+        question: "What is a practical use case for a Stack?",
+        options: [
+          "Print queue",
+          "Undo/redo functionality",
+          "Breadth-first search",
+          "Task scheduling",
+        ],
+        correct: 1,
+        explanation:
+          "Undo/redo uses a stack — each action is pushed on, and undoing pops the last action.",
+      },
     ],
   },
 
   {
-    id:"py-23", courseId:"python", order:23, title:"Data Structures: Linked Lists", duration:"20 min", xpReward:50, language:"python",
-    theory:`# Linked Lists
+    id: "py-23",
+    courseId: "python",
+    order: 23,
+    title: "Data Structures: Linked Lists",
+    duration: "20 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Linked Lists
 
 A linked list is a chain of **nodes**, where each node holds a value and a reference to the next node.
 
@@ -1896,7 +2575,7 @@ class LinkedList:
 
 - O(n) access by index (no random access)
 - Extra memory for pointers`,
-    starterCode:`# Linked Lists
+    starterCode: `# Linked Lists
 
 class Node:
     def __init__(self, data):
@@ -1960,16 +2639,55 @@ print("After delete 30:", ll.to_list())
 print("Search 40:", ll.search(40))
 print("Length:", ll.length())
 `,
-    quiz:[
-      { id:"q1", question:"What does each node in a linked list contain?", options:["Just data","Data and an index","Data and a pointer to the next node","Data and a pointer to all nodes"], correct:2, explanation:"Each node contains data and a next pointer referencing the following node (or None for the last node)." },
-      { id:"q2", question:"What is the time complexity of accessing an element by index in a linked list?", options:["O(1)","O(log n)","O(n)","O(n²)"], correct:2, explanation:"Unlike arrays, linked lists have no direct index access — you must traverse from the head, making it O(n)." },
-      { id:"q3", question:"What is the main advantage of a linked list over a Python list for frequent insertions at the beginning?", options:["More memory efficient","O(1) prepend vs O(n) for list","Better cache performance","Supports more data types"], correct:1, explanation:"Prepending to a linked list is O(1) — just update the head pointer. Inserting at the start of a Python list is O(n) as all elements shift." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does each node in a linked list contain?",
+        options: [
+          "Just data",
+          "Data and an index",
+          "Data and a pointer to the next node",
+          "Data and a pointer to all nodes",
+        ],
+        correct: 2,
+        explanation:
+          "Each node contains data and a next pointer referencing the following node (or None for the last node).",
+      },
+      {
+        id: "q2",
+        question:
+          "What is the time complexity of accessing an element by index in a linked list?",
+        options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+        correct: 2,
+        explanation:
+          "Unlike arrays, linked lists have no direct index access — you must traverse from the head, making it O(n).",
+      },
+      {
+        id: "q3",
+        question:
+          "What is the main advantage of a linked list over a Python list for frequent insertions at the beginning?",
+        options: [
+          "More memory efficient",
+          "O(1) prepend vs O(n) for list",
+          "Better cache performance",
+          "Supports more data types",
+        ],
+        correct: 1,
+        explanation:
+          "Prepending to a linked list is O(1) — just update the head pointer. Inserting at the start of a Python list is O(n) as all elements shift.",
+      },
     ],
   },
 
   {
-    id:"py-24", courseId:"python", order:24, title:"Binary Trees", duration:"20 min", xpReward:50, language:"python",
-    theory:`# Binary Trees
+    id: "py-24",
+    courseId: "python",
+    order: 24,
+    title: "Binary Trees",
+    duration: "20 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Binary Trees
 
 A **tree** is a hierarchical data structure. In a binary tree, each node has at most two children.
 
@@ -2025,7 +2743,7 @@ def preorder(node):   # Root, Left, Right
         preorder(node.left)
         preorder(node.right)
 \`\`\``,
-    starterCode:`# Binary Trees
+    starterCode: `# Binary Trees
 
 class TreeNode:
     def __init__(self, val):
@@ -2086,16 +2804,48 @@ print("Height:", tree.height())
 print("Search 40:", tree.search(40))
 print("Search 55:", tree.search(55))
 `,
-    quiz:[
-      { id:"q1", question:"In a Binary Search Tree, where are smaller values stored?", options:["Right subtree","Root","Left subtree","Random position"], correct:2, explanation:"In a BST, all values smaller than a node are in its left subtree, and all larger values are in the right." },
-      { id:"q2", question:"What does inorder traversal of a BST produce?", options:["Reverse sorted order","Random order","Sorted ascending order","Level by level"], correct:2, explanation:"Inorder traversal (Left, Root, Right) of a BST visits nodes in sorted ascending order." },
-      { id:"q3", question:"What is the time complexity of searching a balanced BST?", options:["O(n)","O(1)","O(n²)","O(log n)"], correct:3, explanation:"A balanced BST halves the search space at each step, giving O(log n) search time." },
+    quiz: [
+      {
+        id: "q1",
+        question: "In a Binary Search Tree, where are smaller values stored?",
+        options: ["Right subtree", "Root", "Left subtree", "Random position"],
+        correct: 2,
+        explanation:
+          "In a BST, all values smaller than a node are in its left subtree, and all larger values are in the right.",
+      },
+      {
+        id: "q2",
+        question: "What does inorder traversal of a BST produce?",
+        options: [
+          "Reverse sorted order",
+          "Random order",
+          "Sorted ascending order",
+          "Level by level",
+        ],
+        correct: 2,
+        explanation:
+          "Inorder traversal (Left, Root, Right) of a BST visits nodes in sorted ascending order.",
+      },
+      {
+        id: "q3",
+        question: "What is the time complexity of searching a balanced BST?",
+        options: ["O(n)", "O(1)", "O(n²)", "O(log n)"],
+        correct: 3,
+        explanation:
+          "A balanced BST halves the search space at each step, giving O(log n) search time.",
+      },
     ],
   },
 
   {
-    id:"py-25", courseId:"python", order:25, title:"Big O Notation & Complexity", duration:"18 min", xpReward:50, language:"python",
-    theory:`# Big O Notation & Complexity
+    id: "py-25",
+    courseId: "python",
+    order: 25,
+    title: "Big O Notation & Complexity",
+    duration: "18 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Big O Notation & Complexity
 
 Big O describes how an algorithm's performance **scales** with input size.
 
@@ -2148,7 +2898,7 @@ def sum_list(lst):
 def double_list(lst):
     return [x * 2 for x in lst]
 \`\`\``,
-    starterCode:`# Big O — Practical Comparison
+    starterCode: `# Big O — Practical Comparison
 import time
 import random
 
@@ -2198,16 +2948,55 @@ t2, _ = time_it(binary_search, big, target)
 print(f"\\nLinear search:  {t1*1000:.3f}ms")
 print(f"Binary search:  {t2*1000:.3f}ms")
 `,
-    quiz:[
-      { id:"q1", question:"What does O(1) mean?", options:["Takes 1 second","Performance doesn't change with input size","Only works for 1 element","One operation per element"], correct:1, explanation:"O(1) is constant time — the algorithm takes the same time regardless of input size." },
-      { id:"q2", question:"A function with two nested loops over n elements has what complexity?", options:["O(n)","O(2n)","O(n log n)","O(n²)"], correct:3, explanation:"Two nested loops each running n times gives O(n × n) = O(n²) quadratic complexity." },
-      { id:"q3", question:"Which is more efficient for large inputs: O(n²) or O(n log n)?", options:["O(n²)","They are equal","O(n log n)","Depends on the machine"], correct:2, explanation:"O(n log n) grows much slower than O(n²). For n=1000: n log n ≈ 10,000 vs n² = 1,000,000 operations." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does O(1) mean?",
+        options: [
+          "Takes 1 second",
+          "Performance doesn't change with input size",
+          "Only works for 1 element",
+          "One operation per element",
+        ],
+        correct: 1,
+        explanation:
+          "O(1) is constant time — the algorithm takes the same time regardless of input size.",
+      },
+      {
+        id: "q2",
+        question:
+          "A function with two nested loops over n elements has what complexity?",
+        options: ["O(n)", "O(2n)", "O(n log n)", "O(n²)"],
+        correct: 3,
+        explanation:
+          "Two nested loops each running n times gives O(n × n) = O(n²) quadratic complexity.",
+      },
+      {
+        id: "q3",
+        question:
+          "Which is more efficient for large inputs: O(n²) or O(n log n)?",
+        options: [
+          "O(n²)",
+          "They are equal",
+          "O(n log n)",
+          "Depends on the machine",
+        ],
+        correct: 2,
+        explanation:
+          "O(n log n) grows much slower than O(n²). For n=1000: n log n ≈ 10,000 vs n² = 1,000,000 operations.",
+      },
     ],
   },
 
   {
-    id:"py-26", courseId:"python", order:26, title:"Functional Programming", duration:"18 min", xpReward:45, language:"python",
-    theory:`# Functional Programming
+    id: "py-26",
+    courseId: "python",
+    order: 26,
+    title: "Functional Programming",
+    duration: "18 min",
+    xpReward: 45,
+    language: "python",
+    theory: `# Functional Programming
 
 Functional programming treats computation as evaluating mathematical functions — avoiding changing state or mutable data.
 
@@ -2263,7 +3052,7 @@ cube   = partial(power, exp=3)
 print(square(5))  # 25
 print(cube(3))    # 27
 \`\`\``,
-    starterCode:`# Functional Programming
+    starterCode: `# Functional Programming
 from functools import reduce, partial
 
 numbers = list(range(1, 11))
@@ -2312,16 +3101,58 @@ process = pipeline(
 )
 print("\\nPipeline(5):", process(5))
 `,
-    quiz:[
-      { id:"q1", question:"What defines a pure function?", options:["It uses no variables","It always returns the same output for the same input with no side effects","It only takes one argument","It uses lambda syntax"], correct:1, explanation:"A pure function always produces the same result for the same inputs and doesn't modify any external state." },
-      { id:"q2", question:"What does reduce() do?", options:["Filters elements","Creates a new list","Accumulates a list into a single value","Maps elements"], correct:2, explanation:"reduce() applies a function cumulatively to items, reducing the sequence to a single value (e.g. summing or multiplying all elements)." },
-      { id:"q3", question:"What does functools.partial do?", options:["Splits a function","Creates a new function with some arguments pre-filled","Partially imports a module","Runs a function partially"], correct:1, explanation:"partial creates a new callable with some arguments already fixed, useful for creating specialized versions of general functions." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What defines a pure function?",
+        options: [
+          "It uses no variables",
+          "It always returns the same output for the same input with no side effects",
+          "It only takes one argument",
+          "It uses lambda syntax",
+        ],
+        correct: 1,
+        explanation:
+          "A pure function always produces the same result for the same inputs and doesn't modify any external state.",
+      },
+      {
+        id: "q2",
+        question: "What does reduce() do?",
+        options: [
+          "Filters elements",
+          "Creates a new list",
+          "Accumulates a list into a single value",
+          "Maps elements",
+        ],
+        correct: 2,
+        explanation:
+          "reduce() applies a function cumulatively to items, reducing the sequence to a single value (e.g. summing or multiplying all elements).",
+      },
+      {
+        id: "q3",
+        question: "What does functools.partial do?",
+        options: [
+          "Splits a function",
+          "Creates a new function with some arguments pre-filled",
+          "Partially imports a module",
+          "Runs a function partially",
+        ],
+        correct: 1,
+        explanation:
+          "partial creates a new callable with some arguments already fixed, useful for creating specialized versions of general functions.",
+      },
     ],
   },
 
   {
-    id:"py-27", courseId:"python", order:27, title:"Context Managers", duration:"15 min", xpReward:40, language:"python",
-    theory:`# Context Managers
+    id: "py-27",
+    courseId: "python",
+    order: 27,
+    title: "Context Managers",
+    duration: "15 min",
+    xpReward: 40,
+    language: "python",
+    theory: `# Context Managers
 
 Context managers handle **setup and teardown** automatically using the \`with\` statement.
 
@@ -2375,7 +3206,7 @@ def managed_resource(name):
 with managed_resource("database") as db:
     print(f"Using {db}")
 \`\`\``,
-    starterCode:`# Context Managers
+    starterCode: `# Context Managers
 import time
 from contextlib import contextmanager
 
@@ -2419,16 +3250,58 @@ with section("String operations"):
     result = " ".join(w.title() for w in sorted(words))
     print(f"  Result: {result}")
 `,
-    quiz:[
-      { id:"q1", question:"What does the __enter__ method return in a context manager?", options:["Nothing","The value bound to 'as' variable","Always self","True or False"], correct:1, explanation:"Whatever __enter__ returns is bound to the variable after 'as' in the with statement." },
-      { id:"q2", question:"When does __exit__ get called?", options:["Only on success","Only on error","Always, when the with block ends","Only when return is called"], correct:2, explanation:"__exit__ is always called when the with block ends, whether normally or due to an exception — this is how cleanup is guaranteed." },
-      { id:"q3", question:"What is the main benefit of using context managers?", options:["Faster code","Guaranteed cleanup even if errors occur","Better syntax","Less memory usage"], correct:1, explanation:"Context managers guarantee that cleanup code (closing files, releasing locks) runs even if an exception occurs in the block." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does the __enter__ method return in a context manager?",
+        options: [
+          "Nothing",
+          "The value bound to 'as' variable",
+          "Always self",
+          "True or False",
+        ],
+        correct: 1,
+        explanation:
+          "Whatever __enter__ returns is bound to the variable after 'as' in the with statement.",
+      },
+      {
+        id: "q2",
+        question: "When does __exit__ get called?",
+        options: [
+          "Only on success",
+          "Only on error",
+          "Always, when the with block ends",
+          "Only when return is called",
+        ],
+        correct: 2,
+        explanation:
+          "__exit__ is always called when the with block ends, whether normally or due to an exception — this is how cleanup is guaranteed.",
+      },
+      {
+        id: "q3",
+        question: "What is the main benefit of using context managers?",
+        options: [
+          "Faster code",
+          "Guaranteed cleanup even if errors occur",
+          "Better syntax",
+          "Less memory usage",
+        ],
+        correct: 1,
+        explanation:
+          "Context managers guarantee that cleanup code (closing files, releasing locks) runs even if an exception occurs in the block.",
+      },
     ],
   },
 
   {
-    id:"py-28", courseId:"python", order:28, title:"Threading & Concurrency", duration:"20 min", xpReward:50, language:"python",
-    theory:`# Threading & Concurrency
+    id: "py-28",
+    courseId: "python",
+    order: 28,
+    title: "Threading & Concurrency",
+    duration: "20 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Threading & Concurrency
 
 ## The Problem: Blocking Operations
 
@@ -2481,7 +3354,7 @@ print(counter)  # Always 1000 (not guaranteed without lock)
 ## GIL Note
 
 Python's Global Interpreter Lock (GIL) means threads share one CPU core. Threading is best for **I/O-bound** tasks (network, files). Use \`multiprocessing\` for **CPU-bound** tasks.`,
-    starterCode:`# Threading
+    starterCode: `# Threading
 import threading
 import time
 import random
@@ -2532,16 +3405,58 @@ print("\\nResults:")
 for name, stats in results.items():
     print(f"  {name}: mean={stats['mean']:.1f}, min={stats['min']}, max={stats['max']}")
 `,
-    quiz:[
-      { id:"q1", question:"What is a threading.Lock() used for?", options:["To speed up threads","To prevent multiple threads accessing shared data simultaneously","To create new threads","To stop all threads"], correct:1, explanation:"A Lock ensures only one thread at a time can execute a critical section, preventing race conditions on shared data." },
-      { id:"q2", question:"What does t.join() do?", options:["Starts the thread","Stops the thread","Waits for the thread to finish","Copies the thread"], correct:2, explanation:"join() blocks the calling thread until the thread it's called on completes execution." },
-      { id:"q3", question:"Python threading is best suited for which type of tasks?", options:["CPU-bound tasks","GPU tasks","I/O-bound tasks","Memory-intensive tasks"], correct:2, explanation:"Due to the GIL, Python threads don't run in parallel for CPU work. They excel at I/O-bound tasks (network, file) where threads wait most of the time." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What is a threading.Lock() used for?",
+        options: [
+          "To speed up threads",
+          "To prevent multiple threads accessing shared data simultaneously",
+          "To create new threads",
+          "To stop all threads",
+        ],
+        correct: 1,
+        explanation:
+          "A Lock ensures only one thread at a time can execute a critical section, preventing race conditions on shared data.",
+      },
+      {
+        id: "q2",
+        question: "What does t.join() do?",
+        options: [
+          "Starts the thread",
+          "Stops the thread",
+          "Waits for the thread to finish",
+          "Copies the thread",
+        ],
+        correct: 2,
+        explanation:
+          "join() blocks the calling thread until the thread it's called on completes execution.",
+      },
+      {
+        id: "q3",
+        question: "Python threading is best suited for which type of tasks?",
+        options: [
+          "CPU-bound tasks",
+          "GPU tasks",
+          "I/O-bound tasks",
+          "Memory-intensive tasks",
+        ],
+        correct: 2,
+        explanation:
+          "Due to the GIL, Python threads don't run in parallel for CPU work. They excel at I/O-bound tasks (network, file) where threads wait most of the time.",
+      },
     ],
   },
 
   {
-    id:"py-29", courseId:"python", order:29, title:"Async Programming with asyncio", duration:"20 min", xpReward:50, language:"python",
-    theory:`# Async Programming with asyncio
+    id: "py-29",
+    courseId: "python",
+    order: 29,
+    title: "Async Programming with asyncio",
+    duration: "20 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Async Programming with asyncio
 
 Asyncio is Python's built-in library for **asynchronous** programming using \`async\`/\`await\`.
 
@@ -2588,7 +3503,7 @@ asyncio.run(main_fast())
 ## Real-world Use
 
 Asyncio powers web frameworks like **FastAPI** and **aiohttp** that handle thousands of concurrent requests.`,
-    starterCode:`# Asyncio
+    starterCode: `# Asyncio
 import asyncio
 import time
 
@@ -2631,16 +3546,58 @@ async def main():
 
 asyncio.run(main())
 `,
-    quiz:[
-      { id:"q1", question:"What does 'await' do in an async function?", options:["Stops the program","Pauses the coroutine and lets other coroutines run","Creates a new thread","Blocks all other code"], correct:1, explanation:"await pauses the current coroutine, returning control to the event loop so other coroutines can run during the wait." },
-      { id:"q2", question:"What does asyncio.gather() do?", options:["Runs coroutines one by one","Runs multiple coroutines concurrently","Collects return values only","Creates new threads"], correct:1, explanation:"asyncio.gather() runs multiple coroutines concurrently and waits for all of them to complete." },
-      { id:"q3", question:"What is a coroutine in Python?", options:["A regular function","A thread","A function defined with async def that can be paused","A generator"], correct:2, explanation:"A coroutine is an async def function that can pause at await points and resume later, enabling cooperative multitasking." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does 'await' do in an async function?",
+        options: [
+          "Stops the program",
+          "Pauses the coroutine and lets other coroutines run",
+          "Creates a new thread",
+          "Blocks all other code",
+        ],
+        correct: 1,
+        explanation:
+          "await pauses the current coroutine, returning control to the event loop so other coroutines can run during the wait.",
+      },
+      {
+        id: "q2",
+        question: "What does asyncio.gather() do?",
+        options: [
+          "Runs coroutines one by one",
+          "Runs multiple coroutines concurrently",
+          "Collects return values only",
+          "Creates new threads",
+        ],
+        correct: 1,
+        explanation:
+          "asyncio.gather() runs multiple coroutines concurrently and waits for all of them to complete.",
+      },
+      {
+        id: "q3",
+        question: "What is a coroutine in Python?",
+        options: [
+          "A regular function",
+          "A thread",
+          "A function defined with async def that can be paused",
+          "A generator",
+        ],
+        correct: 2,
+        explanation:
+          "A coroutine is an async def function that can pause at await points and resume later, enabling cooperative multitasking.",
+      },
     ],
   },
 
   {
-    id:"py-30", courseId:"python", order:30, title:"Testing with pytest", duration:"18 min", xpReward:50, language:"python",
-    theory:`# Testing with pytest
+    id: "py-30",
+    courseId: "python",
+    order: 30,
+    title: "Testing with pytest",
+    duration: "18 min",
+    xpReward: 50,
+    language: "python",
+    theory: `# Testing with pytest
 
 Testing ensures your code works correctly and continues to work as you make changes.
 
@@ -2706,7 +3663,7 @@ def test_max(sample_data):
 def test_add_parametrized(a, b, expected):
     assert add(a, b) == expected
 \`\`\``,
-    starterCode:`# Testing — Manual test runner (pytest runs outside browser)
+    starterCode: `# Testing — Manual test runner (pytest runs outside browser)
 # This simulates what pytest would do
 
 def run_test(name, func):
@@ -2770,10 +3727,46 @@ for name, test in tests:
 
 print(f"\\nResults: {passed}/{total} tests passed")
 `,
-    quiz:[
-      { id:"q1", question:"What does the assert keyword do in a Python test?", options:["Prints a value","Raises AssertionError if condition is False","Returns True","Stops the program"], correct:1, explanation:"assert checks if a condition is True. If False, it raises AssertionError with an optional message — pytest catches these to report failures." },
-      { id:"q2", question:"What does @pytest.fixture do?", options:["Marks a test to skip","Creates reusable test setup code","Runs a test multiple times","Marks a function as async"], correct:1, explanation:"Fixtures provide reusable setup data or objects for tests. Any test function that lists a fixture name as a parameter automatically receives it." },
-      { id:"q3", question:"What is regression testing?", options:["Testing new features","Ensuring old tests still pass after changes","Testing performance","Testing on different machines"], correct:1, explanation:"Regression testing verifies that existing functionality still works correctly after new code changes — preventing old bugs from returning." },
+    quiz: [
+      {
+        id: "q1",
+        question: "What does the assert keyword do in a Python test?",
+        options: [
+          "Prints a value",
+          "Raises AssertionError if condition is False",
+          "Returns True",
+          "Stops the program",
+        ],
+        correct: 1,
+        explanation:
+          "assert checks if a condition is True. If False, it raises AssertionError with an optional message — pytest catches these to report failures.",
+      },
+      {
+        id: "q2",
+        question: "What does @pytest.fixture do?",
+        options: [
+          "Marks a test to skip",
+          "Creates reusable test setup code",
+          "Runs a test multiple times",
+          "Marks a function as async",
+        ],
+        correct: 1,
+        explanation:
+          "Fixtures provide reusable setup data or objects for tests. Any test function that lists a fixture name as a parameter automatically receives it.",
+      },
+      {
+        id: "q3",
+        question: "What is regression testing?",
+        options: [
+          "Testing new features",
+          "Ensuring old tests still pass after changes",
+          "Testing performance",
+          "Testing on different machines",
+        ],
+        correct: 1,
+        explanation:
+          "Regression testing verifies that existing functionality still works correctly after new code changes — preventing old bugs from returning.",
+      },
     ],
   },
 ];
@@ -2787,35 +3780,295 @@ function dateStr(daysFromNow) {
 }
 
 const newChallenges = [
-  { title:"Count Word Frequency", description:"Write a function that takes a sentence and returns a dictionary with each word as a key and its count as the value. The function should be case-insensitive.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def word_frequency(sentence):\n    # Write your solution here\n    pass\n\nprint(word_frequency("the cat sat on the mat the cat"))\n# Expected: {'the': 3, 'cat': 2, 'sat': 1, 'on': 1, 'mat': 1}\nprint(word_frequency("Hello hello HELLO"))\n# Expected: {'hello': 3}`, hint:"Convert to lowercase first, then split into words, then use a dictionary to count." },
-  { title:"Flatten a Nested List", description:"Write a function that takes a nested list (any depth) and returns a flat list containing all elements.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def flatten(lst):\n    # Write your solution here\n    pass\n\nprint(flatten([1, [2, 3], [4, [5, 6]]]))\n# Expected: [1, 2, 3, 4, 5, 6]\nprint(flatten([[1, [2]], [3, [4, [5]]]]))\n# Expected: [1, 2, 3, 4, 5]`, hint:"Use recursion — if an item is a list, flatten it; otherwise append it to results." },
-  { title:"Check Prime Number", description:"Write a function that returns True if a number is prime, and False otherwise. Then use it to find all prime numbers between 1 and 50.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def is_prime(n):\n    # Write your solution here\n    pass\n\nprint(is_prime(7))   # True\nprint(is_prime(10))  # False\nprint(is_prime(1))   # False\n\n# Find all primes from 2 to 50\nprimes = [n for n in range(2, 51) if is_prime(n)]\nprint("Primes:", primes)`, hint:"A number is prime if it's only divisible by 1 and itself. Check divisors up to sqrt(n)." },
-  { title:"Remove Duplicates Preserving Order", description:"Write a function that removes duplicates from a list while preserving the original order of first appearances. Do NOT use set() directly on the list.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def remove_duplicates(lst):\n    # Write your solution here — don't use list(set(lst))\n    pass\n\nprint(remove_duplicates([1,2,3,2,1,4,3,5]))\n# Expected: [1, 2, 3, 4, 5]\nprint(remove_duplicates(["a","b","a","c","b"]))\n# Expected: ['a', 'b', 'c']`, hint:"Keep a 'seen' set to track what you've added, and only append items not already seen." },
-  { title:"Anagram Checker", description:"Write a function that checks if two strings are anagrams of each other (contain the same letters in any order). Ignore spaces and case.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def is_anagram(s1, s2):\n    # Write your solution here\n    pass\n\nprint(is_anagram("listen", "silent"))   # True\nprint(is_anagram("hello", "world"))     # False\nprint(is_anagram("Astronomer", "Moon starer"))  # True`, hint:"Remove spaces, convert to lowercase, then compare sorted characters." },
-  { title:"Matrix Transpose", description:"Write a function that takes a 2D list (matrix) and returns its transpose — rows become columns and columns become rows.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def transpose(matrix):\n    # Write your solution here\n    pass\n\nmatrix = [[1,2,3],[4,5,6],[7,8,9]]\nresult = transpose(matrix)\nfor row in result:\n    print(row)\n# Expected:\n# [1, 4, 7]\n# [2, 5, 8]\n# [3, 6, 9]`, hint:"The element at [i][j] in the original becomes [j][i] in the transpose. Try list comprehensions with zip()." },
-  { title:"Caesar Cipher", description:"Implement a Caesar cipher that shifts each letter by a given number. Non-letter characters should remain unchanged. Support both encoding and decoding.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def caesar_cipher(text, shift, decode=False):\n    # Write your solution here\n    pass\n\nprint(caesar_cipher("Hello, World!", 3))\n# Expected: Khoor, Zruog!\nprint(caesar_cipher("Khoor, Zruog!", 3, decode=True))\n# Expected: Hello, World!`, hint:"Use ord() and chr() to work with character codes. uppercase: 65-90, lowercase: 97-122. Use modulo 26 to wrap around." },
-  { title:"Stack Using Two Queues", description:"Implement a Stack class using only two queue (deque) objects. The stack must support push(), pop(), peek(), and is_empty() operations.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`from collections import deque\n\nclass Stack:\n    def __init__(self):\n        self.q1 = deque()\n        self.q2 = deque()\n    \n    def push(self, item):\n        pass\n    \n    def pop(self):\n        pass\n    \n    def peek(self):\n        pass\n    \n    def is_empty(self):\n        pass\n\ns = Stack()\ns.push(1); s.push(2); s.push(3)\nprint(s.peek())   # 3\nprint(s.pop())    # 3\nprint(s.pop())    # 2\nprint(s.is_empty())  # False\nprint(s.pop())    # 1\nprint(s.is_empty())  # True`, hint:"When pushing, move all elements from q1 to q2, enqueue the new item to q1, then move everything back from q2 to q1." },
-  { title:"Merge Two Sorted Lists", description:"Given two sorted lists, write a function that merges them into one sorted list without using the built-in sort() function.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def merge_sorted(lst1, lst2):\n    # Write your solution here\n    pass\n\nprint(merge_sorted([1,3,5,7], [2,4,6,8]))\n# Expected: [1, 2, 3, 4, 5, 6, 7, 8]\nprint(merge_sorted([1,2,3], [4,5,6]))\n# Expected: [1, 2, 3, 4, 5, 6]\nprint(merge_sorted([], [1,2,3]))\n# Expected: [1, 2, 3]`, hint:"Use two pointers — compare the front of each list and take the smaller element each time." },
-  { title:"Generate All Permutations", description:"Write a function that generates all permutations of a given list. For [1,2,3] there are 6 permutations.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def permutations(lst):\n    # Write your solution here\n    pass\n\nresult = permutations([1, 2, 3])\nfor p in sorted(result):\n    print(p)\n# 6 lines expected:\n# [1, 2, 3]\n# [1, 3, 2]\n# [2, 1, 3]\n# [2, 3, 1]\n# [3, 1, 2]\n# [3, 2, 1]\nprint(f"Total: {len(permutations([1,2,3,4]))} permutations of 4 items")`, hint:"Use recursion — for each element, generate all permutations of the remaining elements and prepend the current element." },
-  { title:"Longest Common Subsequence", description:"Find the length of the longest common subsequence (LCS) between two strings. A subsequence preserves order but doesn't need to be contiguous.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def lcs_length(s1, s2):\n    # Write your solution here (use dynamic programming)\n    pass\n\nprint(lcs_length("ABCBDAB", "BDCAB"))  # Expected: 4 (BCAB or BDAB)\nprint(lcs_length("AGGTAB", "GXTXAYB")) # Expected: 4 (GTAB)\nprint(lcs_length("abc", "abc"))         # Expected: 3`, hint:"Build a 2D DP table. dp[i][j] = LCS length of s1[:i] and s2[:j]. If characters match, dp[i][j] = dp[i-1][j-1] + 1." },
-  { title:"Validate Sudoku Row", description:"Write a function that checks if a given row (list of 9 numbers 1-9) is valid for Sudoku — each number appears exactly once with no zeros.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def is_valid_sudoku_row(row):\n    # Write your solution here\n    pass\n\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8,9]))  # True\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8,8]))  # False (8 repeats)\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8]))    # False (only 8 elements)\nprint(is_valid_sudoku_row([0,2,3,4,5,6,7,8,9]))  # False (contains 0)`, hint:"A valid row has exactly 9 elements, no zeros, and all values are unique (set length equals 9)." },
-  { title:"Roman Numeral Converter", description:"Write a function that converts an integer (1–3999) to its Roman numeral representation.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def to_roman(num):\n    # Write your solution here\n    pass\n\nprint(to_roman(3))     # III\nprint(to_roman(9))     # IX\nprint(to_roman(14))    # XIV\nprint(to_roman(40))    # XL\nprint(to_roman(58))    # LVIII\nprint(to_roman(1994))  # MCMXCIV\nprint(to_roman(3749))  # MMMDCCXLIX`, hint:"Create a list of value-symbol pairs in descending order. Repeatedly subtract the largest possible value and append its symbol." },
-  { title:"Spiral Matrix", description:"Given an n×n matrix, return all elements in spiral order (clockwise from the top-left).", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def spiral_order(matrix):\n    # Write your solution here\n    pass\n\nmatrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint(spiral_order(matrix))\n# Expected: [1, 2, 3, 6, 9, 8, 7, 4, 5]\n\nbig = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]\nprint(spiral_order(big))\n# Expected: [1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10]`, hint:"Use four pointers: top, bottom, left, right. Traverse the outer ring, then shrink the boundaries inward." },
-  { title:"Implement a Simple Calculator", description:"Build a calculator that takes a string like '10 + 5 * 2' and evaluates it respecting operator precedence (*, / before +, -).", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def calculate(expression):\n    # Evaluate a math expression string respecting precedence\n    # Only handles +, -, *, / with integers\n    pass\n\nprint(calculate("3 + 5"))        # 8\nprint(calculate("10 - 3"))       # 7\nprint(calculate("2 * 6"))        # 12\nprint(calculate("10 + 5 * 2"))   # 20 (not 30)\nprint(calculate("20 - 4 * 3"))   # 8\nprint(calculate("6 + 4 / 2"))    # 8.0`, hint:"Split by spaces to get tokens. Handle * and / first (pass 1), then + and - (pass 2), building result lists." },
-  { title:"Memoized Coin Change", description:"Given a list of coin denominations and a target amount, find the minimum number of coins needed to make the amount. Return -1 if impossible.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def coin_change(coins, amount):\n    # Use dynamic programming\n    pass\n\nprint(coin_change([1,5,6,9], 11))  # 2 (5+6)\nprint(coin_change([2], 3))          # -1 (impossible)\nprint(coin_change([1,2,5], 11))    # 3 (5+5+1)\nprint(coin_change([1], 0))          # 0`, hint:"Build a DP array where dp[i] = min coins to make amount i. Initialize with infinity, dp[0]=0. For each amount, try each coin." },
-  { title:"Group Anagrams", description:"Given a list of strings, group the anagrams together. Each group should be a list of strings that are anagrams of each other.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def group_anagrams(words):\n    # Write your solution here\n    pass\n\nresult = group_anagrams(["eat","tea","tan","ate","nat","bat"])\nfor group in sorted(result, key=lambda g: sorted(g)[0]):\n    print(sorted(group))\n# Expected groups (any order):\n# ['ate', 'eat', 'tea']\n# ['bat']\n# ['nat', 'tan']`, hint:"Use a dictionary where the key is the sorted version of each word — anagrams will have the same sorted key." },
-  { title:"Balanced Binary Tree Check", description:"Given a binary tree represented as a nested list [value, left, right] (or None for empty), check if it is height-balanced (no subtree differs in height by more than 1).", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def is_balanced(tree):\n    # tree format: [value, left, right] or None\n    pass\n\n# Balanced tree\nt1 = [1, [2, [4,None,None], None], [3, None, [5,None,None]]]\nprint(is_balanced(t1))  # True\n\n# Unbalanced tree  \nt2 = [1, [2, [3, [4,None,None], None], None], None]\nprint(is_balanced(t2))  # False\n\nprint(is_balanced(None))  # True (empty is balanced)`, hint:"Write a helper that returns the height of the tree (or -1 if unbalanced). At each node, check if both subtrees are balanced and their heights differ by at most 1." },
-  { title:"Run Length Encoding", description:"Implement run-length encoding (RLE) compression and decompression. 'AAABBBCCCC' becomes '3A3B4C'.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def encode(s):\n    # Write your solution here\n    pass\n\ndef decode(s):\n    # Write your solution here\n    pass\n\nprint(encode("AAABBBCCCC"))   # 3A3B4C\nprint(encode("ABCDE"))        # 1A1B1C1D1E\nprint(encode("AABBAAA"))      # 2A2B3A\n\nprint(decode("3A3B4C"))        # AAABBBCCCC\nprint(decode("2A2B3A"))        # AABBAAA`, hint:"For encoding: count consecutive characters. For decoding: read digits to get count, then the following letter." },
-  { title:"Two Sum Problem", description:"Given a list of numbers and a target, return the indices of the two numbers that add up to the target. Assume exactly one solution exists. Do it in O(n) time.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def two_sum(nums, target):\n    # Write your O(n) solution here\n    pass\n\nprint(two_sum([2,7,11,15], 9))   # [0, 1]\nprint(two_sum([3,2,4], 6))       # [1, 2]\nprint(two_sum([3,3], 6))         # [0, 1]`, hint:"Use a dictionary to store each number and its index. For each number, check if target - number is already in the dictionary." },
-  { title:"Number to Words", description:"Write a function that converts a number (0–999) to its English word representation.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def num_to_words(n):\n    # Write your solution here\n    pass\n\nprint(num_to_words(0))    # zero\nprint(num_to_words(15))   # fifteen\nprint(num_to_words(42))   # forty two\nprint(num_to_words(100))  # one hundred\nprint(num_to_words(251))  # two hundred fifty one\nprint(num_to_words(999))  # nine hundred ninety nine`, hint:"Define lists for ones (zero-nineteen) and tens (twenty, thirty...). Handle hundreds separately, then tens, then ones." },
-  { title:"Sliding Window Maximum", description:"Given an array and window size k, find the maximum value in each sliding window of size k as it moves from left to right.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def sliding_window_max(nums, k):\n    # Write your solution here\n    pass\n\nprint(sliding_window_max([1,3,-1,-3,5,3,6,7], 3))\n# Expected: [3, 3, 5, 5, 6, 7]\nprint(sliding_window_max([1,2,3,4,5], 2))\n# Expected: [2, 3, 4, 5]`, hint:"Use a deque to store indices. Maintain the deque in decreasing order of values. Remove indices outside the window from the front." },
-  { title:"Password Strength Checker", description:"Write a function that rates password strength. A strong password has 8+ characters, uppercase, lowercase, digit, and special character.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def check_password(password):\n    # Return: 'Weak', 'Moderate', or 'Strong'\n    pass\n\nprint(check_password("abc"))           # Weak\nprint(check_password("password123"))   # Moderate  \nprint(check_password("P@ssw0rd!"))     # Strong\nprint(check_password("Short1!"))       # Moderate (too short)`, hint:"Check each requirement separately: len >= 8, has_upper, has_lower, has_digit, has_special. Count how many are satisfied." },
-  { title:"Merge Intervals", description:"Given a list of intervals [start, end], merge all overlapping intervals and return the result.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def merge_intervals(intervals):\n    # Write your solution here\n    pass\n\nprint(merge_intervals([[1,3],[2,6],[8,10],[15,18]]))\n# Expected: [[1,6],[8,10],[15,18]]\nprint(merge_intervals([[1,4],[4,5]]))\n# Expected: [[1,5]]\nprint(merge_intervals([[1,4],[0,4]]))\n# Expected: [[0,4]]`, hint:"Sort intervals by start time. Then iterate and merge if current interval overlaps with the last merged one." },
-  { title:"Longest Palindromic Substring", description:"Find the longest palindromic substring in a given string.", language:"python", difficulty:"Hard", xpReward:150, starterCode:`def longest_palindrome(s):\n    # Write your solution here\n    pass\n\nprint(longest_palindrome("babad"))   # "bab" or "aba"\nprint(longest_palindrome("cbbd"))    # "bb"\nprint(longest_palindrome("racecar")) # "racecar"\nprint(longest_palindrome("a"))       # "a"`, hint:"Expand around each character (and each pair) as a potential center. Keep track of the longest palindrome found." },
-  { title:"Implement Queue Using Stacks", description:"Implement a Queue using only two Stack (list) objects. Support enqueue(), dequeue(), front(), and is_empty().", language:"python", difficulty:"Medium", xpReward:100, starterCode:`class Queue:\n    def __init__(self):\n        self.stack1 = []  # for enqueue\n        self.stack2 = []  # for dequeue\n    \n    def enqueue(self, item):\n        pass\n    \n    def dequeue(self):\n        pass\n    \n    def front(self):\n        pass\n    \n    def is_empty(self):\n        pass\n\nq = Queue()\nq.enqueue(1); q.enqueue(2); q.enqueue(3)\nprint(q.front())    # 1\nprint(q.dequeue())  # 1\nprint(q.dequeue())  # 2\nq.enqueue(4)\nprint(q.dequeue())  # 3\nprint(q.dequeue())  # 4\nprint(q.is_empty()) # True`, hint:"Always push to stack1. When dequeuing, if stack2 is empty, move all from stack1 to stack2 (reversing order). Then pop from stack2." },
-  { title:"Find Missing Number", description:"Given a list containing n distinct numbers in the range 0 to n, find the one number missing from the list.", language:"python", difficulty:"Easy", xpReward:75, starterCode:`def find_missing(nums):\n    # Write your solution here\n    pass\n\nprint(find_missing([3,0,1]))       # 2\nprint(find_missing([0,1]))          # 2\nprint(find_missing([9,6,4,2,3,5,7,0,1]))  # 8`, hint:"The sum of 0 to n is n*(n+1)/2. Subtract the actual sum from the expected sum to find the missing number." },
-  { title:"Zigzag Conversion", description:"Write a string in a zigzag pattern on a given number of rows, then read it row by row. 'PAYPALISHIRING' on 3 rows gives 'PAHNAPLSIIGYIR'.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def zigzag(s, num_rows):\n    # Write your solution here\n    pass\n\nprint(zigzag("PAYPALISHIRING", 3))\n# P   A   H   N\n# A P L S I I G\n# Y   I   R\n# Expected: "PAHNAPLSIIGYIR"\n\nprint(zigzag("PAYPALISHIRING", 4))\n# Expected: "PINALSIGYAHRPI"\n\nprint(zigzag("A", 1))\n# Expected: "A"`, hint:"Create a list of strings, one per row. Iterate through the string, adding each character to the current row. Change direction when hitting top or bottom row." },
-  { title:"Maximum Subarray Sum", description:"Find the contiguous subarray with the largest sum (Kadane's algorithm). The array may contain negative numbers.", language:"python", difficulty:"Medium", xpReward:100, starterCode:`def max_subarray(nums):\n    # Write your solution here\n    pass\n\nprint(max_subarray([-2,1,-3,4,-1,2,1,-5,4]))  # 6 (subarray [4,-1,2,1])\nprint(max_subarray([1]))                         # 1\nprint(max_subarray([-1,-2,-3]))                  # -1\nprint(max_subarray([5,4,-1,7,8]))                # 23`, hint:"Track current_sum and max_sum. For each element, current_sum = max(element, current_sum + element). Update max_sum if current_sum is larger." },
+  {
+    title: "Count Word Frequency",
+    description:
+      "Write a function that takes a sentence and returns a dictionary with each word as a key and its count as the value. The function should be case-insensitive.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def word_frequency(sentence):\n    # Write your solution here\n    pass\n\nprint(word_frequency("the cat sat on the mat the cat"))\n# Expected: {'the': 3, 'cat': 2, 'sat': 1, 'on': 1, 'mat': 1}\nprint(word_frequency("Hello hello HELLO"))\n# Expected: {'hello': 3}`,
+    hint: "Convert to lowercase first, then split into words, then use a dictionary to count.",
+  },
+  {
+    title: "Flatten a Nested List",
+    description:
+      "Write a function that takes a nested list (any depth) and returns a flat list containing all elements.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def flatten(lst):\n    # Write your solution here\n    pass\n\nprint(flatten([1, [2, 3], [4, [5, 6]]]))\n# Expected: [1, 2, 3, 4, 5, 6]\nprint(flatten([[1, [2]], [3, [4, [5]]]]))\n# Expected: [1, 2, 3, 4, 5]`,
+    hint: "Use recursion — if an item is a list, flatten it; otherwise append it to results.",
+  },
+  {
+    title: "Check Prime Number",
+    description:
+      "Write a function that returns True if a number is prime, and False otherwise. Then use it to find all prime numbers between 1 and 50.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def is_prime(n):\n    # Write your solution here\n    pass\n\nprint(is_prime(7))   # True\nprint(is_prime(10))  # False\nprint(is_prime(1))   # False\n\n# Find all primes from 2 to 50\nprimes = [n for n in range(2, 51) if is_prime(n)]\nprint("Primes:", primes)`,
+    hint: "A number is prime if it's only divisible by 1 and itself. Check divisors up to sqrt(n).",
+  },
+  {
+    title: "Remove Duplicates Preserving Order",
+    description:
+      "Write a function that removes duplicates from a list while preserving the original order of first appearances. Do NOT use set() directly on the list.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def remove_duplicates(lst):\n    # Write your solution here — don't use list(set(lst))\n    pass\n\nprint(remove_duplicates([1,2,3,2,1,4,3,5]))\n# Expected: [1, 2, 3, 4, 5]\nprint(remove_duplicates(["a","b","a","c","b"]))\n# Expected: ['a', 'b', 'c']`,
+    hint: "Keep a 'seen' set to track what you've added, and only append items not already seen.",
+  },
+  {
+    title: "Anagram Checker",
+    description:
+      "Write a function that checks if two strings are anagrams of each other (contain the same letters in any order). Ignore spaces and case.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def is_anagram(s1, s2):\n    # Write your solution here\n    pass\n\nprint(is_anagram("listen", "silent"))   # True\nprint(is_anagram("hello", "world"))     # False\nprint(is_anagram("Astronomer", "Moon starer"))  # True`,
+    hint: "Remove spaces, convert to lowercase, then compare sorted characters.",
+  },
+  {
+    title: "Matrix Transpose",
+    description:
+      "Write a function that takes a 2D list (matrix) and returns its transpose — rows become columns and columns become rows.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def transpose(matrix):\n    # Write your solution here\n    pass\n\nmatrix = [[1,2,3],[4,5,6],[7,8,9]]\nresult = transpose(matrix)\nfor row in result:\n    print(row)\n# Expected:\n# [1, 4, 7]\n# [2, 5, 8]\n# [3, 6, 9]`,
+    hint: "The element at [i][j] in the original becomes [j][i] in the transpose. Try list comprehensions with zip().",
+  },
+  {
+    title: "Caesar Cipher",
+    description:
+      "Implement a Caesar cipher that shifts each letter by a given number. Non-letter characters should remain unchanged. Support both encoding and decoding.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def caesar_cipher(text, shift, decode=False):\n    # Write your solution here\n    pass\n\nprint(caesar_cipher("Hello, World!", 3))\n# Expected: Khoor, Zruog!\nprint(caesar_cipher("Khoor, Zruog!", 3, decode=True))\n# Expected: Hello, World!`,
+    hint: "Use ord() and chr() to work with character codes. uppercase: 65-90, lowercase: 97-122. Use modulo 26 to wrap around.",
+  },
+  {
+    title: "Stack Using Two Queues",
+    description:
+      "Implement a Stack class using only two queue (deque) objects. The stack must support push(), pop(), peek(), and is_empty() operations.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `from collections import deque\n\nclass Stack:\n    def __init__(self):\n        self.q1 = deque()\n        self.q2 = deque()\n    \n    def push(self, item):\n        pass\n    \n    def pop(self):\n        pass\n    \n    def peek(self):\n        pass\n    \n    def is_empty(self):\n        pass\n\ns = Stack()\ns.push(1); s.push(2); s.push(3)\nprint(s.peek())   # 3\nprint(s.pop())    # 3\nprint(s.pop())    # 2\nprint(s.is_empty())  # False\nprint(s.pop())    # 1\nprint(s.is_empty())  # True`,
+    hint: "When pushing, move all elements from q1 to q2, enqueue the new item to q1, then move everything back from q2 to q1.",
+  },
+  {
+    title: "Merge Two Sorted Lists",
+    description:
+      "Given two sorted lists, write a function that merges them into one sorted list without using the built-in sort() function.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def merge_sorted(lst1, lst2):\n    # Write your solution here\n    pass\n\nprint(merge_sorted([1,3,5,7], [2,4,6,8]))\n# Expected: [1, 2, 3, 4, 5, 6, 7, 8]\nprint(merge_sorted([1,2,3], [4,5,6]))\n# Expected: [1, 2, 3, 4, 5, 6]\nprint(merge_sorted([], [1,2,3]))\n# Expected: [1, 2, 3]`,
+    hint: "Use two pointers — compare the front of each list and take the smaller element each time.",
+  },
+  {
+    title: "Generate All Permutations",
+    description:
+      "Write a function that generates all permutations of a given list. For [1,2,3] there are 6 permutations.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def permutations(lst):\n    # Write your solution here\n    pass\n\nresult = permutations([1, 2, 3])\nfor p in sorted(result):\n    print(p)\n# 6 lines expected:\n# [1, 2, 3]\n# [1, 3, 2]\n# [2, 1, 3]\n# [2, 3, 1]\n# [3, 1, 2]\n# [3, 2, 1]\nprint(f"Total: {len(permutations([1,2,3,4]))} permutations of 4 items")`,
+    hint: "Use recursion — for each element, generate all permutations of the remaining elements and prepend the current element.",
+  },
+  {
+    title: "Longest Common Subsequence",
+    description:
+      "Find the length of the longest common subsequence (LCS) between two strings. A subsequence preserves order but doesn't need to be contiguous.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def lcs_length(s1, s2):\n    # Write your solution here (use dynamic programming)\n    pass\n\nprint(lcs_length("ABCBDAB", "BDCAB"))  # Expected: 4 (BCAB or BDAB)\nprint(lcs_length("AGGTAB", "GXTXAYB")) # Expected: 4 (GTAB)\nprint(lcs_length("abc", "abc"))         # Expected: 3`,
+    hint: "Build a 2D DP table. dp[i][j] = LCS length of s1[:i] and s2[:j]. If characters match, dp[i][j] = dp[i-1][j-1] + 1.",
+  },
+  {
+    title: "Validate Sudoku Row",
+    description:
+      "Write a function that checks if a given row (list of 9 numbers 1-9) is valid for Sudoku — each number appears exactly once with no zeros.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def is_valid_sudoku_row(row):\n    # Write your solution here\n    pass\n\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8,9]))  # True\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8,8]))  # False (8 repeats)\nprint(is_valid_sudoku_row([1,2,3,4,5,6,7,8]))    # False (only 8 elements)\nprint(is_valid_sudoku_row([0,2,3,4,5,6,7,8,9]))  # False (contains 0)`,
+    hint: "A valid row has exactly 9 elements, no zeros, and all values are unique (set length equals 9).",
+  },
+  {
+    title: "Roman Numeral Converter",
+    description:
+      "Write a function that converts an integer (1–3999) to its Roman numeral representation.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def to_roman(num):\n    # Write your solution here\n    pass\n\nprint(to_roman(3))     # III\nprint(to_roman(9))     # IX\nprint(to_roman(14))    # XIV\nprint(to_roman(40))    # XL\nprint(to_roman(58))    # LVIII\nprint(to_roman(1994))  # MCMXCIV\nprint(to_roman(3749))  # MMMDCCXLIX`,
+    hint: "Create a list of value-symbol pairs in descending order. Repeatedly subtract the largest possible value and append its symbol.",
+  },
+  {
+    title: "Spiral Matrix",
+    description:
+      "Given an n×n matrix, return all elements in spiral order (clockwise from the top-left).",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def spiral_order(matrix):\n    # Write your solution here\n    pass\n\nmatrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint(spiral_order(matrix))\n# Expected: [1, 2, 3, 6, 9, 8, 7, 4, 5]\n\nbig = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]\nprint(spiral_order(big))\n# Expected: [1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10]`,
+    hint: "Use four pointers: top, bottom, left, right. Traverse the outer ring, then shrink the boundaries inward.",
+  },
+  {
+    title: "Implement a Simple Calculator",
+    description:
+      "Build a calculator that takes a string like '10 + 5 * 2' and evaluates it respecting operator precedence (*, / before +, -).",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def calculate(expression):\n    # Evaluate a math expression string respecting precedence\n    # Only handles +, -, *, / with integers\n    pass\n\nprint(calculate("3 + 5"))        # 8\nprint(calculate("10 - 3"))       # 7\nprint(calculate("2 * 6"))        # 12\nprint(calculate("10 + 5 * 2"))   # 20 (not 30)\nprint(calculate("20 - 4 * 3"))   # 8\nprint(calculate("6 + 4 / 2"))    # 8.0`,
+    hint: "Split by spaces to get tokens. Handle * and / first (pass 1), then + and - (pass 2), building result lists.",
+  },
+  {
+    title: "Memoized Coin Change",
+    description:
+      "Given a list of coin denominations and a target amount, find the minimum number of coins needed to make the amount. Return -1 if impossible.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def coin_change(coins, amount):\n    # Use dynamic programming\n    pass\n\nprint(coin_change([1,5,6,9], 11))  # 2 (5+6)\nprint(coin_change([2], 3))          # -1 (impossible)\nprint(coin_change([1,2,5], 11))    # 3 (5+5+1)\nprint(coin_change([1], 0))          # 0`,
+    hint: "Build a DP array where dp[i] = min coins to make amount i. Initialize with infinity, dp[0]=0. For each amount, try each coin.",
+  },
+  {
+    title: "Group Anagrams",
+    description:
+      "Given a list of strings, group the anagrams together. Each group should be a list of strings that are anagrams of each other.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def group_anagrams(words):\n    # Write your solution here\n    pass\n\nresult = group_anagrams(["eat","tea","tan","ate","nat","bat"])\nfor group in sorted(result, key=lambda g: sorted(g)[0]):\n    print(sorted(group))\n# Expected groups (any order):\n# ['ate', 'eat', 'tea']\n# ['bat']\n# ['nat', 'tan']`,
+    hint: "Use a dictionary where the key is the sorted version of each word — anagrams will have the same sorted key.",
+  },
+  {
+    title: "Balanced Binary Tree Check",
+    description:
+      "Given a binary tree represented as a nested list [value, left, right] (or None for empty), check if it is height-balanced (no subtree differs in height by more than 1).",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def is_balanced(tree):\n    # tree format: [value, left, right] or None\n    pass\n\n# Balanced tree\nt1 = [1, [2, [4,None,None], None], [3, None, [5,None,None]]]\nprint(is_balanced(t1))  # True\n\n# Unbalanced tree  \nt2 = [1, [2, [3, [4,None,None], None], None], None]\nprint(is_balanced(t2))  # False\n\nprint(is_balanced(None))  # True (empty is balanced)`,
+    hint: "Write a helper that returns the height of the tree (or -1 if unbalanced). At each node, check if both subtrees are balanced and their heights differ by at most 1.",
+  },
+  {
+    title: "Run Length Encoding",
+    description:
+      "Implement run-length encoding (RLE) compression and decompression. 'AAABBBCCCC' becomes '3A3B4C'.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def encode(s):\n    # Write your solution here\n    pass\n\ndef decode(s):\n    # Write your solution here\n    pass\n\nprint(encode("AAABBBCCCC"))   # 3A3B4C\nprint(encode("ABCDE"))        # 1A1B1C1D1E\nprint(encode("AABBAAA"))      # 2A2B3A\n\nprint(decode("3A3B4C"))        # AAABBBCCCC\nprint(decode("2A2B3A"))        # AABBAAA`,
+    hint: "For encoding: count consecutive characters. For decoding: read digits to get count, then the following letter.",
+  },
+  {
+    title: "Two Sum Problem",
+    description:
+      "Given a list of numbers and a target, return the indices of the two numbers that add up to the target. Assume exactly one solution exists. Do it in O(n) time.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def two_sum(nums, target):\n    # Write your O(n) solution here\n    pass\n\nprint(two_sum([2,7,11,15], 9))   # [0, 1]\nprint(two_sum([3,2,4], 6))       # [1, 2]\nprint(two_sum([3,3], 6))         # [0, 1]`,
+    hint: "Use a dictionary to store each number and its index. For each number, check if target - number is already in the dictionary.",
+  },
+  {
+    title: "Number to Words",
+    description:
+      "Write a function that converts a number (0–999) to its English word representation.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def num_to_words(n):\n    # Write your solution here\n    pass\n\nprint(num_to_words(0))    # zero\nprint(num_to_words(15))   # fifteen\nprint(num_to_words(42))   # forty two\nprint(num_to_words(100))  # one hundred\nprint(num_to_words(251))  # two hundred fifty one\nprint(num_to_words(999))  # nine hundred ninety nine`,
+    hint: "Define lists for ones (zero-nineteen) and tens (twenty, thirty...). Handle hundreds separately, then tens, then ones.",
+  },
+  {
+    title: "Sliding Window Maximum",
+    description:
+      "Given an array and window size k, find the maximum value in each sliding window of size k as it moves from left to right.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def sliding_window_max(nums, k):\n    # Write your solution here\n    pass\n\nprint(sliding_window_max([1,3,-1,-3,5,3,6,7], 3))\n# Expected: [3, 3, 5, 5, 6, 7]\nprint(sliding_window_max([1,2,3,4,5], 2))\n# Expected: [2, 3, 4, 5]`,
+    hint: "Use a deque to store indices. Maintain the deque in decreasing order of values. Remove indices outside the window from the front.",
+  },
+  {
+    title: "Password Strength Checker",
+    description:
+      "Write a function that rates password strength. A strong password has 8+ characters, uppercase, lowercase, digit, and special character.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def check_password(password):\n    # Return: 'Weak', 'Moderate', or 'Strong'\n    pass\n\nprint(check_password("abc"))           # Weak\nprint(check_password("password123"))   # Moderate  \nprint(check_password("P@ssw0rd!"))     # Strong\nprint(check_password("Short1!"))       # Moderate (too short)`,
+    hint: "Check each requirement separately: len >= 8, has_upper, has_lower, has_digit, has_special. Count how many are satisfied.",
+  },
+  {
+    title: "Merge Intervals",
+    description:
+      "Given a list of intervals [start, end], merge all overlapping intervals and return the result.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def merge_intervals(intervals):\n    # Write your solution here\n    pass\n\nprint(merge_intervals([[1,3],[2,6],[8,10],[15,18]]))\n# Expected: [[1,6],[8,10],[15,18]]\nprint(merge_intervals([[1,4],[4,5]]))\n# Expected: [[1,5]]\nprint(merge_intervals([[1,4],[0,4]]))\n# Expected: [[0,4]]`,
+    hint: "Sort intervals by start time. Then iterate and merge if current interval overlaps with the last merged one.",
+  },
+  {
+    title: "Longest Palindromic Substring",
+    description: "Find the longest palindromic substring in a given string.",
+    language: "python",
+    difficulty: "Hard",
+    xpReward: 150,
+    starterCode: `def longest_palindrome(s):\n    # Write your solution here\n    pass\n\nprint(longest_palindrome("babad"))   # "bab" or "aba"\nprint(longest_palindrome("cbbd"))    # "bb"\nprint(longest_palindrome("racecar")) # "racecar"\nprint(longest_palindrome("a"))       # "a"`,
+    hint: "Expand around each character (and each pair) as a potential center. Keep track of the longest palindrome found.",
+  },
+  {
+    title: "Implement Queue Using Stacks",
+    description:
+      "Implement a Queue using only two Stack (list) objects. Support enqueue(), dequeue(), front(), and is_empty().",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `class Queue:\n    def __init__(self):\n        self.stack1 = []  # for enqueue\n        self.stack2 = []  # for dequeue\n    \n    def enqueue(self, item):\n        pass\n    \n    def dequeue(self):\n        pass\n    \n    def front(self):\n        pass\n    \n    def is_empty(self):\n        pass\n\nq = Queue()\nq.enqueue(1); q.enqueue(2); q.enqueue(3)\nprint(q.front())    # 1\nprint(q.dequeue())  # 1\nprint(q.dequeue())  # 2\nq.enqueue(4)\nprint(q.dequeue())  # 3\nprint(q.dequeue())  # 4\nprint(q.is_empty()) # True`,
+    hint: "Always push to stack1. When dequeuing, if stack2 is empty, move all from stack1 to stack2 (reversing order). Then pop from stack2.",
+  },
+  {
+    title: "Find Missing Number",
+    description:
+      "Given a list containing n distinct numbers in the range 0 to n, find the one number missing from the list.",
+    language: "python",
+    difficulty: "Easy",
+    xpReward: 75,
+    starterCode: `def find_missing(nums):\n    # Write your solution here\n    pass\n\nprint(find_missing([3,0,1]))       # 2\nprint(find_missing([0,1]))          # 2\nprint(find_missing([9,6,4,2,3,5,7,0,1]))  # 8`,
+    hint: "The sum of 0 to n is n*(n+1)/2. Subtract the actual sum from the expected sum to find the missing number.",
+  },
+  {
+    title: "Zigzag Conversion",
+    description:
+      "Write a string in a zigzag pattern on a given number of rows, then read it row by row. 'PAYPALISHIRING' on 3 rows gives 'PAHNAPLSIIGYIR'.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def zigzag(s, num_rows):\n    # Write your solution here\n    pass\n\nprint(zigzag("PAYPALISHIRING", 3))\n# P   A   H   N\n# A P L S I I G\n# Y   I   R\n# Expected: "PAHNAPLSIIGYIR"\n\nprint(zigzag("PAYPALISHIRING", 4))\n# Expected: "PINALSIGYAHRPI"\n\nprint(zigzag("A", 1))\n# Expected: "A"`,
+    hint: "Create a list of strings, one per row. Iterate through the string, adding each character to the current row. Change direction when hitting top or bottom row.",
+  },
+  {
+    title: "Maximum Subarray Sum",
+    description:
+      "Find the contiguous subarray with the largest sum (Kadane's algorithm). The array may contain negative numbers.",
+    language: "python",
+    difficulty: "Medium",
+    xpReward: 100,
+    starterCode: `def max_subarray(nums):\n    # Write your solution here\n    pass\n\nprint(max_subarray([-2,1,-3,4,-1,2,1,-5,4]))  # 6 (subarray [4,-1,2,1])\nprint(max_subarray([1]))                         # 1\nprint(max_subarray([-1,-2,-3]))                  # -1\nprint(max_subarray([5,4,-1,7,8]))                # 23`,
+    hint: "Track current_sum and max_sum. For each element, current_sum = max(element, current_sum + element). Update max_sum if current_sum is larger.",
+  },
 ];
 
 // ── Seed function ─────────────────────────────────────────────────────────────
@@ -2825,10 +4078,17 @@ async function seed() {
 
   // Update course total lesson count
   await setDoc(doc(db, "courses", "python"), {
-    id: "python", title: "Python Programming", emoji: "🐍", color: "green",
+    id: "python",
+    title: "Python Programming",
+    emoji: "🐍",
+    color: "green",
     tagline: "From your first print() to advanced algorithms",
-    description: "Learn Python from scratch through 30 comprehensive lessons covering beginner to advanced topics.",
-    level: "Beginner → Advanced", totalLessons: 30, xpReward: 50, order: 1,
+    description:
+      "Learn Python from scratch through 30 comprehensive lessons covering beginner to advanced topics.",
+    level: "Beginner → Advanced",
+    totalLessons: 30,
+    xpReward: 50,
+    order: 1,
   });
   console.log("✅ Updated Python course (30 lessons)\n");
 
@@ -2842,10 +4102,12 @@ async function seed() {
   // Seed challenges
   console.log("\n⚔️  Adding daily challenges...");
   for (let i = 0; i < newChallenges.length; i++) {
-    const date = dateStr(i - 7);  // spread from 7 days ago to future
-    const id   = date;
+    const date = dateStr(i - 7); // spread from 7 days ago to future
+    const id = date;
     await setDoc(doc(db, "challenges", id), {
-      ...newChallenges[i], date, id
+      ...newChallenges[i],
+      date,
+      id,
     });
     console.log(`  ✅ ${date}: ${newChallenges[i].title}`);
   }
@@ -2856,4 +4118,7 @@ async function seed() {
   process.exit(0);
 }
 
-seed().catch(e => { console.error("❌", e); process.exit(1); });
+seed().catch((e) => {
+  console.error("❌", e);
+  process.exit(1);
+});
