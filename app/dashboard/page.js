@@ -8,6 +8,8 @@ import {
   getDocs,
   doc,
   getDoc,
+  onSnapshot,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
@@ -71,6 +73,7 @@ export default function DashboardPage() {
   const router = useRouter();
 
   const [progress, setProgress] = useState([]);
+  const [coursesData, setCoursesData] = useState([]);
   const [todayChallenge, setTodayChallenge] = useState(null);
   const [challengeDone, setChallengeDone] = useState(false);
   const [toastEvent, setToastEvent] = useState(null);
@@ -84,30 +87,58 @@ export default function DashboardPage() {
   // Load dashboard data
   useEffect(() => {
     if (!user) return;
-    async function load() {
-      // Completed lessons
-      const q = query(
-        collection(db, "progress"),
-        where("userId", "==", user.uid),
-      );
-      const snap = await getDocs(q);
+
+    // Completed lessons
+    const qProgress = query(
+      collection(db, "progress"),
+      where("userId", "==", user.uid),
+    );
+    const unProgress = onSnapshot(qProgress, (snap) => {
       setProgress(snap.docs.map((d) => d.data()));
+    });
 
-      // Today's challenge
-      const today = todayString();
-      const chalSnap = await getDoc(doc(db, "challenges", today));
-      if (chalSnap.exists())
-        setTodayChallenge({ id: chalSnap.id, ...chalSnap.data() });
+    // Courses data
+    const qCourses = query(collection(db, "courses"), orderBy("order"));
+    const unCourses = onSnapshot(qCourses, (snap) => {
+      // Map Firestore courses to include UI styling data
+      const loaded = snap.docs.map((d) => {
+        const data = d.data();
+        const baseStyle = COURSES.find((c) => c.id === d.id) || {
+          color: "text-gray-400",
+          border: "border-gray-500/30",
+          bg: "hover:bg-gray-500/5",
+        };
+        return { id: d.id, ...data, ...baseStyle };
+      });
+      setCoursesData(loaded.length > 0 ? loaded : COURSES);
+    });
 
-      // Check if challenge done today
-      const doneSnap = await getDoc(
-        doc(db, "challengeCompletions", `${user.uid}_${today}`),
-      );
-      setChallengeDone(doneSnap.exists());
+    // Today's challenge
+    const today = todayString();
+    const unChallenge = onSnapshot(doc(db, "challenges", today), (docSnap) => {
+      if (docSnap.exists()) {
+        setTodayChallenge({ id: docSnap.id, ...docSnap.data() });
+      } else {
+        setTodayChallenge(null);
+      }
+    });
 
-      setDataLoading(false);
-    }
-    load();
+    // Check if challenge done today
+    const unChallengeDone = onSnapshot(
+      doc(db, "challengeCompletions", `${user.uid}_${today}`),
+      (docSnap) => {
+        setChallengeDone(docSnap.exists());
+      },
+    );
+
+    setDataLoading(false);
+
+    return () => {
+      unProgress();
+      unCourses();
+      unChallenge();
+      unChallengeDone();
+    };
   }, [user]);
 
   if (loading || !profile)
@@ -125,7 +156,7 @@ export default function DashboardPage() {
 
   // Group completed lessons by course
   const completedByCourse = {};
-  COURSES.forEach((c) => {
+  coursesData.forEach((c) => {
     completedByCourse[c.id] = progress.filter(
       (p) => p.courseId === c.id,
     ).length;
@@ -267,10 +298,16 @@ export default function DashboardPage() {
             <BookOpen className="w-5 h-5 text-blue-400" /> Your Courses
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {COURSES.map((course) => {
+            {coursesData.map((course) => {
               const done = completedByCourse[course.id] ?? 0;
-              const total = 4; // approximate, update per course
-              const pct = Math.min(Math.round((done / total) * 100), 100);
+              const total = course.totalLessons ?? 4;
+              const pct =
+                total === 0
+                  ? 0
+                  : Math.min(Math.round((done / total) * 100), 100);
+              // Handle mapping missing properties
+              const courseTitle = course.name || course.title || course.id;
+
               return (
                 <Link
                   key={course.id}
@@ -283,9 +320,9 @@ export default function DashboardPage() {
                       {pct}%
                     </span>
                   </div>
-                  <p className="font-semibold">{course.name}</p>
+                  <p className="font-semibold capitalize">{courseTitle}</p>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    {done} lessons done
+                    {done} / {total} lessons done
                   </p>
                   <div className="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden">
                     <div
