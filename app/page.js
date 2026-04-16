@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/lib/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import {
   Code2,
   Terminal,
@@ -147,6 +150,27 @@ const TESTIMONIALS = [
 // }
 
 function LanguageCard({ lang }) {
+  const [actualLessons, setActualLessons] = useState(lang.lessons); // Fallback to hardcoded temporarily
+  const [loadingLessons, setLoadingLessons] = useState(true);
+
+  useEffect(() => {
+    async function loadDynamicLessonCount() {
+      try {
+        const courseRef = doc(db, "courses", lang.slug);
+        const courseSnap = await getDoc(courseRef);
+
+        if (courseSnap.exists() && courseSnap.data().totalLessons) {
+          setActualLessons(courseSnap.data().totalLessons);
+        }
+      } catch (error) {
+        console.error(`Error loading lessons for ${lang.slug}:`, error);
+      } finally {
+        setLoadingLessons(false);
+      }
+    }
+    loadDynamicLessonCount();
+  }, [lang.slug]);
+
   return (
     <div
       className={`glass rounded-2xl p-6 border ${lang.border} bg-linear-to-br ${lang.color} card-hover group`}
@@ -162,7 +186,14 @@ function LanguageCard({ lang }) {
       <h3 className="text-xl font-bold mb-2">{lang.name}</h3>
       <p className="text-gray-400 text-sm mb-4 leading-relaxed">{lang.desc}</p>
       <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-500">{lang.lessons} lessons</span>
+        <span className="text-xs text-gray-500">
+          {loadingLessons ? (
+            <span className="inline-block w-6 h-4 bg-gray-800 rounded animate-pulse align-middle" />
+          ) : (
+            actualLessons
+          )}{" "}
+          lessons
+        </span>
         <Link
           href={`/courses/${lang.slug}`}
           className={`flex items-center gap-1 text-sm font-semibold ${lang.tag} group-hover:gap-2 transition-all`}
@@ -217,6 +248,17 @@ function FeatureCard({ feature }) {
 
 export default function HomePage() {
   const { user, signInWithGoogle } = useAuth();
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      setUserProfile(userDoc.data());
+    };
+    fetchUserProfile();
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-950">
