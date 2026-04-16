@@ -727,9 +727,18 @@ function SignedInAiPage({ user, profile }) {
 // ── Main export — switches between guest and signed-in view ───────────────────
 
 export default function AiPage() {
-  const { user, profile, signInWithGoogle } = useAuth();
+  const { user, profile, loading, signInWithGoogle } = useAuth();
 
-  // Show guest page while auth is loading or user is not signed in
+  // Wait for Firebase to determine auth state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
+  // Show guest page if user is completely signed out
   if (!user) return <GuestAiPage signInWithGoogle={signInWithGoogle} />;
 
   return <SignedInAiPage user={user} profile={profile} />;
