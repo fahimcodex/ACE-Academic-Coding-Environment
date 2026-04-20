@@ -42,7 +42,22 @@ export default function CoursesPage() {
     async function load() {
       const q = query(collection(db, "courses"), orderBy("order"));
       const snap = await getDocs(q);
-      setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+
+      const withLessonCounts = await Promise.all(
+        snap.docs.map(async (d) => {
+          const base = { id: d.id, ...d.data() };
+          try {
+            const lessonsSnap = await getDocs(
+              collection(db, "courses", d.id, "lessons"),
+            );
+            return { ...base, totalLessons: lessonsSnap.size };
+          } catch {
+            return base;
+          }
+        }),
+      );
+
+      setCourses(withLessonCounts);
       setLoading(false);
     }
     load();
