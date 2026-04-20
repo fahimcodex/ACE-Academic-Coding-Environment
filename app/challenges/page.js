@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
@@ -18,7 +18,6 @@ import {
   CheckCircle,
   Lock,
 } from "lucide-react";
-import { awardXP } from "@/lib/xpService";
 import { todayString } from "@/lib/gamification";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -111,32 +110,60 @@ export default function ChallengePage() {
 
   // ── Submit solution ────────────────────────────────────────────────────────
   async function submitSolution() {
-    if (!user || completed) return;
-    await runCode();
+    if (!user || completed || running || !challenge) return;
+    setRunning(true);
+    setOutput("⏳ Validating on server...");
 
-    // Award XP
-    const result = await awardXP(
-      user.uid,
-      challenge.xpReward,
-      "daily_challenge",
-    );
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch("/api/challenges/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          challengeId: challenge.id,
+          code,
+        }),
+      });
 
-    // Record completion
-    await setDoc(doc(db, "challengeCompletions", `${user.uid}_${today}`), {
-      userId: user.uid,
-      challengeId: today,
-      completedAt: serverTimestamp(),
-      xpEarned: challenge.xpReward,
-    });
+      const data = await res.json();
 
-    setCompleted(true);
-    setToastEvent({
-      xp: challenge.xpReward,
-      reason: "Daily Challenge Complete!",
-      leveledUp: result?.leveledUp,
-      newLevel: result?.newLevel,
-      newBadges: result?.newBadges,
-    });
+      if (!res.ok) {
+        setOutput(`❌ ${data.error ?? "Submission failed"}`);
+        return;
+      }
+
+      if (data.alreadyCompleted) {
+        setCompleted(true);
+        setOutput("✅ Challenge already completed for today.");
+        return;
+      }
+
+      if (!data.correct) {
+        setOutput(
+          data.message
+            ? `❌ ${data.message}`
+            : "❌ Incorrect output. Try again.",
+        );
+        return;
+      }
+
+      setCompleted(true);
+      setOutput("✅ Correct output! Challenge completed.");
+      setToastEvent({
+        xp: data.reward?.xp ?? challenge.xpReward,
+        reason: "Daily Challenge Complete!",
+        leveledUp: data.reward?.leveledUp,
+        newLevel: data.reward?.newLevel,
+        newBadges: data.reward?.newBadges,
+      });
+    } catch (err) {
+      setOutput("❌ " + err.message);
+    } finally {
+      setRunning(false);
+    }
   }
 
   if (loading)
