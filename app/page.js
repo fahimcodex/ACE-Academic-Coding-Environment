@@ -294,10 +294,11 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Trust line */}
+          {/* Trust line 
           <p className="mt-6 text-sm text-gray-500">
             No credit card required • Free forever • All AI features included
           </p>
+          */}
         </div>
       </section>
 

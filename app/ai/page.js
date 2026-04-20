@@ -10,6 +10,7 @@ import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import { getLearningPath, generatePractice } from "@/lib/aiClient";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -703,12 +704,12 @@ function SignedInAiPage({ user, profile }) {
                     <div className="px-4 py-3 bg-white/2 border-t border-white/10 text-center">
                       <p className="text-xs text-gray-500">
                         To run your code, paste it into a{" "}
-                        <link
+                        <Link
                           href="/courses/python"
                           className="text-blue-400 hover:underline"
                         >
                           lesson editor
-                        </link>
+                        </Link>
                         .
                       </p>
                     </div>
