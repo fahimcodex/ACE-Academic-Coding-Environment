@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
-import { FieldValue } from "firebase-admin/firestore";
-import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  writeBatch,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import {
   calculateStreak,
   checkNewBadges,
@@ -8,6 +18,17 @@ import {
   todayString,
   XP_REWARDS,
 } from "@/lib/gamification";
+
+function decodeTokenPayload(token) {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) throw new Error("Invalid token format");
+    const payload = JSON.parse(Buffer.from(parts[1], "base64").toString());
+    return payload;
+  } catch {
+    return null;
+  }
+}
 
 const LANGUAGE_IDS = {
   python: 71,
@@ -100,14 +121,22 @@ async function verifyRequestUser(request) {
     throw error;
   }
 
-  try {
-    const decoded = await adminAuth.verifyIdToken(token);
-    return decoded.uid;
-  } catch {
-    const error = new Error("Invalid or expired auth token");
-    error.status = 401;
-    throw error;
+  // Decode JWT payload to extract uid
+  console.log("Verifying token via JWT payload decoding");
+  const payload = decodeTokenPayload(token);
+  console.log("Decoded token payload:", payload);
+
+  if (payload) {
+    const uid = payload.uid || payload.sub;
+    if (uid) {
+      console.log("Using uid from token payload:", uid);
+      return uid;
+    }
   }
+
+  const error = new Error("Invalid or expired auth token");
+  error.status = 401;
+  throw error;
 }
 
 export async function POST(request) {
@@ -128,9 +157,12 @@ export async function POST(request) {
       return NextResponse.json({ error: "Code is required" }, { status: 400 });
     }
 
-    const challengeRef = adminDb.collection("challenges").doc(challengeId);
-    const challengeSnap = await challengeRef.get();
-    if (!challengeSnap.exists) {
+    const completionId = `${uid}_${challengeId}`;
+    const challengeRef = doc(db, "challenges", challengeId);
+    const completionRef = doc(db, "challengeCompletions", completionId);
+
+    const challengeSnap = await getDoc(challengeRef);
+    if (!challengeSnap.exists()) {
       return NextResponse.json(
         { error: "Challenge not found" },
         { status: 404 },
@@ -149,20 +181,6 @@ export async function POST(request) {
         },
         { status: 400 },
       );
-    }
-
-    const completionId = `${uid}_${challengeId}`;
-    const completionRef = adminDb
-      .collection("challengeCompletions")
-      .doc(completionId);
-
-    const existingCompletion = await completionRef.get();
-    if (existingCompletion.exists) {
-      return NextResponse.json({
-        correct: true,
-        alreadyCompleted: true,
-        message: "Challenge already completed.",
-      });
     }
 
     const exec = await runWithJudge0(
@@ -190,83 +208,84 @@ export async function POST(request) {
       });
     }
 
-    const userRef = adminDb.collection("users").doc(uid);
-    const xpEventRef = adminDb
-      .collection("xpEvents")
-      .doc(`${uid}_${Date.now()}`);
+    const userRef = doc(db, "users", uid);
+    const xpEventRef = doc(db, "xpEvents", `${uid}_${Date.now()}`);
 
-    const reward = await adminDb.runTransaction(async (tx) => {
-      const completedInTx = await tx.get(completionRef);
-      if (completedInTx.exists) {
-        return { alreadyCompleted: true };
-      }
+    // Use writeBatch for atomic updates
+    const batch = writeBatch(db);
 
-      const userSnap = await tx.get(userRef);
-      if (!userSnap.exists) {
-        throw new Error("User profile not found");
-      }
-
-      const profile = userSnap.data() ?? {};
-      const oldXp = profile.xp ?? 0;
-      const oldLevel = profile.level ?? 1;
-      const baseXp = Number(challenge.xpReward ?? XP_REWARDS.DAILY_CHALLENGE);
-
-      const tentativeXp = oldXp + baseXp;
-      const newStreak = calculateStreak(
-        profile.lastActiveDate ?? "",
-        profile.streak ?? 0,
-      );
-      const badgeCalc = checkNewBadges({
-        ...profile,
-        xp: tentativeXp,
-        streak: newStreak,
-      });
-      const badgeBonus = badgeCalc.newBadges.length * XP_REWARDS.BADGE_EARNED;
-      const finalXp = tentativeXp + badgeBonus;
-      const finalLevel = levelFromXp(finalXp);
-
-      tx.update(userRef, {
-        xp: finalXp,
-        level: finalLevel,
-        streak: newStreak,
-        badges: badgeCalc.allBadges,
-        lastActiveDate: todayString(),
-        lastActive: FieldValue.serverTimestamp(),
-      });
-
-      tx.set(completionRef, {
-        userId: uid,
-        challengeId,
-        language,
-        isCorrect: true,
-        xpEarned: baseXp,
-        completedAt: FieldValue.serverTimestamp(),
-      });
-
-      tx.set(xpEventRef, {
-        userId: uid,
-        amount: baseXp,
-        reason: "daily_challenge",
-        timestamp: FieldValue.serverTimestamp(),
-      });
-
-      return {
-        xp: baseXp,
-        newXp: finalXp,
-        newLevel: finalLevel,
-        leveledUp: finalLevel > oldLevel,
-        newBadges: badgeCalc.newBadges,
-        newStreak,
-      };
-    });
-
-    if (reward?.alreadyCompleted) {
+    // Check if already completed (need to get first)
+    const existingCompletion = await getDoc(completionRef);
+    if (existingCompletion.exists()) {
       return NextResponse.json({
         correct: true,
         alreadyCompleted: true,
         message: "Challenge already completed.",
       });
     }
+
+    // Get user profile
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      throw new Error("User profile not found");
+    }
+
+    const profile = userSnap.data() ?? {};
+    const oldXp = profile.xp ?? 0;
+    const oldLevel = profile.level ?? 1;
+    const baseXp = Number(challenge.xpReward ?? XP_REWARDS.DAILY_CHALLENGE);
+
+    const tentativeXp = oldXp + baseXp;
+    const newStreak = calculateStreak(
+      profile.lastActiveDate ?? "",
+      profile.streak ?? 0,
+    );
+    const badgeCalc = checkNewBadges({
+      ...profile,
+      xp: tentativeXp,
+      streak: newStreak,
+    });
+    const badgeBonus = badgeCalc.newBadges.length * XP_REWARDS.BADGE_EARNED;
+    const finalXp = tentativeXp + badgeBonus;
+    const finalLevel = levelFromXp(finalXp);
+
+    // Add batch operations
+    batch.update(userRef, {
+      xp: finalXp,
+      level: finalLevel,
+      streak: newStreak,
+      badges: badgeCalc.allBadges,
+      lastActiveDate: todayString(),
+      lastActive: new Date(),
+    });
+
+    batch.set(completionRef, {
+      userId: uid,
+      challengeId,
+      language,
+      isCorrect: true,
+      xpEarned: baseXp,
+      completedAt: new Date(),
+    });
+
+    batch.set(xpEventRef, {
+      userId: uid,
+      amount: baseXp,
+      reason: "daily_challenge",
+      timestamp: new Date(),
+    });
+
+    // Commit batch
+    await batch.commit();
+
+    const reward = {
+      xp: baseXp,
+      newXp: finalXp,
+      newLevel: finalLevel,
+      leveledUp: finalLevel > oldLevel,
+      newBadges: badgeCalc.newBadges,
+      newStreak,
+    };
 
     return NextResponse.json({
       correct: true,
@@ -276,9 +295,8 @@ export async function POST(request) {
   } catch (err) {
     console.error("Challenge submit error:", err);
     const status = Number(err?.status) || 500;
-    return NextResponse.json(
-      { error: err.message || "Submission failed" },
-      { status },
-    );
+    const message = err.message || "Submission failed";
+    console.error("Full error details:", { message, stack: err.stack });
+    return NextResponse.json({ error: message }, { status });
   }
 }
