@@ -10,7 +10,6 @@ import {
   addDoc,
   query,
   where,
-  orderBy,
   onSnapshot,
   updateDoc,
   doc,
@@ -95,11 +94,20 @@ function CommentCard({ comment, lessonId, depth = 0 }) {
       collection(db, "comments"),
       where("lessonId", "==", lessonId),
       where("parentId", "==", comment.id),
-      orderBy("createdAt", "asc"),
     );
-    const unsub = onSnapshot(q, (snap) => {
-      setReplies(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        data.sort((a, b) => {
+          const timeA = a.createdAt?.seconds || 0;
+          const timeB = b.createdAt?.seconds || 0;
+          return timeA - timeB; // ascending
+        });
+        setReplies(data);
+      },
+      (err) => console.error("Replies onSnapshot error:", err),
+    );
     return () => unsub();
   }, [comment.id, lessonId, depth]);
 
@@ -113,19 +121,25 @@ function CommentCard({ comment, lessonId, depth = 0 }) {
   async function postReply() {
     if (!replyText.trim() || !user || posting) return;
     setPosting(true);
-    await addDoc(collection(db, "comments"), {
-      lessonId,
-      parentId: comment.id,
-      userId: user.uid,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      body: replyText.trim(),
-      upvotes: 0,
-      createdAt: serverTimestamp(),
-    });
-    setReplyText("");
-    setShowReply(false);
-    setPosting(false);
+    try {
+      await addDoc(collection(db, "comments"), {
+        lessonId,
+        parentId: comment.id,
+        userId: user.uid,
+        displayName: user.displayName || null,
+        photoURL: user.photoURL || null,
+        body: replyText.trim(),
+        upvotes: 0,
+        createdAt: serverTimestamp(),
+      });
+      setReplyText("");
+      setShowReply(false);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to post reply. " + e.message);
+    } finally {
+      setPosting(false);
+    }
   }
 
   return (
@@ -252,30 +266,46 @@ export default function CommentSection({ lessonId }) {
       collection(db, "comments"),
       where("lessonId", "==", lessonId),
       where("parentId", "==", null),
-      orderBy("upvotes", "desc"),
-      orderBy("createdAt", "desc"),
     );
-    const unsub = onSnapshot(q, (snap) => {
-      setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        // Sort by upvotes (desc) then createdAt (desc)
+        data.sort((a, b) => {
+          if (b.upvotes !== a.upvotes) return b.upvotes - a.upvotes;
+          const timeA = a.createdAt?.seconds || 0;
+          const timeB = b.createdAt?.seconds || 0;
+          return timeB - timeA;
+        });
+        setComments(data);
+      },
+      (err) => console.error("Comments onSnapshot error:", err),
+    );
     return () => unsub();
   }, [lessonId]);
 
   async function postComment() {
     if (!newComment.trim() || !user || posting) return;
     setPosting(true);
-    await addDoc(collection(db, "comments"), {
-      lessonId,
-      parentId: null,
-      userId: user.uid,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      body: newComment.trim(),
-      upvotes: 0,
-      createdAt: serverTimestamp(),
-    });
-    setNewComment("");
-    setPosting(false);
+    try {
+      await addDoc(collection(db, "comments"), {
+        lessonId,
+        parentId: null,
+        userId: user.uid,
+        displayName: user.displayName || null,
+        photoURL: user.photoURL || null,
+        body: newComment.trim(),
+        upvotes: 0,
+        createdAt: serverTimestamp(),
+      });
+      setNewComment("");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to post comment. " + e.message);
+    } finally {
+      setPosting(false);
+    }
   }
 
   return (
