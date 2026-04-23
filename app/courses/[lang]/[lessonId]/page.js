@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { useParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import LinuxTerminal from "@/components/LinuxTerminal";
@@ -14,6 +14,9 @@ import XpToast from "@/components/XpToast";
 import dynamic from "next/dynamic";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { updateLessonProgress } from "@/lib/xpService";
+import { auth } from "@/lib/firebase";
+
 import {
   ArrowLeft, Play, RotateCcw, Zap, CheckCircle, XCircle,
   ChevronRight, Clock, Brain, Bug,
@@ -33,24 +36,25 @@ async function executeC(code, lang) {
   return runWithJudge0(code, lang);
 }
 
-const MONACO_LANG = { python:"python", c:"c", cpp:"cpp", linux:"shell" };
-const FILE_NAME   = { python:"main.py", c:"main.c", cpp:"main.cpp", linux:"script.sh" };
+const MONACO_LANG = { python: "python", c: "c", cpp: "cpp", linux: "shell" };
+const FILE_NAME = { python: "main.py", c: "main.c", cpp: "main.cpp", linux: "script.sh" };
 
 export default function LessonPage() {
   const { lang, lessonId } = useParams();
-  const { user, profile }  = useAuth();
+  const router = useRouter();
+  const { user, profile } = useAuth();
 
-  const [lesson,     setLesson]     = useState(null);
-  const [loading,    setLoading]    = useState(true);
-  const [code,       setCode]       = useState("");
-  const [output,     setOutput]     = useState("");
-  const [running,    setRunning]    = useState(false);
-  const [execMeta,   setExecMeta]   = useState(null);
-  const [tab,        setTab]        = useState("theory");
-  const [answers,    setAnswers]    = useState({});
-  const [submitted,  setSubmitted]  = useState(false);
+  const [lesson, setLesson] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [code, setCode] = useState("");
+  const [output, setOutput] = useState("");
+  const [running, setRunning] = useState(false);
+  const [execMeta, setExecMeta] = useState(null);
+  const [tab, setTab] = useState("theory");
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
   const [toastEvent, setToastEvent] = useState(null);
-  const [aiPanel,    setAiPanel]    = useState("none"); // "none" | "explain" | "debug"
+  const [aiPanel, setAiPanel] = useState("none"); // "none" | "explain" | "debug"
 
   useEffect(() => {
     async function load() {
@@ -68,6 +72,22 @@ export default function LessonPage() {
     }
     load();
   }, [lang, lessonId]);
+
+  useEffect(() => {
+    async function checkAccess() {
+      if (!lesson || !user) return;
+      if (lesson.order === 1) return; // Lesson 1 is always open
+
+      const progSnap = await getDoc(doc(db, "users", user.uid, "courseProgress", lang));
+      const highest = progSnap.exists() ? progSnap.data().highestCompletedOrder || 0 : 0;
+
+      if (lesson.order > highest + 1) {
+        alert("Lesson locked! Complete the previous quiz to unlock.");
+        router.push(`/courses/${lang}`);
+      }
+    }
+    checkAccess();
+  }, [lesson, user, lang, router]);
 
   const runCode = useCallback(async () => {
     if (!lesson || running) return;
@@ -108,6 +128,7 @@ export default function LessonPage() {
     const allCorrect = lesson.quiz.every((q, i) => answers[i] === q.correct);
     if (allCorrect && user) {
       const result = await completeLesson(user.uid, lesson.id, lang, lesson.xpReward);
+      await updateLessonProgress(user.uid, lang, lesson.order);
       if (result) {
         setToastEvent({
           xp: lesson.xpReward, reason: "Lesson Complete!",
@@ -134,7 +155,7 @@ export default function LessonPage() {
   );
 
   const quizScore = submitted ? lesson.quiz.filter((q, i) => answers[i] === q.correct).length : 0;
-  const isLinux   = lesson.language === "linux";
+  const isLinux = lesson.language === "linux";
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col">
@@ -160,14 +181,13 @@ export default function LessonPage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 flex">
           {[
-            { id:"theory", label:"📖 Theory" },
-            { id:"code",   label: isLinux ? "🖥️ Terminal" : "💻 Code" },
-            { id:"quiz",   label:"🧠 Quiz" },
+            { id: "theory", label: "📖 Theory" },
+            { id: "code", label: isLinux ? "🖥️ Terminal" : "💻 Code" },
+            { id: "quiz", label: "🧠 Quiz" },
           ].map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`px-5 py-2.5 text-sm font-medium transition-colors border-b-2 ${
-                tab === t.id ? "border-blue-500 text-blue-400" : "border-transparent text-gray-400 hover:text-white"
-              }`}>
+              className={`px-5 py-2.5 text-sm font-medium transition-colors border-b-2 ${tab === t.id ? "border-blue-500 text-blue-400" : "border-transparent text-gray-400 hover:text-white"
+                }`}>
               {t.label}
             </button>
           ))}
@@ -222,22 +242,20 @@ export default function LessonPage() {
                               <button
                                 onClick={() => setAiPanel(p => p === "explain" ? "none" : "explain")}
                                 title="AI Explain"
-                                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
-                                  aiPanel === "explain"
+                                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${aiPanel === "explain"
                                     ? "bg-pink-600 text-white"
                                     : "text-pink-400 hover:text-pink-300 hover:bg-pink-500/10"
-                                }`}>
+                                  }`}>
                                 <Brain className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Explain</span>
                               </button>
                               <button
                                 onClick={() => setAiPanel(p => p === "debug" ? "none" : "debug")}
                                 title="AI Debug"
-                                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${
-                                  aiPanel === "debug"
+                                className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${aiPanel === "debug"
                                     ? "bg-red-600 text-white"
                                     : "text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                                }`}>
+                                  }`}>
                                 <Bug className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Debug</span>
                               </button>
@@ -273,9 +291,8 @@ export default function LessonPage() {
                           </span>
                         )}
                       </div>
-                      <pre className={`p-4 text-sm font-mono whitespace-pre-wrap overflow-auto h-[400px] ${
-                        output.startsWith("❌") ? "text-red-400" : "text-green-400"
-                      }`}>
+                      <pre className={`p-4 text-sm font-mono whitespace-pre-wrap overflow-auto h-[400px] ${output.startsWith("❌") ? "text-red-400" : "text-green-400"
+                        }`}>
                         {output || "Click ▶ Run to execute your code."}
                       </pre>
                     </div>
@@ -342,20 +359,20 @@ export default function LessonPage() {
                   </p>
                   <div className="space-y-2">
                     {q.options.map((opt, oi) => {
-                      const selected  = answers[qi] === oi;
+                      const selected = answers[qi] === oi;
                       const isCorrect = oi === q.correct;
                       let cls = "border-white/10 hover:border-blue-500/40 bg-white/[0.02] cursor-pointer";
                       if (submitted) {
-                        if (isCorrect)     cls = "border-green-500 bg-green-500/10 cursor-default";
+                        if (isCorrect) cls = "border-green-500 bg-green-500/10 cursor-default";
                         else if (selected) cls = "border-red-500   bg-red-500/10   cursor-default";
-                        else               cls = "border-white/5   opacity-40      cursor-default";
+                        else cls = "border-white/5   opacity-40      cursor-default";
                       } else if (selected) cls = "border-blue-500 bg-blue-500/10";
                       return (
                         <button key={oi} disabled={submitted}
                           onClick={() => setAnswers(a => ({ ...a, [qi]: oi }))}
                           className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all flex items-center justify-between gap-2 ${cls}`}>
                           <span>{opt}</span>
-                          {submitted && isCorrect  && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
+                          {submitted && isCorrect && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
                           {submitted && selected && !isCorrect && <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />}
                         </button>
                       );
