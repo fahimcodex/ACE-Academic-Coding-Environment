@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
@@ -45,6 +45,7 @@ export default function LessonPage() {
   const { user, profile } = useAuth();
 
   const [lesson, setLesson] = useState(null);
+  const [nextLesson, setNextLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
@@ -67,6 +68,17 @@ export default function LessonPage() {
           setOutput("⏳ Python runtime loads on first Run (~5s).");
         else if (data.language !== "linux")
           setOutput("Click ▶ Run to compile and execute.");
+
+        // 👇 NEW: Fetch the next lesson based on order 👇
+        const nextQ = query(
+          collection(db, "courses", lang, "lessons"), 
+          where("order", "==", data.order + 1), 
+          limit(1)
+        );
+        const nextSnap = await getDocs(nextQ);
+        if (!nextSnap.empty) {
+          setNextLesson({ id: nextSnap.docs[0].id, ...nextSnap.docs[0].data() });
+        }
       }
       setLoading(false);
     }
@@ -409,10 +421,12 @@ export default function LessonPage() {
                       <RotateCcw className="w-4 h-4" /> Try Again
                     </button>
                   )}
-                  <Link href={`/courses/${lang}`}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
-                    Back to Course <ChevronRight className="w-4 h-4" />
-                  </Link>
+                  {quizScore === lesson.quiz.length && nextLesson && (
+                    <Link href={`/courses/${lang}/${nextLesson.id}`}
+                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
+                      Next: {nextLesson.title} <ChevronRight className="w-4 h-4" />
+                    </Link>
+                  )}
                 </div>
               </div>
             )}
