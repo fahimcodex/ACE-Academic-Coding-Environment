@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
+
 import {
   collection,
   doc,
@@ -144,14 +146,7 @@ export async function POST(request) {
     const uid = await verifyRequestUser(request);
     const body = await request.json();
     const code = String(body?.code ?? "");
-    const challengeId = todayString();
-
-    if (body?.challengeId && String(body.challengeId) !== challengeId) {
-      return NextResponse.json(
-        { error: "Only today's challenge can be submitted." },
-        { status: 400 },
-      );
-    }
+    const challengeId = body?.challengeId || todayString();
 
     if (!code.trim()) {
       return NextResponse.json({ error: "Code is required" }, { status: 400 });

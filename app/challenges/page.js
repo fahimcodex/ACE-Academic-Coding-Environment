@@ -48,7 +48,7 @@ async function executeNative(code, lang) {
 }
 
 export default function ChallengePage() {
-  const { user, profile } = useAuth();
+  const { user, profile, updateProfile } = useAuth();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [code, setCode] = useState("");
@@ -152,11 +152,28 @@ export default function ChallengePage() {
 
       setCompleted(true);
       setOutput("✅ Correct output! Challenge completed.");
+
+      const earnedXp = data.reward?.xp ?? challenge.xpReward;
+      const newTotalXp = data.reward?.newXp ?? profile?.xp + earnedXp;
+      const newLevel = data.reward?.newLevel ?? profile?.level;
+
+      // Optimistic UI Update for immediate XP rendering
+      if (updateProfile && profile) {
+        updateProfile({
+          xp: newTotalXp,
+          level: newLevel,
+          streak: data.reward?.newStreak ?? profile.streak,
+          badges: data.reward?.newBadges
+            ? [...profile.badges, ...data.reward.newBadges]
+            : profile.badges,
+        });
+      }
+
       setToastEvent({
-        xp: data.reward?.xp ?? challenge.xpReward,
+        xp: earnedXp,
         reason: "Daily Challenge Complete!",
         leveledUp: data.reward?.leveledUp,
-        newLevel: data.reward?.newLevel,
+        newLevel: newLevel,
         newBadges: data.reward?.newBadges,
       });
     } catch (err) {
