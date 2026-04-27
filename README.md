@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Branch Summary
 
-## Getting Started
+## master-colab
 
-First, run the development server:
+Optimistic UI updates for XP and improved comment section sorting
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Introduces optimistic UI updates for XP/level on lesson/challenge completion and refactors the comment section to handle sorting and error states without relying on Firestore `orderBy`. Also adds real-time profile updates and manual profile mutations for user state.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Changes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Implements optimistic XP/level/badge updates in `ChallengePage` and `LessonPage` using the new `updateProfile` function from `useAuth`.
+- Refactors `lib/auth.js` to provide real-time profile updates via `onSnapshot` and an `updateProfile` method for local state mutation.
+- Updates `/app/api/challenges/submit/route.js` to relax challengeId submission logic and mark the route as "force-dynamic".
+- Refactors `CommentSection.js` to remove Firestore `orderBy` in queries, instead performing client-side sorting (by upvotes and creation time for root comments, by creation time for replies).
+- Adds error handling for comment and reply posting, displaying alerts on failure and preventing state inconsistencies.
+- Refactors code for better formatting and minor UI/UX improvements (button styling, event handling).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Impact
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Users see immediate XP, level, and badge updates on UI after completing lessons or challenges, improving responsiveness.
+- User profile information stays in sync with Firestore changes in real time.
+- Comment and reply ordering remains correct even without Firestore indexes, improving robustness and reliability.
+- Graceful error handling prevents silent failures in comment and reply posting.
+- No breaking API changes, but relies on new optimistic state management and real-time profile subscription.
+- Potential for minor increased memory usage due to additional listeners, but no major performance impact expected.
