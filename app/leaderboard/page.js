@@ -24,7 +24,7 @@ const RANK_STYLE = {
 };
 
 export default function LeaderboardPage() {
-  const { user, profile }     = useAuth();
+  const { user, profile, loading: authLoading }     = useAuth();
   const [tab,      setTab]    = useState("Global");
   const [entries,  setEntries] = useState([]);
   const [myRank,   setMyRank] = useState(null);
@@ -140,7 +140,7 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Table */}
-        {loading ? (
+        {loading || authLoading ? (
           <div className="flex justify-center py-16">
             <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>

@@ -43,7 +43,7 @@ const FILE_NAME = { python: "main.py", c: "main.c", cpp: "main.cpp", linux: "scr
 export default function LessonPage() {
   const { lang, lessonId } = useParams();
   const router = useRouter();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
 
   const [lesson, setLesson] = useState(null);
   const [nextLesson, setNextLesson] = useState(null);
@@ -185,7 +185,7 @@ export default function LessonPage() {
     }
   }
 
-  if (loading) return (
+  if (loading || authLoading) return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center">
       <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
     </div>

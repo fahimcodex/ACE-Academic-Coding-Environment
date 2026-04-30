@@ -48,7 +48,7 @@ async function executeNative(code, lang) {
 }
 
 export default function ChallengePage() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [code, setCode] = useState("");
@@ -166,7 +166,7 @@ export default function ChallengePage() {
     }
   }
 
-  if (loading)
+  if (loading || authLoading)
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />

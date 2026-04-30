@@ -22,7 +22,7 @@ import { levelTitle, levelColor } from "@/lib/gamification";
 
 export default function ProfilePage() {
   const { uid }               = useParams();
-  const { user }              = useAuth();
+  const { user, loading: authLoading }              = useAuth();
   const [profile,   setProfile]   = useState(null);
   const [progress,  setProgress]  = useState([]);
   const [following, setFollowing] = useState(false);
@@ -92,7 +92,7 @@ export default function ProfilePage() {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  if (loading) return (
+  if (loading || authLoading) return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center">
       <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
     </div>
