@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth";
+
 import {
   collection,
   getDocs,
@@ -18,8 +20,10 @@ import { BookOpen, Clock, Zap, ChevronRight, ArrowLeft } from "lucide-react";
 export default function CoursePage() {
   const { lang } = useParams();
   const [course, setCourse] = useState(null);
+  const { user } = useAuth();
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [highestOrder, setHighestOrder] = useState(0);
 
   useEffect(() => {
     async function load() {
@@ -27,13 +31,19 @@ export default function CoursePage() {
       const lessonsSnap = await getDocs(
         query(collection(db, "courses", lang, "lessons"), orderBy("order")),
       );
+      if (user) {
+        const progSnap = await getDoc(doc(db, "users", user.uid, "courseProgress", lang));
+        if (progSnap.exists()) {
+          setHighestOrder(progSnap.data().highestCompletedOrder || 0);
+        }
+      }
       if (courseSnap.exists())
         setCourse({ id: courseSnap.id, ...courseSnap.data() });
       setLessons(lessonsSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
       setLoading(false);
     }
     load();
-  }, [lang]);
+  }, [lang,user]);
 
   if (loading)
     return (
@@ -86,34 +96,64 @@ export default function CoursePage() {
         {/* Lesson list */}
         <h2 className="text-xl font-bold mb-4">Lessons</h2>
         <div className="space-y-3">
-          {lessons.map((lesson, i) => (
-            <Link
-              key={lesson.id}
-              href={`/courses/${lang}/${lesson.id}`}
-              className="glass rounded-xl p-5 border border-white/5 hover:border-blue-500/30 flex items-center justify-between group transition-all block"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  {i + 1}
-                </div>
-                <div>
-                  <p className="font-semibold group-hover:text-blue-400 transition-colors">
-                    {lesson.title}
-                  </p>
-                  <div className="flex items-center gap-3 text-xs text-gray-400 mt-0.5">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> {lesson.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Zap className="w-3 h-3 text-yellow-400" />{" "}
-                      {lesson.xpReward} XP
-                    </span>
+          {lessons.map((lesson, i) => {
+            // 1. Check if the lesson should be locked
+            const isLocked = lesson.order > highestOrder + 1;
+
+            // 2. If locked, show the grayed-out box with a lock icon (no Link)
+            if (isLocked) {
+              return (
+                <div
+                  key={lesson.id}
+                  className="glass rounded-xl p-5 border border-white/5 opacity-50 cursor-not-allowed flex items-center justify-between transition-all block"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-full bg-gray-800 text-gray-500 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      🔒
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-500">
+                        {lesson.title}
+                      </p>
+                      <div className="flex items-center gap-3 text-xs text-gray-600 mt-0.5">
+                        <span>Complete previous quiz to unlock</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
-            </Link>
-          ))}
+              );
+            }
+
+            // 3. If unlocked, show your original clickable Link
+            return (
+              <Link
+                key={lesson.id}
+                href={`/courses/${lang}/${lesson.id}`}
+                className="glass rounded-xl p-5 border border-white/5 hover:border-blue-500/30 flex items-center justify-between group transition-all block"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-9 h-9 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    {i + 1}
+                  </div>
+                  <div>
+                    <p className="font-semibold group-hover:text-blue-400 transition-colors">
+                      {lesson.title}
+                    </p>
+                    <div className="flex items-center gap-3 text-xs text-gray-400 mt-0.5">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> {lesson.duration}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-yellow-400" />{" "}
+                        {lesson.xpReward} XP
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
