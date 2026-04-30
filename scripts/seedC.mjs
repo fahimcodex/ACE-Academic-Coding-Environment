@@ -25,6 +25,8 @@ const cLessons = [
         duration: "10 min",
         xpReward: 20,
         language: "c",
+        videoIntro: "https://www.youtube.com/embed/sxmTTS4qros", 
+        videoOutro: "https://www.youtube.com/embed/AtfT782_TKk",
         theory: `# Introduction to C
 
 C is one of the most widely used and influential programming languages of all time. It is known for its speed, low-level memory access, and as the basis for modern languages like C++, Java, and Python.

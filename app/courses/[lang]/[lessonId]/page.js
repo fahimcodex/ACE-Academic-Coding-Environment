@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import CinematicPlayer from "@/components/CinematicPlayer";
 import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -56,6 +57,23 @@ export default function LessonPage() {
   const [submitted, setSubmitted] = useState(false);
   const [toastEvent, setToastEvent] = useState(null);
   const [aiPanel, setAiPanel] = useState("none"); // "none" | "explain" | "debug"
+  const [missionPhase, setMissionPhase] = useState("intro"); // "intro" | "task" | "outro" | "completed"
+  const [videoLocked, setVideoLocked] = useState(false);
+
+  // This triggers a timer whenever a video phase starts
+  useEffect(() => {
+    if ((missionPhase === "intro" && lesson?.videoIntro) ||
+      (missionPhase === "outro" && lesson?.videoOutro)) {
+      setVideoLocked(true);
+      // Locks the button for 10 seconds (adjust this number as needed!)
+      const timer = setTimeout(() => setVideoLocked(false), 10000);
+      return () => clearTimeout(timer);
+    } else {
+      setVideoLocked(false);
+    }
+  }, [missionPhase, lesson]);
+
+
 
   useEffect(() => {
     async function load() {
@@ -71,8 +89,8 @@ export default function LessonPage() {
 
         // 👇 NEW: Fetch the next lesson based on order 👇
         const nextQ = query(
-          collection(db, "courses", lang, "lessons"), 
-          where("order", "==", data.order + 1), 
+          collection(db, "courses", lang, "lessons"),
+          where("order", "==", data.order + 1),
           limit(1)
         );
         const nextSnap = await getDocs(nextQ);
@@ -138,12 +156,21 @@ export default function LessonPage() {
   async function submitQuiz() {
     setSubmitted(true);
     const allCorrect = lesson.quiz.every((q, i) => answers[i] === q.correct);
+
     if (allCorrect && user) {
       const result = await completeLesson(user.uid, lesson.id, lang, lesson.xpReward);
       await updateLessonProgress(user.uid, lang, lesson.order);
+
+      // Phase Shift: Go to V2 Outro if it exists, otherwise skip to results
+      if (lesson.videoOutro) {
+        setMissionPhase("outro");
+      } else {
+        setMissionPhase("completed");
+      }
+
       if (result) {
         setToastEvent({
-          xp: lesson.xpReward, reason: "Lesson Complete!",
+          xp: lesson.xpReward, reason: "Mission Accomplished!",
           leveledUp: result.leveledUp, newLevel: result.newLevel,
           newBadges: result.newBadges,
         });
@@ -152,6 +179,9 @@ export default function LessonPage() {
         for (const b of (result.newBadges ?? [])) await notify.badge(user.uid, b.replace(/_/g, " "));
         if ([3, 7, 30].includes(result.newStreak)) await notify.streak(user.uid, result.newStreak);
       }
+    } else {
+      // If they got questions wrong, skip to the completed view to show the 'Try Again' button
+      setMissionPhase("completed");
     }
   }
 
@@ -255,8 +285,8 @@ export default function LessonPage() {
                                 onClick={() => setAiPanel(p => p === "explain" ? "none" : "explain")}
                                 title="AI Explain"
                                 className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${aiPanel === "explain"
-                                    ? "bg-pink-600 text-white"
-                                    : "text-pink-400 hover:text-pink-300 hover:bg-pink-500/10"
+                                  ? "bg-pink-600 text-white"
+                                  : "text-pink-400 hover:text-pink-300 hover:bg-pink-500/10"
                                   }`}>
                                 <Brain className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Explain</span>
@@ -265,8 +295,8 @@ export default function LessonPage() {
                                 onClick={() => setAiPanel(p => p === "debug" ? "none" : "debug")}
                                 title="AI Debug"
                                 className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${aiPanel === "debug"
-                                    ? "bg-red-600 text-white"
-                                    : "text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                                  ? "bg-red-600 text-white"
+                                  : "text-red-400 hover:text-red-300 hover:bg-red-500/10"
                                   }`}>
                                 <Bug className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Debug</span>
@@ -351,87 +381,140 @@ export default function LessonPage() {
           </div>
         )}
 
-        {/* QUIZ */}
+        {/* QUIZ / MISSION TAB */}
         {tab === "quiz" && (
           <div className="max-w-2xl mx-auto">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-2xl font-bold">Quick Quiz</h2>
-              <span className="text-sm text-gray-400">{lesson.quiz.length} questions</span>
-            </div>
-            <p className="text-gray-400 mb-8">
-              Answer all correctly to earn{" "}
-              <span className="text-yellow-400 font-semibold">+{lesson.xpReward} XP</span>.
-            </p>
 
-            <div className="space-y-6">
-              {lesson.quiz.map((q, qi) => (
-                <div key={q.id} className="glass rounded-xl p-6 border border-white/10">
-                  <p className="font-semibold mb-4 leading-relaxed">
-                    <span className="text-blue-400 mr-2">{qi + 1}.</span>{q.question}
-                  </p>
-                  <div className="space-y-2">
-                    {q.options.map((opt, oi) => {
-                      const selected = answers[qi] === oi;
-                      const isCorrect = oi === q.correct;
-                      let cls = "border-white/10 hover:border-blue-500/40 bg-white/[0.02] cursor-pointer";
-                      if (submitted) {
-                        if (isCorrect) cls = "border-green-500 bg-green-500/10 cursor-default";
-                        else if (selected) cls = "border-red-500   bg-red-500/10   cursor-default";
-                        else cls = "border-white/5   opacity-40      cursor-default";
-                      } else if (selected) cls = "border-blue-500 bg-blue-500/10";
-                      return (
-                        <button key={oi} disabled={submitted}
-                          onClick={() => setAnswers(a => ({ ...a, [qi]: oi }))}
-                          className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all flex items-center justify-between gap-2 ${cls}`}>
-                          <span>{opt}</span>
-                          {submitted && isCorrect && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
-                          {submitted && selected && !isCorrect && <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />}
-                        </button>
-                      );
-                    })}
+            {/* 🔴 V1: MISSION INTRO */}
+            {missionPhase === "intro" && (
+              <div className="glass rounded-xl p-6 border border-white/10 text-center animate-in fade-in zoom-in duration-300">
+                <h2 className="text-3xl font-bold mb-2">Mission Briefing</h2>
+                <p className="text-gray-400 mb-6">Review your objectives before beginning.</p>
+
+                {lesson.videoIntro ? (
+                  <div className="aspect-video w-full bg-black rounded-lg mb-6 overflow-hidden border border-white/5 shadow-2xl">
+                    {lesson.videoIntro ? (
+                      <CinematicPlayer src={lesson.videoIntro} />
+                    ) : (
+                      <div className="aspect-video w-full bg-blue-900/20 rounded-lg mb-6 flex flex-col items-center justify-center border border-blue-500/20">
+                        <Brain className="w-16 h-16 text-blue-500/50 mb-4" />
+                        <p className="text-gray-400">Classified text briefing only.</p>
+                      </div>
+                    )}
                   </div>
-                  {submitted && (
-                    <div className="mt-3 flex gap-2 bg-white/5 rounded-lg px-3 py-2">
-                      <span className="text-blue-400 flex-shrink-0">💡</span>
-                      <p className="text-sm text-gray-300">{q.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                ) : (
+                  <div className="aspect-video w-full bg-blue-900/20 rounded-lg mb-6 flex flex-col items-center justify-center border border-blue-500/20">
+                    <Brain className="w-16 h-16 text-blue-500/50 mb-4" />
+                    <p className="text-gray-400">Classified text briefing only.</p>
+                  </div>
+                )}
 
-            {!submitted ? (
-              <button onClick={submitQuiz}
-                disabled={Object.keys(answers).length < lesson.quiz.length}
-                className="mt-8 w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors text-lg">
-                Submit Answers
-              </button>
-            ) : (
-              <div className="mt-8 glass rounded-xl p-6 border border-white/10 text-center">
-                <div className={`text-4xl font-bold mb-2 ${quizScore === lesson.quiz.length ? "text-green-400" : "text-yellow-400"}`}>
+                <button onClick={() => setMissionPhase("task")}
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-10 py-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-lg w-full sm:w-auto">
+                  Accept Mission
+                </button>
+              </div>
+            )}
+
+            {/* 🔴 MAIN: THE TASKS */}
+            {missionPhase === "task" && (
+              <div className="animate-in slide-in-from-right duration-300">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-2xl font-bold">Mission Tasks</h2>
+                  <span className="text-sm text-gray-400">{lesson.quiz.length} objectives</span>
+                </div>
+                <p className="text-gray-400 mb-8">
+                  Complete all tasks perfectly to earn <span className="text-yellow-400 font-semibold">+{lesson.xpReward} XP</span>.
+                </p>
+
+                <div className="space-y-6">
+                  {lesson.quiz.map((q, qi) => (
+                    <div key={q.id} className="glass rounded-xl p-6 border border-white/10">
+                      <p className="font-semibold mb-4 leading-relaxed">
+                        <span className="text-blue-400 mr-2">{qi + 1}.</span>{q.question}
+                      </p>
+                      <div className="space-y-2">
+                        {q.options.map((opt, oi) => {
+                          const selected = answers[qi] === oi;
+                          const isCorrect = oi === q.correct;
+                          let cls = "border-white/10 hover:border-blue-500/40 bg-white/[0.02] cursor-pointer";
+                          if (submitted) {
+                            if (isCorrect) cls = "border-green-500 bg-green-500/10 cursor-default";
+                            else if (selected) cls = "border-red-500 bg-red-500/10 cursor-default";
+                            else cls = "border-white/5 opacity-40 cursor-default";
+                          } else if (selected) cls = "border-blue-500 bg-blue-500/10";
+
+                          return (
+                            <button key={oi} disabled={submitted}
+                              onClick={() => setAnswers(a => ({ ...a, [qi]: oi }))}
+                              className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all flex items-center justify-between gap-2 ${cls}`}>
+                              <span>{opt}</span>
+                              {submitted && isCorrect && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
+                              {submitted && selected && !isCorrect && <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button onClick={submitQuiz}
+                  disabled={Object.keys(answers).length < lesson.quiz.length}
+                  className="mt-8 w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors text-lg">
+                  Submit Telemetry
+                </button>
+              </div>
+            )}
+
+            {/* 🔴 V2: MISSION OUTRO */}
+            {missionPhase === "outro" && (
+              <div className="glass rounded-xl p-6 border border-green-500/30 text-center animate-in fade-in zoom-in duration-300">
+                <h2 className="text-3xl font-bold text-green-400 mb-2">Mission Accomplished</h2>
+                <p className="text-gray-400 mb-6">Review the debriefing video.</p>
+
+                {/* Replaced iframe with our professional component */}
+                <CinematicPlayer src={lesson.videoOutro} />
+
+                <button
+                  onClick={() => setMissionPhase("completed")}
+                  disabled={videoLocked}
+                  className="bg-green-600 hover:bg-green-500 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold px-10 py-4 rounded-xl transition-all shadow-lg shadow-green-500/20 text-lg w-full sm:w-auto">
+                  {videoLocked ? "Decrypting Rewards..." : "Claim Rewards"}
+                </button>
+              </div>
+            )}
+
+            {/* 🔴 FINAL: RESULTS / NEXT LEVEL */}
+            {missionPhase === "completed" && (
+              <div className="animate-in slide-in-from-bottom duration-300 mt-8 glass rounded-xl p-6 border border-white/10 text-center">
+                <div className={`text-5xl font-bold mb-4 ${quizScore === lesson.quiz.length ? "text-green-400" : "text-yellow-400"}`}>
                   {quizScore}/{lesson.quiz.length}
                 </div>
-                <p className="text-gray-300 mb-6">
-                  {quizScore === lesson.quiz.length ? "Perfect score! 🎉" : "Review the explanations above."}
+                <p className="text-gray-300 mb-8 text-lg">
+                  {quizScore === lesson.quiz.length ? "Data verified. Authorization granted. 🎉" : "Mission failed. Review logic and retry."}
                 </p>
-                <div className="flex gap-3 justify-center flex-wrap">
+
+                <div className="flex gap-4 justify-center flex-wrap">
                   {quizScore < lesson.quiz.length && (
-                    <button onClick={() => { setAnswers({}); setSubmitted(false); }}
-                      className="flex items-center gap-2 text-sm border border-white/10 hover:border-white/20 text-gray-300 px-5 py-2.5 rounded-xl transition-colors">
+                    <button onClick={() => { setAnswers({}); setSubmitted(false); setMissionPhase("task"); }}
+                      className="flex items-center gap-2 font-bold border border-white/10 hover:border-white/20 hover:bg-white/5 text-gray-200 px-8 py-3 rounded-xl transition-colors">
                       <RotateCcw className="w-4 h-4" /> Try Again
                     </button>
                   )}
                   {quizScore === lesson.quiz.length && nextLesson && (
                     <Link href={`/courses/${lang}/${nextLesson.id}`}
-                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
-                      Next: {nextLesson.title} <ChevronRight className="w-4 h-4" />
+                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl transition-colors">
+                      Next: {nextLesson.title} <ChevronRight className="w-5 h-5" />
                     </Link>
                   )}
                 </div>
               </div>
             )}
 
-            <CommentSection lessonId={lessonId} />
+            <div className="mt-8">
+              <CommentSection lessonId={lessonId} />
+            </div>
           </div>
         )}
       </div>
