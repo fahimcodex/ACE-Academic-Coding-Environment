@@ -48,7 +48,7 @@ async function executeNative(code, lang) {
 }
 
 export default function ChallengePage() {
-  const { user, profile } = useAuth();
+  const { user, profile, setProfile } = useAuth();
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [code, setCode] = useState("");
@@ -114,6 +114,15 @@ export default function ChallengePage() {
     setRunning(true);
     setOutput("⏳ Validating on server...");
 
+    // Optimistic Update
+    const prevProfile = profile;
+    if (profile && challenge) {
+      setProfile({
+        ...profile,
+        xp: profile.xp + challenge.xpReward,
+      });
+    }
+
     try {
       const token = await user.getIdToken();
       const res = await fetch("/api/challenges/submit", {
@@ -132,12 +141,14 @@ export default function ChallengePage() {
 
       if (!res.ok) {
         setOutput(`❌ ${data.error ?? "Submission failed"}`);
+        setProfile(prevProfile); // Revert optimistic update
         return;
       }
 
       if (data.alreadyCompleted) {
         setCompleted(true);
         setOutput("✅ Challenge already completed for today.");
+        setProfile(prevProfile); // Revert optimistic update as no new XP gained
         return;
       }
 
@@ -147,11 +158,22 @@ export default function ChallengePage() {
             ? `❌ ${data.message}`
             : "❌ Incorrect output. Try again.",
         );
+        setProfile(prevProfile); // Revert optimistic update
         return;
       }
 
       setCompleted(true);
       setOutput("✅ Correct output! Challenge completed.");
+
+      // Update with exact server values
+      if (data.reward) {
+        setProfile({
+          ...profile,
+          xp: data.reward.newXp,
+          level: data.reward.newLevel || profile.level,
+        });
+      }
+
       setToastEvent({
         xp: data.reward?.xp ?? challenge.xpReward,
         reason: "Daily Challenge Complete!",
@@ -161,6 +183,7 @@ export default function ChallengePage() {
       });
     } catch (err) {
       setOutput("❌ " + err.message);
+      setProfile(prevProfile); // Revert optimistic update on catch
     } finally {
       setRunning(false);
     }
@@ -330,8 +353,12 @@ export default function ChallengePage() {
                     disabled={running}
                     className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
                   >
-                    <Trophy className="w-4 h-4" /> Submit Solution & Earn{" "}
-                    {challenge.xpReward} XP
+                    <Trophy className="w-4 h-4" />{" "}
+                    {!challenge.expectedOutput ||
+                    challenge.expectedOutput === "MANUAL_REVIEW_REQUIRED" ||
+                    challenge.expectedOutput === "FIXME"
+                      ? "Submit for Review (Not Auto-Gradable)"
+                      : `Submit Solution & Earn ${challenge.xpReward} XP`}
                   </button>
                 ) : (
                   <div className="flex items-center gap-2 glass rounded-xl p-4 border border-white/10 text-gray-400 text-sm">

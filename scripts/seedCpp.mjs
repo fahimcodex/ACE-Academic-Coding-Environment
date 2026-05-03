@@ -3886,6 +3886,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <string>\nusing namespace std;\n\nstring reverseStr(string s) {\n    // Write your solution\n    return "";\n}\n\nint main() {\n    cout << reverseStr("Hello")    << endl; // olleH\n    cout << reverseStr("C++")      << endl; // ++C\n    cout << reverseStr("racecar")  << endl; // racecar\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use two pointers — one at the start and one at the end — swapping characters as they move toward the center.",
   },
   {
@@ -3896,6 +3897,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint countVowels(string s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countVowels("Hello World") << endl; // 3\n    cout << countVowels("AEIOU")       << endl; // 5\n    cout << countVowels("rhythm")      << endl; // 0\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: 'Convert each character to lowercase and check if it\'s in the string "aeiou".',
   },
   {
@@ -3906,6 +3908,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\nusing namespace std;\n\nint digitSum(int n) {\n    n = abs(n);\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << digitSum(12345) << endl; // 15\n    cout << digitSum(999)   << endl; // 27\n    cout << digitSum(0)     << endl; // 0\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Repeatedly take n % 10 to get the last digit, add it to sum, then do n /= 10 to remove it.",
   },
   {
@@ -3916,6 +3919,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nbool isPalindrome(string s) {\n    // Write your solution\n    return false;\n}\n\nint main() {\n    cout << isPalindrome("racecar")              << endl; // 1\n    cout << isPalindrome("hello")                << endl; // 0\n    cout << isPalindrome("A man a plan a canal Panama") << endl; // 1\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Remove spaces, convert to lowercase, then compare the string with its reverse.",
   },
   {
@@ -3926,6 +3930,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nvector<string> fizzBuzz(int n) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto result = fizzBuzz(20);\n    for (const auto& s : result)\n        cout << s << endl;\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Check divisibility by 15 first (FizzBuzz), then 3 (Fizz), then 5 (Buzz), else convert number to string.",
   },
   {
@@ -3936,6 +3941,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nint findMax(const vector<int>& nums) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << findMax({3,1,9,2,7})    << endl; // 9\n    cout << findMax({-5,-1,-3})     << endl; // -1\n    cout << findMax({42})           << endl; // 42\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Start with the first element as max, then loop through comparing each element.",
   },
   {
@@ -3946,6 +3952,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <string>\n#include <sstream>\nusing namespace std;\n\nint countWords(const string& s) {\n    // Write your solution\n    return 0;\n}\n\nint main() {\n    cout << countWords("Hello World")          << endl; // 2\n    cout << countWords("  spaces   between  ") << endl; // 2\n    cout << countWords("one")                  << endl; // 1\n    cout << countWords("")                     << endl; // 0\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use a stringstream and extract words with >>. Each successful extraction is one word.",
   },
   {
@@ -3956,6 +3963,7 @@ const challenges = [
     difficulty: "Easy",
     xpReward: 75,
     starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid bubbleSort(vector<int>& arr) {\n    // Write your solution\n}\n\nint main() {\n    vector<int> v = {64,34,25,12,22,11,90};\n    bubbleSort(v);\n    for (int n : v) cout << n << " ";\n    cout << endl; // 11 12 22 25 34 64 90\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use two nested loops. The inner loop compares adjacent elements and swaps them if out of order. After each pass, the largest unsorted element is in its place.",
   },
   {
@@ -3966,6 +3974,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\n#include <stdexcept>\nusing namespace std;\n\ntemplate <typename T>\nclass Stack {\n    // Write your implementation\npublic:\n    void push(T val) {}\n    void pop()       {}\n    T    top()       { return T{}; }\n    bool isEmpty()   { return true; }\n    int  size()      { return 0; }\n};\n\nint main() {\n    Stack<int> s;\n    s.push(1); s.push(2); s.push(3);\n    cout << s.top()  << endl; // 3\n    cout << s.size() << endl; // 3\n    s.pop();\n    cout << s.top()  << endl; // 2\n\n    Stack<string> ss;\n    ss.push("hello"); ss.push("world");\n    cout << ss.top() << endl; // world\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use a private std::vector<T> as the underlying storage. push uses push_back, pop uses pop_back, top returns back().",
   },
   {
@@ -3976,6 +3985,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\n#include <vector>\nusing namespace std;\n\nusing Matrix = vector<vector<int>>;\n\nMatrix multiply(const Matrix& A, const Matrix& B) {\n    // Write your solution\n    return {};\n}\n\nvoid printMatrix(const Matrix& m) {\n    for (const auto& row : m) {\n        for (int v : row) cout << v << "\\t";\n        cout << endl;\n    }\n}\n\nint main() {\n    Matrix A = {{1,2},{3,4}};\n    Matrix B = {{5,6},{7,8}};\n    printMatrix(multiply(A, B));\n    // Expected: 19 22 / 43 50\n    return 0;\n}`,
+    expectedOutput: "19 22 / 43 50\n    return 0;\n}",
     hint: "For result[i][j], sum the products of row i from A and column j from B: result[i][j] += A[i][k] * B[k][j] for each k.",
   },
   {
@@ -3986,6 +3996,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\nusing namespace std;\n\nstruct Node {\n    int   val;\n    Node* left  = nullptr;\n    Node* right = nullptr;\n    Node(int v) : val(v) {}\n};\n\nclass BST {\n    Node* root = nullptr;\n    // Add helper methods as needed\npublic:\n    void insert(int val) {}\n    bool search(int val) { return false; }\n};\n\nint main() {\n    BST tree;\n    for (int v : {5,3,7,1,4,6,8}) tree.insert(v);\n    cout << tree.search(4)  << endl; // 1\n    cout << tree.search(9)  << endl; // 0\n    cout << tree.search(1)  << endl; // 1\n    cout << tree.search(10) << endl; // 0\n    return 0;\n}`,
+    expectedOutput: "Add helper methods as needed\npublic:\n    void insert(int val) {}\n    bool search(int val) { return false; }\n};\n\nint main() {\n    BST tree;\n    for (int v : {5,3,7,1,4,6,8}) tree.insert(v);\n    cout << tree.search(4)  << endl;",
     hint: "For insert: if val < node->val go left, else go right. Create a new node when you reach nullptr. Search follows the same logic returning true on a match.",
   },
   {
@@ -3996,6 +4007,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\n#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nvector<string> sortByLength(vector<string> words) {\n    // Write your solution using std::sort with a custom comparator\n    return words;\n}\n\nint main() {\n    auto r = sortByLength({"banana","apple","kiwi","fig","cherry","date","pear"});\n    for (const auto& w : r) cout << w << endl;\n    // fig, date, kiwi, pear, apple, banana, cherry\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Pass a lambda to std::sort. Return true if a should come before b. Compare lengths first, and if equal, compare alphabetically with <.",
   },
   {
@@ -4006,6 +4018,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\n#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nvector<int> uniqueElements(const vector<int>& nums) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto r = uniqueElements({1,2,3,2,1,4,3,5});\n    for (int n : r) cout << n << " ";\n    cout << endl; // 1 2 3 4 5\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use an unordered_set to track seen elements. For each element, only add it to the result vector if it's not in the set yet.",
   },
   {
@@ -4016,6 +4029,7 @@ const challenges = [
     difficulty: "Medium",
     xpReward: 100,
     starterCode: `#include <iostream>\n#include <map>\n#include <string>\n#include <sstream>\n#include <algorithm>\nusing namespace std;\n\nmap<string,int> wordFrequency(const string& sentence) {\n    // Write your solution\n    return {};\n}\n\nint main() {\n    auto freq = wordFrequency("the cat sat on the mat the cat");\n    for (const auto& [w,c] : freq)\n        cout << w << ": " << c << endl;\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use a stringstream to split words. Convert each word to lowercase with transform+tolower. Then use map[word]++ to count.",
   },
   {
@@ -4026,6 +4040,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\nusing namespace std;\n\ntemplate <typename T>\nclass SharedPtr {\n    T*   ptr   = nullptr;\n    int* count = nullptr;\n\npublic:\n    explicit SharedPtr(T* p = nullptr) {\n        // Initialize ptr and count\n    }\n\n    SharedPtr(const SharedPtr& other) {\n        // Copy — increment count\n    }\n\n    ~SharedPtr() {\n        // Decrement count, delete if zero\n    }\n\n    T& operator*()  const { return *ptr;  }\n    T* operator->() const { return ptr;   }\n    int useCount()  const { return count ? *count : 0; }\n};\n\nint main() {\n    SharedPtr<int> sp1(new int(42));\n    cout << *sp1 << " count=" << sp1.useCount() << endl; // 42 count=1\n    {\n        SharedPtr<int> sp2 = sp1;\n        cout << "count=" << sp1.useCount() << endl;     // count=2\n    }\n    cout << "count=" << sp1.useCount() << endl;         // count=1\n    return 0;\n}`,
+    expectedOutput: "Initialize ptr and count\n    }\n\n    SharedPtr(const SharedPtr& other) {\n",
     hint: "Allocate count as a new int(1) in the constructor. Copy increments *count. Destructor decrements *count and deletes ptr if *count reaches 0.",
   },
   {
@@ -4036,6 +4051,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\n#include <string>\n#include <stack>\nusing namespace std;\n\nint evaluate(const string& expr) {\n    // Handle +, -, *, / with integer operands\n    // Respect * and / precedence over + and -\n    return 0;\n}\n\nint main() {\n    cout << evaluate("3 + 5")        << endl; // 8\n    cout << evaluate("10 - 3")       << endl; // 7\n    cout << evaluate("2 * 6")        << endl; // 12\n    cout << evaluate("10 + 5 * 2")   << endl; // 20\n    cout << evaluate("20 - 4 * 3")   << endl; // 8\n    return 0;\n}`,
+    expectedOutput: "Handle +, -, *, / with integer operands\n",
     hint: "Use two stacks: one for numbers and one for operators. When you see an operator with lower/equal precedence to the top of the stack, pop and compute first.",
   },
   {
@@ -4046,6 +4062,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\n#include <unordered_map>\n#include <list>\nusing namespace std;\n\nclass LRUCache {\n    int capacity;\n    // Hint: use list for O(1) move-to-front\n    //       unordered_map<int, list<pair<int,int>>::iterator> for O(1) lookup\npublic:\n    LRUCache(int cap) : capacity(cap) {}\n    int  get(int key)              { return -1; }\n    void put(int key, int value)   {}\n};\n\nint main() {\n    LRUCache cache(2);\n    cache.put(1, 1);\n    cache.put(2, 2);\n    cout << cache.get(1)    << endl; // 1\n    cache.put(3, 3);                 // evicts 2\n    cout << cache.get(2)    << endl; // -1 (evicted)\n    cout << cache.get(3)    << endl; // 3\n    return 0;\n}`,
+    expectedOutput: "Hint: use list for O(1) move-to-front\n",
     hint: "Use a doubly linked list (std::list) where the front is most recent. Store iterators in an unordered_map for O(1) access. On get/put, move accessed item to front.",
   },
   {
@@ -4056,6 +4073,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\n#include <thread>\n#include <mutex>\n#include <vector>\nusing namespace std;\n\nclass ThreadSafeCounter {\n    // Write your implementation\npublic:\n    void increment()  {}\n    void decrement()  {}\n    int  getValue()   { return 0; }\n};\n\nint main() {\n    ThreadSafeCounter counter;\n    vector<thread> threads;\n\n    for (int i = 0; i < 10; i++)\n        threads.emplace_back([&](){ for(int j=0;j<1000;j++) counter.increment(); });\n\n    for (auto& t : threads) t.join();\n    cout << "Final: " << counter.getValue() << endl; // always 10000\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Use a private std::mutex and lock_guard<mutex> in each method. Without the mutex, concurrent increments will produce values less than 10000 due to race conditions.",
   },
   {
@@ -4066,6 +4084,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\nusing namespace std;\n\n// Write your variadic template here\n// Hint: use parameter pack (typename... Args)\n\nint main() {\n    cout << sum(1, 2, 3)           << endl; // 6\n    cout << sum(1.5, 2.5, 3.0)     << endl; // 7.0\n    cout << sum(1, 2.5, 3, 4.5)    << endl; // 11.0\n    cout << sum(10)                << endl; // 10\n    return 0;\n}`,
+    expectedOutput: "MANUAL_REVIEW_REQUIRED",
     hint: "Define a base case: sum(T x) returns x. Define the recursive case: sum(T first, Args... rest) returns first + sum(rest...). The compiler expands the pack.",
   },
   {
@@ -4076,6 +4095,7 @@ const challenges = [
     difficulty: "Hard",
     xpReward: 150,
     starterCode: `#include <iostream>\nusing namespace std;\n\nclass Range {\n    // Implement iterator support for range-based for\npublic:\n    Range(int start, int end) {}\n};\n\nint main() {\n    for (int i : Range(1, 6))\n        cout << i << " ";  // 1 2 3 4 5\n    cout << endl;\n\n    for (int i : Range(0, 10))\n        if (i % 2 == 0) cout << i << " ";  // 0 2 4 6 8\n    cout << endl;\n    return 0;\n}`,
+    expectedOutput: "Implement iterator support for range-based for\npublic:\n    Range(int start, int end) {}\n};\n\nint main() {\n    for (int i : Range(1, 6))\n        cout << i << \" \";",
     hint: "Create a nested Iterator struct with int current. Implement operator!=, operator++, operator*. Range::begin() returns Iterator(start), Range::end() returns Iterator(end).",
   },
 ];

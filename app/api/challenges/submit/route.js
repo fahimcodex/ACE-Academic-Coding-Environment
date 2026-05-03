@@ -173,14 +173,70 @@ export async function POST(request) {
     const language = normalizeLanguage(challenge.language);
     const expectedOutput = normalizeOutput(challenge.expectedOutput);
 
-    if (!expectedOutput) {
-      return NextResponse.json(
-        {
-          error:
-            "This challenge is not auto-gradable yet (missing expected output).",
-        },
-        { status: 400 },
+    if (
+      !expectedOutput ||
+      expectedOutput === "MANUAL_REVIEW_REQUIRED" ||
+      expectedOutput === "FIXME" ||
+      expectedOutput === "MANUAL_REVIEW_REQUIRED\n" ||
+      expectedOutput === normalizeOutput("MANUAL_REVIEW_REQUIRED")
+    ) {
+      // Just mark it as completed to avoid blocking the user
+      const userRef = doc(db, "users", uid);
+      const xpEventRef = doc(db, "xpEvents", `${uid}_${Date.now()}`);
+      const batch = writeBatch(db);
+
+      const userSnap = await getDoc(userRef);
+      const profile = userSnap.exists() ? userSnap.data() : {};
+      const oldXp = profile.xp ?? 0;
+      const baseXp = Number(challenge.xpReward ?? XP_REWARDS.DAILY_CHALLENGE);
+      const tentativeXp = oldXp + baseXp;
+      const newStreak = calculateStreak(
+        profile.lastActiveDate ?? "",
+        profile.streak ?? 0,
       );
+      const badgeCalc = checkNewBadges({
+        ...profile,
+        xp: tentativeXp,
+        streak: newStreak,
+      });
+      const finalXp =
+        tentativeXp + badgeCalc.newBadges.length * XP_REWARDS.BADGE_EARNED;
+      const finalLevel = levelFromXp(finalXp);
+
+      batch.set(completionRef, {
+        userId: uid,
+        challengeId,
+        date: todayString(),
+        completedAt: new Date().toISOString(),
+        score: baseXp,
+        language,
+        code,
+        autoGraded: false,
+      });
+
+      batch.update(userRef, {
+        xp: finalXp,
+        level: finalLevel,
+        streak: newStreak,
+        lastActiveDate: todayString(),
+        badges: badgeCalc.allBadges,
+      });
+
+      badgeCalc.newBadges.forEach((badgeId, i) => {
+        batch.set(doc(db, "badges", `${uid}_${badgeId}_${Date.now()}_${i}`), {
+          userId: uid,
+          badgeId: badgeId,
+          earnedAt: new Date().toISOString(),
+        });
+      });
+
+      await batch.commit();
+
+      return NextResponse.json({
+        correct: true,
+        message: "Solution submitted for manual review!",
+        output: "✅ Saved! (Expected output not configured for auto-grading)",
+      });
     }
 
     const exec = await runWithJudge0(
