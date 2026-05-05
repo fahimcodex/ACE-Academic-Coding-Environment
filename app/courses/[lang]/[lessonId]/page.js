@@ -3,7 +3,15 @@
 import { useEffect, useState, useCallback } from "react";
 import CinematicPlayer from "@/components/CinematicPlayer";
 import { useParams, useRouter } from "next/navigation";
-import { doc, getDoc, collection, query, where, limit, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  limit,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
@@ -48,7 +56,12 @@ async function executeC(code, lang) {
 }
 
 const MONACO_LANG = { python: "python", c: "c", cpp: "cpp", linux: "shell" };
-const FILE_NAME = { python: "main.py", c: "main.c", cpp: "main.cpp", linux: "script.sh" };
+const FILE_NAME = {
+  python: "main.py",
+  c: "main.c",
+  cpp: "main.cpp",
+  linux: "script.sh",
+};
 
 export default function LessonPage() {
   const { lang, lessonId } = useParams();
@@ -100,11 +113,14 @@ export default function LessonPage() {
         const nextQ = query(
           collection(db, "courses", lang, "lessons"),
           where("order", "==", data.order + 1),
-          limit(1)
+          limit(1),
         );
         const nextSnap = await getDocs(nextQ);
         if (!nextSnap.empty) {
-          setNextLesson({ id: nextSnap.docs[0].id, ...nextSnap.docs[0].data() });
+          setNextLesson({
+            id: nextSnap.docs[0].id,
+            ...nextSnap.docs[0].data(),
+          });
         }
       }
       setLoading(false);
@@ -117,8 +133,12 @@ export default function LessonPage() {
       if (!lesson || !user) return;
       if (lesson.order === 1) return; // Lesson 1 is always open
 
-      const progSnap = await getDoc(doc(db, "users", user.uid, "courseProgress", lang));
-      const highest = progSnap.exists() ? progSnap.data().highestCompletedOrder || 0 : 0;
+      const progSnap = await getDoc(
+        doc(db, "users", user.uid, "courseProgress", lang),
+      );
+      const highest = progSnap.exists()
+        ? progSnap.data().highestCompletedOrder || 0
+        : 0;
 
       if (lesson.order > highest + 1) {
         alert("Lesson locked! Complete the previous quiz to unlock.");
@@ -173,7 +193,12 @@ export default function LessonPage() {
     const allCorrect = lesson.quiz.every((q, i) => answers[i] === q.correct);
 
     if (allCorrect && user) {
-      const result = await completeLesson(user.uid, lesson.id, lang, lesson.xpReward);
+      const result = await completeLesson(
+        user.uid,
+        lesson.id,
+        lang,
+        lesson.xpReward,
+      );
       await updateLessonProgress(user.uid, lang, lesson.order);
 
       // Phase Shift: Go to V2 Outro if it exists, otherwise skip to results
@@ -411,13 +436,6 @@ export default function LessonPage() {
                             : "text-green-400"
                         }`}
                       >
-                      <pre
-                        className={`p-4 text-sm font-mono whitespace-pre-wrap overflow-auto h-[400px] ${
-                          output.startsWith("❌")
-                            ? "text-red-400"
-                            : "text-green-400"
-                        }`}
-                      >
                         {output || "Click ▶ Run to execute your code."}
                       </pre>
                     </div>
@@ -492,7 +510,9 @@ export default function LessonPage() {
                 ) : (
                   <div className="aspect-video w-full bg-blue-900/20 rounded-lg mb-6 flex flex-col items-center justify-center border border-blue-500/20">
                     <Brain className="w-16 h-16 text-blue-500/50 mb-4" />
-                    <p className="text-gray-400">Classified text briefing only.</p>
+                    <p className="text-gray-400">
+                      Classified text briefing only.
+                    </p>
                   </div>
                 )}
 
@@ -545,8 +565,10 @@ export default function LessonPage() {
                             else if (selected)
                               cls =
                                 "border-red-500 bg-red-500/10 cursor-default";
-                            else cls = "border-white/5 opacity-40 cursor-default";
-                          } else if (selected) cls = "border-blue-500 bg-blue-500/10";
+                            else
+                              cls = "border-white/5 opacity-40 cursor-default";
+                          } else if (selected)
+                            cls = "border-blue-500 bg-blue-500/10";
 
                           return (
                             <button
@@ -588,7 +610,9 @@ export default function LessonPage() {
                 <h2 className="text-3xl font-bold text-green-400 mb-2">
                   Mission Accomplished
                 </h2>
-                <p className="text-gray-400 mb-6">Review the debriefing video.</p>
+                <p className="text-gray-400 mb-6">
+                  Review the debriefing video.
+                </p>
 
                 <CinematicPlayer src={lesson.videoOutro} />
 
@@ -638,7 +662,8 @@ export default function LessonPage() {
                       href={`/courses/${lang}/${nextLesson.id}`}
                       className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl transition-colors"
                     >
-                      Next: {nextLesson.title} <ChevronRight className="w-5 h-5" />
+                      Next: {nextLesson.title}{" "}
+                      <ChevronRight className="w-5 h-5" />
                     </Link>
                   )}
                 </div>
