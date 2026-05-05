@@ -147,11 +147,11 @@ export default function NotificationBell() {
                   <div
                     key={notif.id}
                     className={`flex items-start gap-3 px-4 py-3 transition-colors rounded-lg hover:bg-white/5 ${
-                      !notif.read ? "bg-white/[0.03]" : ""
+                      !notif.read ? "bg-white/3" : ""
                     }`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${style.color}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${style.color}`}
                     >
                       <Icon className="w-4 h-4" />
                     </div>
