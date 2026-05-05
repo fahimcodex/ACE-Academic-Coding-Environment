@@ -121,7 +121,7 @@ export default function NotificationBell() {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 mt-2 w-80 glass rounded-2xl shadow-2xl border border-white/10 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-3 w-80 dropdown-panel dropdown-animate rounded-2xl border border-white/10 z-50 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <p className="font-semibold text-sm">Notifications</p>
@@ -146,7 +146,7 @@ export default function NotificationBell() {
                 return (
                   <div
                     key={notif.id}
-                    className={`flex items-start gap-3 px-4 py-3 transition-colors ${
+                    className={`flex items-start gap-3 px-4 py-3 transition-colors rounded-lg hover:bg-white/5 ${
                       !notif.read ? "bg-white/[0.03]" : ""
                     }`}
                   >

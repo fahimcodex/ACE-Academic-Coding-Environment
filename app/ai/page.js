@@ -142,17 +142,17 @@ const HOW_IT_WORKS = [
 function Select({ value, onChange, options, label }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="relative">
+    <div className="relative overflow-visible">
       {label && <p className="text-xs text-gray-400 mb-1">{label}</p>}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-between gap-2 glass border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors w-full min-w-32.5"
+        className="flex items-center justify-between gap-2 bg-gray-900/70 border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 hover:text-white hover:border-white/20 transition-all duration-150 w-full min-w-32.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
       >
         <span className="capitalize truncate">{value}</span>
         <ChevronDown className="w-3 h-3 shrink-0" />
       </button>
       {open && (
-        <div className="absolute top-full mt-1 left-0 glass rounded-lg border border-white/10 py-1 z-20 w-full min-w-32.5 max-h-48 overflow-y-auto">
+        <div className="absolute top-full mt-2 left-0 dropdown-panel dropdown-animate rounded-xl border border-white/10 py-2 z-50 w-full min-w-32.5 max-h-52 overflow-y-auto">
           {options.map((opt) => (
             <button
               key={opt}
@@ -160,8 +160,8 @@ function Select({ value, onChange, options, label }) {
                 onChange(opt);
                 setOpen(false);
               }}
-              className={`w-full text-left px-3 py-2 text-sm capitalize transition-colors hover:bg-white/5 ${
-                value === opt ? "text-blue-400" : "text-gray-300"
+              className={`w-full text-left px-3 py-2 text-sm capitalize text-gray-200 dropdown-item ${
+                value === opt ? "dropdown-item-active" : ""
               }`}
             >
               {opt}

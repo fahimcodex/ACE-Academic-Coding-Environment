@@ -100,8 +100,8 @@ export default function Navbar() {
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-52 glass rounded-xl shadow-xl border border-white/10 py-2 z-50">
-                      <div className="px-4 py-2 border-b border-white/10">
+                    <div className="absolute right-0 mt-3 w-56 dropdown-panel dropdown-animate rounded-2xl border border-white/10 p-2 z-50">
+                      <div className="px-3 py-2 border-b border-white/10">
                         <p className="text-sm font-semibold truncate">
                           {user.displayName}
                         </p>
@@ -112,28 +112,28 @@ export default function Navbar() {
                       <Link
                         href="/dashboard"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-200 dropdown-item"
                       >
                         <LayoutDashboard className="w-4 h-4" /> Dashboard
                       </Link>
                       <Link
                         href={`/profile/${user.uid}`}
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-200 dropdown-item"
                       >
                         <User className="w-4 h-4" /> My Profile
                       </Link>
                       <Link
                         href="/leaderboard"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-200 dropdown-item"
                       >
                         <Trophy className="w-4 h-4" /> Leaderboard
                       </Link>
                       <Link
                         href="/ai"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-pink-400 hover:text-pink-300 hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-2.5 px-3 py-2 text-sm text-pink-300 dropdown-item"
                       >
                         <Brain className="w-4 h-4" /> AI Hub
                       </Link>
@@ -142,7 +142,7 @@ export default function Navbar() {
                           logout();
                           setUserMenuOpen(false);
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-white/5 transition-colors"
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-300 dropdown-item"
                       >
                         <LogOut className="w-4 h-4" /> Sign Out
                       </button>
