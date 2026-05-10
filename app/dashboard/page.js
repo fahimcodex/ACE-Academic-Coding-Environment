@@ -316,7 +316,7 @@ export default function DashboardPage() {
               </span>
             </h2>
             <Link
-              href="/profile"
+              href={`/profile/${user.uid}`}
               className="text-sm text-blue-400 hover:text-blue-300"
             >
               View all →
