@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import {
   Play,
@@ -8,7 +8,6 @@ import {
   Lightbulb,
   CheckCircle,
   XCircle,
-  RotateCcw,
 } from "lucide-react";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
@@ -32,7 +31,7 @@ export default function MissionGame({
   missionData,
   language,
   onComplete,
-  onSkip,
+  onRedirectToTheory,
 }) {
   const { user, profile, updateProfile } = useAuth();
   const [code, setCode] = useState(missionData?.starterCode || "");
@@ -41,6 +40,8 @@ export default function MissionGame({
   const [result, setResult] = useState(null);
   const [isHintOpen, setIsHintOpen] = useState(false);
   const [hasCompleted, setHasCompleted] = useState(false);
+  const [showingRedirect, setShowingRedirect] = useState(false);
+  const redirectTimeoutRef = useRef(null);
 
   const missionLanguage = (
     language ||
@@ -53,7 +54,28 @@ export default function MissionGame({
     return (missionData?.expectedOutput || "").trim();
   }, [missionData?.expectedOutput]);
 
-  const canSkip = attempts >= 3 && !hasCompleted;
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleFailedAttempt = () => {
+    const nextAttempts = attempts + 1;
+    setAttempts(nextAttempts);
+
+    if (nextAttempts >= 3 && !showingRedirect) {
+      setShowingRedirect(true);
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+      redirectTimeoutRef.current = setTimeout(() => {
+        onRedirectToTheory?.();
+      }, 2000);
+    }
+  };
 
   const runCode = async () => {
     if (isRunning || hasCompleted) {
@@ -78,7 +100,7 @@ export default function MissionGame({
     const actualOutput = (execution.output || "").trim();
 
     if (execution.error) {
-      setAttempts((count) => count + 1);
+      handleFailedAttempt();
       setResult({
         status: "error",
         message: execution.error,
@@ -134,7 +156,7 @@ export default function MissionGame({
         onComplete?.(missionData?.xpBonus || 0);
       }
     } else {
-      setAttempts((count) => count + 1);
+      handleFailedAttempt();
       setResult({
         status: "failure",
         actualOutput,
@@ -189,7 +211,7 @@ export default function MissionGame({
           <button
             type="button"
             onClick={runCode}
-            disabled={isRunning || hasCompleted}
+            disabled={isRunning || hasCompleted || showingRedirect}
             className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isRunning ? (
@@ -204,17 +226,6 @@ export default function MissionGame({
               </>
             )}
           </button>
-
-          {canSkip && (
-            <button
-              type="button"
-              onClick={onSkip}
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/10"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Skip mission
-            </button>
-          )}
 
           <span className="text-xs uppercase tracking-wide text-white/60">
             Attempts: {attempts}
@@ -282,6 +293,13 @@ export default function MissionGame({
             <pre className="mt-2 whitespace-pre-wrap rounded-lg bg-black/30 p-2 text-xs text-red-50">
               {result.message}
             </pre>
+          </div>
+        )}
+
+        {showingRedirect && (
+          <div className="mt-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-100">
+            Too many attempts. Reviewing the theory will help — redirecting you
+            now...
           </div>
         )}
       </div>

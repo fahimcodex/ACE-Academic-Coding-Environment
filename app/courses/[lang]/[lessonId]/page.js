@@ -660,13 +660,7 @@ export default function LessonPage() {
                       setMissionPhase("completed");
                     }
                   }}
-                  onSkip={() => {
-                    if (lesson.videoOutro) {
-                      setMissionPhase("outro");
-                    } else {
-                      setMissionPhase("completed");
-                    }
-                  }}
+                  onRedirectToTheory={() => setTab("theory")}
                 />
               </div>
             )}
