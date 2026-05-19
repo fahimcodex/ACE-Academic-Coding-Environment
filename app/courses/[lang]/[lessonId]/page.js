@@ -366,7 +366,7 @@ export default function LessonPage() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* Editor */}
                     <div className="glass rounded-xl overflow-hidden border border-white/10">
-                      <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/10">
+                      <div className="flex items-center justify-between px-4 py-2 bg-white/2 border-b border-white/10">
                         <span className="text-xs text-gray-400 font-mono">
                           {FILE_NAME[lesson.language]}
                         </span>
@@ -449,7 +449,7 @@ export default function LessonPage() {
 
                     {/* Output */}
                     <div className="glass rounded-xl overflow-hidden border border-white/10">
-                      <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/10">
+                      <div className="flex items-center justify-between px-4 py-2 bg-white/2 border-b border-white/10">
                         <span className="text-xs text-gray-400">Output</span>
                         {execMeta && (
                           <span className="text-xs text-gray-500">
@@ -459,7 +459,7 @@ export default function LessonPage() {
                         )}
                       </div>
                       <pre
-                        className={`p-4 text-sm font-mono whitespace-pre-wrap overflow-auto h-[400px] ${
+                        className={`p-4 text-sm font-mono whitespace-pre-wrap overflow-auto h-100 ${
                           output.startsWith("❌")
                             ? "text-red-400"
                             : "text-green-400"
@@ -496,7 +496,7 @@ export default function LessonPage() {
                 {/* AI panel (slides in from right) */}
                 {aiPanel !== "none" && (
                   <div
-                    className="w-80 flex-shrink-0 glass rounded-xl border border-white/10 overflow-hidden flex flex-col"
+                    className="w-80 shrink-0 glass rounded-xl border border-white/10 overflow-hidden flex flex-col"
                     style={{ minHeight: 480 }}
                   >
                     {aiPanel === "explain" && (
@@ -610,10 +610,10 @@ export default function LessonPage() {
                             >
                               <span>{opt}</span>
                               {submitted && isCorrect && (
-                                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                                <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
                               )}
                               {submitted && selected && !isCorrect && (
-                                <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                                <XCircle className="w-4 h-4 text-red-400 shrink-0" />
                               )}
                             </button>
                           );
