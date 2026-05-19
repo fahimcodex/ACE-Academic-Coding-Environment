@@ -10,9 +10,13 @@ import {
   XCircle,
   RotateCcw,
 } from "lucide-react";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { runPython } from "@/lib/executors/python";
 import { runWithJudge0 } from "@/lib/executors/judge0";
+import { useAuth } from "@/lib/auth";
+import { awardXP } from "@/lib/xpService";
+import { db } from "@/lib/firebase";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -30,6 +34,7 @@ export default function MissionGame({
   onComplete,
   onSkip,
 }) {
+  const { user, profile, updateProfile } = useAuth();
   const [code, setCode] = useState(missionData?.starterCode || "");
   const [isRunning, setIsRunning] = useState(false);
   const [attempts, setAttempts] = useState(0);
@@ -86,7 +91,48 @@ export default function MissionGame({
     if (actualOutput === expectedOutput) {
       setHasCompleted(true);
       setResult({ status: "success", actualOutput });
-      onComplete?.(missionData?.xpBonus || 0);
+      const completeMission = async () => {
+        try {
+          await awardXP(user.uid, missionData.xpBonus, "mission_complete");
+          const completionId = missionData?.id || missionData?.concept;
+          if (completionId) {
+            await setDoc(
+              doc(db, "users", user.uid, "missionCompletions", completionId),
+              {
+                completedAt: serverTimestamp(),
+                language: missionData?.language,
+                xpEarned: missionData?.xpBonus,
+              },
+            );
+          }
+
+          const nextProfile = {
+            missionsCompleted: (profile?.missionsCompleted ?? 0) + 1,
+          };
+
+          if (missionLanguage === "python") {
+            nextProfile.pythonMissionsCompleted =
+              (profile?.pythonMissionsCompleted ?? 0) + 1;
+          } else if (missionLanguage === "c") {
+            nextProfile.cMissionsCompleted =
+              (profile?.cMissionsCompleted ?? 0) + 1;
+          } else if (missionLanguage === "cpp") {
+            nextProfile.cppMissionsCompleted =
+              (profile?.cppMissionsCompleted ?? 0) + 1;
+          }
+
+          await updateProfile?.(nextProfile);
+          onComplete?.(missionData?.xpBonus || 0);
+        } catch (error) {
+          onComplete?.(missionData?.xpBonus || 0);
+        }
+      };
+
+      if (user) {
+        await completeMission();
+      } else {
+        onComplete?.(missionData?.xpBonus || 0);
+      }
     } else {
       setAttempts((count) => count + 1);
       setResult({
