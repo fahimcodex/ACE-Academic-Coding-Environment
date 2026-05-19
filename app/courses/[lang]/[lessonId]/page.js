@@ -20,6 +20,7 @@ import CommentSection from "@/components/CommentSection";
 import AiExplainPanel from "@/components/AiExplainPanel";
 import AiDebugPanel from "@/components/AiDebugPanel";
 import XpToast from "@/components/XpToast";
+import MissionGame from "@/components/MissionGame";
 import dynamic from "next/dynamic";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -81,6 +82,7 @@ export default function LessonPage() {
   const [toastEvent, setToastEvent] = useState(null);
   const [aiPanel, setAiPanel] = useState("none"); // "none" | "explain" | "debug"
   const [missionPhase, setMissionPhase] = useState("intro"); // "intro" | "task" | "outro" | "completed"
+  const [missionData, setMissionData] = useState(null);
   const [videoLocked, setVideoLocked] = useState(false);
 
   // This triggers a timer whenever a video phase starts
@@ -104,6 +106,27 @@ export default function LessonPage() {
         const data = { id: snap.id, ...snap.data() };
         setLesson(data);
         setCode(data.starterCode ?? "");
+        // Load mission data if this lesson has one
+        if (data.missionId) {
+          try {
+            const missionSnap = await getDoc(
+              doc(
+                db,
+                "courses",
+                lang,
+                "lessons",
+                lessonId,
+                "missions",
+                data.missionId,
+              ),
+            );
+            if (missionSnap.exists()) {
+              setMissionData({ id: missionSnap.id, ...missionSnap.data() });
+            }
+          } catch (e) {
+            console.warn("No mission data found for this lesson");
+          }
+        }
         if (data.language === "python")
           setOutput("⏳ Python runtime loads on first Run (~5s).");
         else if (data.language !== "linux")
@@ -202,7 +225,9 @@ export default function LessonPage() {
       await updateLessonProgress(user.uid, lang, lesson.order);
 
       // Phase Shift: Go to V2 Outro if it exists, otherwise skip to results
-      if (lesson.videoOutro) {
+      if (missionData) {
+        setMissionPhase("mission-game");
+      } else if (lesson.videoOutro) {
         setMissionPhase("outro");
       } else {
         setMissionPhase("completed");
@@ -601,6 +626,44 @@ export default function LessonPage() {
                 >
                   Submit Telemetry
                 </button>
+              </div>
+            )}
+
+            {/* 🎮 CODEQUEST MISSION */}
+            {missionPhase === "mission-game" && missionData && (
+              <div className="animate-in slide-in-from-right duration-300">
+                <div className="mb-4 text-center">
+                  <h2 className="text-2xl font-bold text-purple-400">
+                    CodeQuest Mission
+                  </h2>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Apply what you just learned
+                  </p>
+                </div>
+                <MissionGame
+                  missionData={missionData}
+                  language={lang}
+                  onComplete={(xpEarned) => {
+                    setToastEvent({
+                      xp: xpEarned,
+                      reason: "Mission Complete!",
+                      leveledUp: false,
+                      newBadges: [],
+                    });
+                    if (lesson.videoOutro) {
+                      setMissionPhase("outro");
+                    } else {
+                      setMissionPhase("completed");
+                    }
+                  }}
+                  onSkip={() => {
+                    if (lesson.videoOutro) {
+                      setMissionPhase("outro");
+                    } else {
+                      setMissionPhase("completed");
+                    }
+                  }}
+                />
               </div>
             )}
 
