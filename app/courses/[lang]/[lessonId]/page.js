@@ -91,12 +91,16 @@ export default function LessonPage() {
       (missionPhase === "intro" && lesson?.videoIntro) ||
       (missionPhase === "outro" && lesson?.videoOutro)
     ) {
-      setVideoLocked(true);
+      const lockTimer = setTimeout(() => setVideoLocked(true), 0);
       // Locks the button for 10 seconds (adjust this number as needed!)
       const timer = setTimeout(() => setVideoLocked(false), 10000);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(lockTimer);
+        clearTimeout(timer);
+      };
     }
-    setVideoLocked(false);
+    const unlockTimer = setTimeout(() => setVideoLocked(false), 0);
+    return () => clearTimeout(unlockTimer);
   }, [missionPhase, lesson]);
 
   useEffect(() => {
