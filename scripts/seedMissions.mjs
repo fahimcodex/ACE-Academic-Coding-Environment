@@ -691,6 +691,399 @@ const missions = [
     hint: "class Weapon { public: string name; int damage; };",
     xpBonus: 50,
   },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-04",
+    missionId: "cpp04-mission",
+    concept: "Loops",
+    storyTitle: "The Enchanted Mill",
+    storyText: "Count each turn of the mill to keep the rhythm steady.",
+    language: "cpp",
+    challenge: "Use a for loop to print numbers 1 to 5, one per line.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    // Loop 1 to 5\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    for(int i=1; i<=5; i++) cout << i << endl;\n    return 0;\n}",
+    expectedOutput: "1\n2\n3\n4\n5",
+    hint: "for(int i=1; i<=5; i++) cout << i << endl;",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-05",
+    missionId: "cpp05-mission",
+    concept: "Functions",
+    storyTitle: "The Wizard's Workshop",
+    storyText: "A simple spell must be reusable at any time.",
+    language: "cpp",
+    challenge: "Define int square(int n) returning n*n. Call with 6 and print.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\n// Define square\nint main() {\n    // Call and print\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nint square(int n) { return n*n; }\nint main() { cout << square(6); return 0; }",
+    expectedOutput: "36",
+    hint: "int square(int n) { return n * n; }",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-06",
+    missionId: "cpp06-mission",
+    concept: "Arrays & Strings",
+    storyTitle: "The Armoury Roster",
+    storyText: "Tally the gear list before the patrol departs.",
+    language: "cpp",
+    challenge: "Create vector<int> scores = {10, 20, 30}. Print the sum.",
+    starterCode:
+      "#include <iostream>\n#include <vector>\nusing namespace std;\nint main() {\n    vector<int> scores = {10, 20, 30};\n    // Print sum\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\n#include <vector>\nusing namespace std;\nint main() {\n    vector<int> scores = {10,20,30};\n    int sum=0;\n    for(int s: scores) sum+=s;\n    cout << sum;\n    return 0;\n}",
+    expectedOutput: "60",
+    hint: "for(int s : scores) sum += s;",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-07",
+    missionId: "cpp07-mission",
+    concept: "Pointers & References",
+    storyTitle: "The Memory Maze",
+    storyText: "A single change in the maze must echo through its source.",
+    language: "cpp",
+    challenge:
+      "Declare int x = 10. Create a reference int& ref = x. Modify ref to 99 and print x.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    int x = 10;\n    // Create reference, modify, print x\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    int x = 10;\n    int& ref = x;\n    ref = 99;\n    cout << x;\n    return 0;\n}",
+    expectedOutput: "99",
+    hint: "int& ref = x; ref = 99; — modifying ref changes x",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-08",
+    missionId: "cpp08-mission",
+    concept: "OOP I — Classes",
+    storyTitle: "The Blacksmith's Blueprint",
+    storyText: "Forge a hero template with name and health.",
+    language: "cpp",
+    challenge:
+      "Define class Hero with public string name and int hp. Create instance with name='Kael' hp=100. Print both.",
+    starterCode:
+      "#include <iostream>\n#include <string>\nusing namespace std;\n// Define Hero class\nint main() {\n    // Create and print\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <string>\nusing namespace std;\nclass Hero { public: string name; int hp; };\nint main() {\n    Hero h;\n    h.name="Kael"; h.hp=100;\n    cout << h.name << endl << h.hp;\n    return 0;\n}',
+    expectedOutput: "Kael\n100",
+    hint: "class Hero { public: string name; int hp; };",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-09",
+    missionId: "cpp09-mission",
+    concept: "OOP II — Inheritance",
+    storyTitle: "The Guild of Heroes",
+    storyText: "Pass a name down the lineage and add a bark of power.",
+    language: "cpp",
+    challenge:
+      "Define base class Animal with string name. Derive class Dog that adds void bark() printing 'Woof!'. Create Dog, set name='Rex', call bark().",
+    starterCode:
+      "#include <iostream>\n#include <string>\nusing namespace std;\n// Define Animal and Dog\nint main() {\n    // Create Dog and call bark\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <string>\nusing namespace std;\nclass Animal { public: string name; };\nclass Dog : public Animal { public: void bark() { cout << "Woof!"; } };\nint main() {\n    Dog d; d.name="Rex"; d.bark();\n    return 0;\n}',
+    expectedOutput: "Woof!",
+    hint: 'class Dog : public Animal { public: void bark() { cout << "Woof!"; } };',
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-10",
+    missionId: "cpp10-mission",
+    concept: "OOP III — Operator Overloading",
+    storyTitle: "The Arcane Calculator",
+    storyText: "Combine vectors with a single enchanted symbol.",
+    language: "cpp",
+    challenge:
+      "Define class Vec2 with int x, y. Overload operator+ to add two Vec2 objects. Create Vec2(1,2) + Vec2(3,4) and print x and y of result.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\n// Define Vec2 with operator+\nint main() {\n    // Add and print\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nclass Vec2 {\npublic:\n    int x,y;\n    Vec2(int x,int y):x(x),y(y){}\n    Vec2 operator+(Vec2 o){ return Vec2(x+o.x,y+o.y); }\n};\nint main() {\n    Vec2 r = Vec2(1,2)+Vec2(3,4);\n    cout << r.x << endl << r.y;\n    return 0;\n}",
+    expectedOutput: "4\n6",
+    hint: "Vec2 operator+(Vec2 o) { return Vec2(x+o.x, y+o.y); }",
+    xpBonus: 40,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-11",
+    missionId: "cpp11-mission",
+    concept: "Memory Management",
+    storyTitle: "The Conjured Storage",
+    storyText: "Summon memory, use it, and then release it.",
+    language: "cpp",
+    challenge:
+      "Use new to allocate an int with value 42. Print it. Then delete it.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    // new, print, delete\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    int* p = new int(42);\n    cout << *p;\n    delete p;\n    return 0;\n}",
+    expectedOutput: "42",
+    hint: "int* p = new int(42); cout << *p; delete p;",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-12",
+    missionId: "cpp12-mission",
+    concept: "STL Vectors",
+    storyTitle: "The Archive of Ancients",
+    storyText: "Count the relics and recall the last one.",
+    language: "cpp",
+    challenge:
+      "Create vector<string> items with 'sword', 'shield', 'potion'. Print the size and the last element.",
+    starterCode:
+      '#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\nint main() {\n    vector<string> items = {"sword","shield","potion"};\n    // Print size and last element\n    return 0;\n}\n',
+    solution:
+      '#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\nint main() {\n    vector<string> items={"sword","shield","potion"};\n    cout << items.size() << endl << items.back();\n    return 0;\n}',
+    expectedOutput: "3\npotion",
+    hint: "items.size() and items.back()",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-13",
+    missionId: "cpp13-mission",
+    concept: "STL Maps & Sets",
+    storyTitle: "The Royal Registry",
+    storyText: "Record scores in the royal ledger and read them back.",
+    language: "cpp",
+    challenge:
+      "Create map<string,int> scores. Add 'Kael'->95 and 'Aria'->87. Print Kael's score.",
+    starterCode:
+      "#include <iostream>\n#include <map>\n#include <string>\nusing namespace std;\nint main() {\n    map<string,int> scores;\n    // Add entries and print Kael's score\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <map>\n#include <string>\nusing namespace std;\nint main() {\n    map<string,int> scores;\n    scores["Kael"]=95; scores["Aria"]=87;\n    cout << scores["Kael"];\n    return 0;\n}',
+    expectedOutput: "95",
+    hint: 'scores["Kael"] = 95; cout << scores["Kael"];',
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-14",
+    missionId: "cpp14-mission",
+    concept: "STL Algorithms",
+    storyTitle: "The Tournament Ranking",
+    storyText: "Sort the contenders and read the champions.",
+    language: "cpp",
+    challenge:
+      "Sort vector<int> {5,2,8,1,9} using std::sort and print the first and last elements.",
+    starterCode:
+      "#include <iostream>\n#include <vector>\n#include <algorithm>\nusing namespace std;\nint main() {\n    vector<int> v = {5,2,8,1,9};\n    // Sort and print first and last\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\n#include <vector>\n#include <algorithm>\nusing namespace std;\nint main() {\n    vector<int> v={5,2,8,1,9};\n    sort(v.begin(),v.end());\n    cout << v.front() << endl << v.back();\n    return 0;\n}",
+    expectedOutput: "1\n9",
+    hint: "sort(v.begin(), v.end()); then v.front() and v.back()",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-15",
+    missionId: "cpp15-mission",
+    concept: "Templates",
+    storyTitle: "The Universal Forge",
+    storyText: "Craft a single tool that fits every material.",
+    language: "cpp",
+    challenge:
+      "Write a template function maxOf(a, b) that returns the larger of two values. Test with ints 3 and 7, print the result.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\n// Define template maxOf\nint main() {\n    // Test with 3 and 7\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\ntemplate<typename T>\nT maxOf(T a, T b) { return a > b ? a : b; }\nint main() { cout << maxOf(3,7); return 0; }",
+    expectedOutput: "7",
+    hint: "template<typename T> T maxOf(T a, T b) { return a > b ? a : b; }",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-16",
+    missionId: "cpp16-mission",
+    concept: "Exception Handling",
+    storyTitle: "The Trap Door",
+    storyText: "Catch the trap before it snaps shut.",
+    language: "cpp",
+    challenge:
+      "Throw a runtime_error inside a try block. Catch it and print 'Caught: ' followed by the error message.",
+    starterCode:
+      "#include <iostream>\n#include <stdexcept>\nusing namespace std;\nint main() {\n    // try/throw/catch\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <stdexcept>\nusing namespace std;\nint main() {\n    try { throw runtime_error("trap sprung"); }\n    catch(exception& e) { cout << "Caught: " << e.what(); }\n    return 0;\n}',
+    expectedOutput: "Caught: trap sprung",
+    hint: 'throw runtime_error("trap sprung"); catch(exception& e) { cout << e.what(); }',
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-17",
+    missionId: "cpp17-mission",
+    concept: "Smart Pointers",
+    storyTitle: "The Guarded Vault",
+    storyText: "Let a guardian manage the key automatically.",
+    language: "cpp",
+    challenge:
+      "Use unique_ptr<int> to allocate int value 77. Print the value via the pointer.",
+    starterCode:
+      "#include <iostream>\n#include <memory>\nusing namespace std;\nint main() {\n    // unique_ptr, assign 77, print\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\n#include <memory>\nusing namespace std;\nint main() {\n    auto p = make_unique<int>(77);\n    cout << *p;\n    return 0;\n}",
+    expectedOutput: "77",
+    hint: "auto p = make_unique<int>(77); cout << *p;",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-18",
+    missionId: "cpp18-mission",
+    concept: "Move Semantics",
+    storyTitle: "The Transfer Ritual",
+    storyText: "Shift ownership without copying the essence.",
+    language: "cpp",
+    challenge:
+      "Create string s1 = 'Syntaxia'. Move it into s2 using std::move. Print s2.",
+    starterCode:
+      '#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string s1 = "Syntaxia";\n    // Move into s2 and print s2\n    return 0;\n}\n',
+    solution:
+      '#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string s1="Syntaxia";\n    string s2=move(s1);\n    cout << s2;\n    return 0;\n}',
+    expectedOutput: "Syntaxia",
+    hint: "string s2 = move(s1); cout << s2;",
+    xpBonus: 45,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-19",
+    missionId: "cpp19-mission",
+    concept: "Lambda Expressions",
+    storyTitle: "The Lambda Forge",
+    storyText: "Shape a quick spell without naming it.",
+    language: "cpp",
+    challenge:
+      "Define a lambda multiply that takes two ints and returns their product. Print multiply(4, 5).",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    // Define lambda and print result\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nint main() {\n    auto multiply = [](int a, int b){ return a*b; };\n    cout << multiply(4,5);\n    return 0;\n}",
+    expectedOutput: "20",
+    hint: "auto multiply = [](int a, int b){ return a * b; };",
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-20",
+    missionId: "cpp20-mission",
+    concept: "File I/O",
+    storyTitle: "The Scribe's Archive",
+    storyText: "Write the record and read it back to confirm the seal.",
+    language: "cpp",
+    challenge:
+      "Write 'Archive entry' to archive.txt using ofstream. Read it back with ifstream and print.",
+    starterCode:
+      "#include <iostream>\n#include <fstream>\n#include <string>\nusing namespace std;\nint main() {\n    // Write then read archive.txt\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <fstream>\n#include <string>\nusing namespace std;\nint main() {\n    ofstream out("archive.txt");\n    out << "Archive entry";\n    out.close();\n    ifstream in("archive.txt");\n    string line;\n    getline(in,line);\n    cout << line;\n    return 0;\n}',
+    expectedOutput: "Archive entry",
+    hint: 'ofstream out("archive.txt"); out << "text"; then ifstream in; getline(in, line);',
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-21",
+    missionId: "cpp21-mission",
+    concept: "Multithreading",
+    storyTitle: "The Parallel Siege",
+    storyText: "Let a second team act while you hold the line.",
+    language: "cpp",
+    challenge:
+      "Create a thread that prints 'Thread running'. Join it and let it complete.",
+    starterCode:
+      "#include <iostream>\n#include <thread>\nusing namespace std;\nint main() {\n    // Create thread, join\n    return 0;\n}\n",
+    solution:
+      '#include <iostream>\n#include <thread>\nusing namespace std;\nvoid task() { cout << "Thread running"; }\nint main() {\n    thread t(task);\n    t.join();\n    return 0;\n}',
+    expectedOutput: "Thread running",
+    hint: "thread t(task); t.join();",
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-22",
+    missionId: "cpp22-mission",
+    concept: "Linked List",
+    storyTitle: "The Chain of Relics",
+    storyText: "Link the relics and walk the chain.",
+    language: "cpp",
+    challenge:
+      "Define struct Node with int val and Node* next. Build a 3-node list (1→2→3). Print each value by traversing from head.",
+    starterCode:
+      "#include <iostream>\nusing namespace std;\n// Define Node struct\nint main() {\n    // Build list and traverse\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\nusing namespace std;\nstruct Node { int val; Node* next; };\nint main() {\n    Node* n1=new Node{1,nullptr};\n    Node* n2=new Node{2,nullptr};\n    Node* n3=new Node{3,nullptr};\n    n1->next=n2; n2->next=n3;\n    Node* cur=n1;\n    while(cur){ cout<<cur->val<<endl; cur=cur->next; }\n    return 0;\n}",
+    expectedOutput: "1\n2\n3",
+    hint: "while(cur) { cout << cur->val << endl; cur = cur->next; }",
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-23",
+    missionId: "cpp23-mission",
+    concept: "Stack & Queue",
+    storyTitle: "The Dungeon Stack",
+    storyText: "Track the last room explored and the next one to enter.",
+    language: "cpp",
+    challenge:
+      "Use std::stack<int>. Push 1, 2, 3. Pop the top and print it. Then print the new top.",
+    starterCode:
+      "#include <iostream>\n#include <stack>\nusing namespace std;\nint main() {\n    stack<int> s;\n    // Push 1,2,3 then pop and print\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\n#include <stack>\nusing namespace std;\nint main() {\n    stack<int> s;\n    s.push(1); s.push(2); s.push(3);\n    cout << s.top() << endl;\n    s.pop();\n    cout << s.top();\n    return 0;\n}",
+    expectedOutput: "3\n2",
+    hint: "s.top() reads top without removing. s.pop() removes it.",
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-24",
+    missionId: "cpp24-mission",
+    concept: "Modern C++ Best Practices",
+    storyTitle: "The Master Codex",
+    storyText: "Let the codex guide you with concise modern form.",
+    language: "cpp",
+    challenge:
+      "Use auto and range-based for to iterate vector<int> {1,2,3,4,5} and print each value.",
+    starterCode:
+      "#include <iostream>\n#include <vector>\nusing namespace std;\nint main() {\n    vector<int> nums = {1,2,3,4,5};\n    // Use auto and range-based for\n    return 0;\n}\n",
+    solution:
+      "#include <iostream>\n#include <vector>\nusing namespace std;\nint main() {\n    vector<int> nums={1,2,3,4,5};\n    for(auto n: nums) cout << n << endl;\n    return 0;\n}",
+    expectedOutput: "1\n2\n3\n4\n5",
+    hint: "for(auto n : nums) cout << n << endl;",
+    xpBonus: 50,
+  },
+  {
+    courseId: "cpp",
+    lessonId: "cpp-25",
+    missionId: "cpp25-mission",
+    concept: "Reverse a String",
+    storyTitle: "The Mirror Rune",
+    storyText: "Flip the rune to reveal its mirrored form.",
+    language: "cpp",
+    challenge:
+      "Use std::reverse to reverse the string 'Syntaxia' and print it.",
+    starterCode:
+      '#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\nint main() {\n    string s = "Syntaxia";\n    // Reverse and print\n    return 0;\n}\n',
+    solution:
+      '#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\nint main() {\n    string s="Syntaxia";\n    reverse(s.begin(),s.end());\n    cout << s;\n    return 0;\n}',
+    expectedOutput: "aixatnyS",
+    hint: "reverse(s.begin(), s.end());",
+    xpBonus: 50,
+  },
 ];
 
 async function seedMissions() {
