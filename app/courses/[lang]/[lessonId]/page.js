@@ -85,6 +85,59 @@ export default function LessonPage() {
   const [missionData, setMissionData] = useState(null);
   const [videoLocked, setVideoLocked] = useState(false);
 
+  const loadMissionData = useCallback(
+    async (lessonData) => {
+      if (!lessonData) return null;
+      setMissionData(null);
+
+      if (lessonData.missionId) {
+        try {
+          const missionSnap = await getDoc(
+            doc(
+              db,
+              "courses",
+              lang,
+              "lessons",
+              lessonId,
+              "missions",
+              lessonData.missionId,
+            ),
+          );
+          if (missionSnap.exists()) {
+            const resolved = { id: missionSnap.id, ...missionSnap.data() };
+            setMissionData(resolved);
+            return resolved;
+          }
+        } catch (e) {
+          console.warn("No mission data found for this lesson");
+        }
+      }
+
+      try {
+        const missionsRef = collection(
+          db,
+          "courses",
+          lang,
+          "lessons",
+          lessonId,
+          "missions",
+        );
+        const missionSnap = await getDocs(query(missionsRef, limit(1)));
+        if (!missionSnap.empty) {
+          const docSnap = missionSnap.docs[0];
+          const resolved = { id: docSnap.id, ...docSnap.data() };
+          setMissionData(resolved);
+          return resolved;
+        }
+      } catch (e) {
+        console.warn("No mission data found for this lesson");
+      }
+
+      return null;
+    },
+    [lang, lessonId],
+  );
+
   // This triggers a timer whenever a video phase starts
   useEffect(() => {
     if (
@@ -110,27 +163,7 @@ export default function LessonPage() {
         const data = { id: snap.id, ...snap.data() };
         setLesson(data);
         setCode(data.starterCode ?? "");
-        // Load mission data if this lesson has one
-        if (data.missionId) {
-          try {
-            const missionSnap = await getDoc(
-              doc(
-                db,
-                "courses",
-                lang,
-                "lessons",
-                lessonId,
-                "missions",
-                data.missionId,
-              ),
-            );
-            if (missionSnap.exists()) {
-              setMissionData({ id: missionSnap.id, ...missionSnap.data() });
-            }
-          } catch (e) {
-            console.warn("No mission data found for this lesson");
-          }
-        }
+        await loadMissionData(data);
         if (data.language === "python")
           setOutput("⏳ Python runtime loads on first Run (~5s).");
         else if (data.language !== "linux")
@@ -228,8 +261,10 @@ export default function LessonPage() {
       );
       await updateLessonProgress(user.uid, lang, lesson.order);
 
+      const resolvedMission = missionData || (await loadMissionData(lesson));
+
       // Phase Shift: Go to V2 Outro if it exists, otherwise skip to results
-      if (missionData) {
+      if (resolvedMission) {
         setMissionPhase("mission-game");
       } else if (lesson.videoOutro) {
         setMissionPhase("outro");
