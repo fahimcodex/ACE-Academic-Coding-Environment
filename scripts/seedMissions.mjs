@@ -23,7 +23,15 @@ const seedPythonTo = process.env.SEED_PY_TO
   ? Number.parseInt(process.env.SEED_PY_TO.replace("py-", ""), 10)
   : null;
 
+const seedCourse = process.env.SEED_COURSE
+  ? process.env.SEED_COURSE.trim()
+  : null;
+
 const shouldSeedMission = (mission) => {
+  if (seedCourse && mission.courseId !== seedCourse) {
+    return false;
+  }
+
   if (seedPythonFrom === null && seedPythonTo === null) {
     return true;
   }
@@ -585,56 +593,58 @@ const missions = [
   {
     courseId: "c",
     lessonId: "c-01",
-    missionId: "c-vars-mission",
+    missionId: "c01-mission",
     concept: "Variables & Output",
     storyTitle: "The Lost Traveller",
-    storyText: "Same village, same gate. But this time the spell runs in C.",
+    storyText:
+      "The enchanted gate won't open without the visitor's name. The spell runs in C.",
     language: "c",
     challenge:
       'Declare a char array called visitor_name storing "Mira". Print: Hello, Mira!',
     starterCode:
-      "#include <stdio.h>\n\nint main() {\n    // Store the name and print a greeting\n    \n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    // Declare visitor_name and print greeting\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint main() {\n    char visitor_name[] = "Mira";\n    printf("Hello, %s!", visitor_name);\n    return 0;\n}',
     expectedOutput: "Hello, Mira!",
-    hint: 'Use char visitor_name[] = "Mira"; then printf("Hello, %s!", visitor_name);',
-    xpBonus: 40,
+    hint: 'char visitor_name[] = "Mira"; then printf("Hello, %s!", visitor_name);',
+    xpBonus: 30,
   },
   {
     courseId: "c",
     lessonId: "c-02",
-    missionId: "c-loops-mission",
-    concept: "Loops",
-    storyTitle: "The Enchanted Mill",
-    storyText: "The mill needs 5 grinds. Make it happen in C.",
+    missionId: "c02-mission",
+    concept: "Variables & Data Types",
+    storyTitle: "The Merchant's Ledger",
+    storyText:
+      "The merchant needs his inventory logged. He has 42 gold coins, a 3.5kg spice bag, and a grade of A.",
     language: "c",
-    challenge: "Write a for loop that prints 'Grinding...' exactly 5 times.",
+    challenge:
+      "Declare int coins = 42, float weight = 3.5, char grade = 'A'. Print all three on separate lines using correct format specifiers.",
     starterCode:
-      "#include <stdio.h>\n\nint main() {\n    // Loop 5 times\n    \n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    // Declare and print coins, weight, grade\n    return 0;\n}\n",
     solution:
-      '#include <stdio.h>\nint main() {\n    for(int i = 0; i < 5; i++) {\n        printf("Grinding...\\n");\n    }\n    return 0;\n}',
-    expectedOutput:
-      "Grinding...\nGrinding...\nGrinding...\nGrinding...\nGrinding...",
-    hint: 'Use for(int i = 0; i < 5; i++) { printf("Grinding...\\n"); }',
-    xpBonus: 40,
+      '#include <stdio.h>\nint main() {\n    int coins = 42;\n    float weight = 3.5;\n    char grade = \'A\';\n    printf("%d\\n", coins);\n    printf("%.1f\\n", weight);\n    printf("%c\\n", grade);\n    return 0;\n}',
+    expectedOutput: "42\n3.5\nA",
+    hint: "Use %d for int, %.1f for float, %c for char in printf.",
+    xpBonus: 30,
   },
   {
     courseId: "c",
     lessonId: "c-03",
-    missionId: "c-func-mission",
-    concept: "Functions",
-    storyTitle: "The Wizard's Workshop",
-    storyText: "The wizard needs a reusable fire-lighting function in C.",
+    missionId: "c03-mission",
+    concept: "User Input",
+    storyTitle: "The Gatekeeper's Question",
+    storyText:
+      "The gatekeeper asks for a number before letting anyone pass. The gate spell uses scanf to read it.",
     language: "c",
-    challenge:
-      "Define a void function light_fire(char* size) that prints 'Lighting a [size] fire!'. Call it with 'large'.",
+    challenge: "Declare int num = 7 (simulating input). Print: You entered: 7",
     starterCode:
-      '#include <stdio.h>\n\n// Define light_fire here\n\nint main() {\n    // Call it with "large"\n    return 0;\n}\n',
+      "#include <stdio.h>\n\nint main() {\n    int num = 7;\n    // Print: You entered: 7\n    return 0;\n}\n",
     solution:
-      '#include <stdio.h>\nvoid light_fire(char* size) {\n    printf("Lighting a %s fire!", size);\n}\nint main() {\n    light_fire("large");\n    return 0;\n}',
-    expectedOutput: "Lighting a large fire!",
-    hint: 'void light_fire(char* size) { printf("Lighting a %s fire!", size); }',
-    xpBonus: 45,
+      '#include <stdio.h>\nint main() {\n    int num = 7;\n    printf("You entered: %d", num);\n    return 0;\n}',
+    expectedOutput: "You entered: 7",
+    hint: 'printf("You entered: %d", num);',
+    xpBonus: 30,
   },
   {
     courseId: "c",
@@ -643,17 +653,17 @@ const missions = [
     concept: "Conditionals & Loops",
     storyTitle: "The Bridge of Choices",
     storyText:
-      "A gatekeeper checks your score before letting you cross the bridge.",
+      "The troll checks your score. High scorers pass freely, others pay a toll.",
     language: "c",
     challenge:
-      "Declare int score = 75. Use if/else if/else to print 'Pass' if >= 50, 'Fail' otherwise.",
+      "int score = 75 is declared. Use if/else to print 'Pass' if score >= 50, else print 'Fail'.",
     starterCode:
-      "#include <stdio.h>\nint main() {\n    int score = 75;\n    // if/else here\n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    int score = 75;\n    // if/else to print Pass or Fail\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint main() {\n    int score = 75;\n    if (score >= 50) printf("Pass");\n    else printf("Fail");\n    return 0;\n}',
     expectedOutput: "Pass",
     hint: 'if (score >= 50) printf("Pass"); else printf("Fail");',
-    xpBonus: 40,
+    xpBonus: 35,
   },
   {
     courseId: "c",
@@ -661,17 +671,18 @@ const missions = [
     missionId: "c05-mission",
     concept: "Arrays & Strings",
     storyTitle: "The Armoury Roster",
-    storyText: "Tally the weapons in the roster to prepare the armory.",
+    storyText:
+      "The armoury stores weapon power ratings. The blacksmith needs the total.",
     language: "c",
     challenge:
-      "Declare int weapons[] = {10, 20, 30}. Print the sum of all three elements.",
+      "int weapons[] = {10, 20, 30} is declared. Loop through it and print the sum.",
     starterCode:
-      "#include <stdio.h>\nint main() {\n    int weapons[] = {10, 20, 30};\n    // Print the sum\n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    int weapons[] = {10, 20, 30};\n    // Print the sum\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint main() {\n    int weapons[] = {10, 20, 30};\n    int sum = 0;\n    for(int i = 0; i < 3; i++) sum += weapons[i];\n    printf("%d", sum);\n    return 0;\n}',
     expectedOutput: "60",
-    hint: "Loop with for(int i=0; i<3; i++) and accumulate sum += weapons[i]",
-    xpBonus: 42,
+    hint: 'for(int i=0; i<3; i++) sum += weapons[i]; then printf("%d", sum);',
+    xpBonus: 35,
   },
   {
     courseId: "c",
@@ -679,17 +690,18 @@ const missions = [
     missionId: "c06-mission",
     concept: "Functions",
     storyTitle: "The Wizard's Workshop",
-    storyText: "Forge a reusable square spell for the workshop.",
+    storyText:
+      "The wizard needs a reusable squaring spell. Write it once, call it forever.",
     language: "c",
     challenge:
       "Define int square(int n) that returns n*n. Call it with 7 and print the result.",
     starterCode:
-      "#include <stdio.h>\n// Define square function\nint main() {\n    // Call and print\n    return 0;\n}\n",
+      "#include <stdio.h>\n\n// Define square function here\n\nint main() {\n    // Call square(7) and print\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint square(int n) { return n * n; }\nint main() {\n    printf("%d", square(7));\n    return 0;\n}',
     expectedOutput: "49",
-    hint: "int square(int n) { return n * n; }",
-    xpBonus: 44,
+    hint: 'int square(int n) { return n * n; } then printf("%d", square(7));',
+    xpBonus: 40,
   },
   {
     courseId: "c",
@@ -697,17 +709,18 @@ const missions = [
     missionId: "c07-mission",
     concept: "Pointers",
     storyTitle: "The Memory Maze",
-    storyText: "Follow the pointer through the maze to reveal the value.",
+    storyText:
+      "The dungeon map is stored at a memory address. Only those who know how to dereference can read it.",
     language: "c",
     challenge:
-      "Declare int x = 42. Create a pointer int *p = &x. Print the value using the pointer.",
+      "Declare int x = 42. Create pointer int *p = &x. Print the value using the pointer.",
     starterCode:
-      "#include <stdio.h>\nint main() {\n    int x = 42;\n    // Create pointer and print via pointer\n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    int x = 42;\n    // Create pointer and print via pointer\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint main() {\n    int x = 42;\n    int *p = &x;\n    printf("%d", *p);\n    return 0;\n}',
     expectedOutput: "42",
     hint: 'int *p = &x; then printf("%d", *p);',
-    xpBonus: 46,
+    xpBonus: 40,
   },
   {
     courseId: "c",
@@ -715,17 +728,18 @@ const missions = [
     missionId: "c08-mission",
     concept: "Dynamic Memory",
     storyTitle: "The Conjured Storage",
-    storyText: "Conjure memory for a single value and release it safely.",
+    storyText:
+      "The wizard conjures storage from thin air using malloc. Use it, then release it.",
     language: "c",
     challenge:
-      "Use malloc to allocate an int, assign value 99, print it, then free it.",
+      "Use malloc to allocate an int. Assign value 99, print it, then free it.",
     starterCode:
-      "#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    // malloc, assign, print, free\n    return 0;\n}\n",
+      "#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    // malloc, assign 99, print, free\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*)malloc(sizeof(int));\n    *p = 99;\n    printf("%d", *p);\n    free(p);\n    return 0;\n}',
     expectedOutput: "99",
     hint: 'int *p = (int*)malloc(sizeof(int)); *p = 99; printf("%d", *p); free(p);',
-    xpBonus: 48,
+    xpBonus: 45,
   },
   {
     courseId: "c",
@@ -733,17 +747,18 @@ const missions = [
     missionId: "c09-mission",
     concept: "Structs",
     storyTitle: "The Blacksmith's Blueprint",
-    storyText: "Stamp a hero blueprint with name and health for the forge.",
+    storyText:
+      "The blacksmith needs a blueprint for heroes - a struct that groups name and HP.",
     language: "c",
     challenge:
-      "Define a struct Hero with char name[20] and int hp. Create one with name 'Kael' and hp 100. Print both fields.",
+      "Define struct Hero with int hp. Create one with hp = 100. Print: HP: 100",
     starterCode:
-      "#include <stdio.h>\n// Define Hero struct\nint main() {\n    // Create instance and print\n    return 0;\n}\n",
+      "#include <stdio.h>\n\n// Define Hero struct here\n\nint main() {\n    // Create Hero and print hp\n    return 0;\n}\n",
     solution:
-      '#include <stdio.h>\nstruct Hero { char name[20]; int hp; };\nint main() {\n    struct Hero h;\n    h.hp = 100;\n    printf("Kael\\n%d", h.hp);\n    return 0;\n}',
-    expectedOutput: "Kael\n100",
-    hint: 'struct Hero h; strcpy(h.name, "Kael"); h.hp = 100;',
-    xpBonus: 50,
+      '#include <stdio.h>\nstruct Hero { int hp; };\nint main() {\n    struct Hero h;\n    h.hp = 100;\n    printf("HP: %d", h.hp);\n    return 0;\n}',
+    expectedOutput: "HP: 100",
+    hint: 'struct Hero { int hp; }; then struct Hero h; h.hp = 100; printf("HP: %d", h.hp);',
+    xpBonus: 45,
   },
   {
     courseId: "c",
@@ -751,16 +766,17 @@ const missions = [
     missionId: "c10-mission",
     concept: "File Handling",
     storyTitle: "The Scribe's Archive",
-    storyText: "Record the quest result and read it back to confirm the ink.",
+    storyText:
+      "The royal scribe must record the quest log to a file and read it back for the king.",
     language: "c",
     challenge:
-      "Open a file quest.txt for writing, write 'Quest complete', close it. Then open for reading and print the content.",
+      "Open quest.txt for writing, write 'Quest complete', close it. Then open for reading and print the content.",
     starterCode:
-      "#include <stdio.h>\nint main() {\n    // Write then read quest.txt\n    return 0;\n}\n",
+      "#include <stdio.h>\n\nint main() {\n    // Write then read quest.txt\n    return 0;\n}\n",
     solution:
       '#include <stdio.h>\nint main() {\n    FILE *f = fopen("quest.txt", "w");\n    fprintf(f, "Quest complete");\n    fclose(f);\n    f = fopen("quest.txt", "r");\n    char buf[50];\n    fgets(buf, 50, f);\n    printf("%s", buf);\n    fclose(f);\n    return 0;\n}',
     expectedOutput: "Quest complete",
-    hint: 'FILE *f = fopen("quest.txt", "w"); fprintf(f, ...); fclose(f);',
+    hint: 'FILE *f = fopen("quest.txt", "w"); fprintf(f, "Quest complete"); fclose(f);',
     xpBonus: 50,
   },
   {
