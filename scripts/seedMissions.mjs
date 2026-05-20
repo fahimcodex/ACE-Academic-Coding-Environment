@@ -637,6 +637,133 @@ const missions = [
     xpBonus: 45,
   },
   {
+    courseId: "c",
+    lessonId: "c-04",
+    missionId: "c04-mission",
+    concept: "Conditionals & Loops",
+    storyTitle: "The Bridge of Choices",
+    storyText:
+      "A gatekeeper checks your score before letting you cross the bridge.",
+    language: "c",
+    challenge:
+      "Declare int score = 75. Use if/else if/else to print 'Pass' if >= 50, 'Fail' otherwise.",
+    starterCode:
+      "#include <stdio.h>\nint main() {\n    int score = 75;\n    // if/else here\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nint main() {\n    int score = 75;\n    if (score >= 50) printf("Pass");\n    else printf("Fail");\n    return 0;\n}',
+    expectedOutput: "Pass",
+    hint: 'if (score >= 50) printf("Pass"); else printf("Fail");',
+    xpBonus: 40,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-05",
+    missionId: "c05-mission",
+    concept: "Arrays & Strings",
+    storyTitle: "The Armoury Roster",
+    storyText: "Tally the weapons in the roster to prepare the armory.",
+    language: "c",
+    challenge:
+      "Declare int weapons[] = {10, 20, 30}. Print the sum of all three elements.",
+    starterCode:
+      "#include <stdio.h>\nint main() {\n    int weapons[] = {10, 20, 30};\n    // Print the sum\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nint main() {\n    int weapons[] = {10, 20, 30};\n    int sum = 0;\n    for(int i = 0; i < 3; i++) sum += weapons[i];\n    printf("%d", sum);\n    return 0;\n}',
+    expectedOutput: "60",
+    hint: "Loop with for(int i=0; i<3; i++) and accumulate sum += weapons[i]",
+    xpBonus: 42,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-06",
+    missionId: "c06-mission",
+    concept: "Functions",
+    storyTitle: "The Wizard's Workshop",
+    storyText: "Forge a reusable square spell for the workshop.",
+    language: "c",
+    challenge:
+      "Define int square(int n) that returns n*n. Call it with 7 and print the result.",
+    starterCode:
+      "#include <stdio.h>\n// Define square function\nint main() {\n    // Call and print\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nint square(int n) { return n * n; }\nint main() {\n    printf("%d", square(7));\n    return 0;\n}',
+    expectedOutput: "49",
+    hint: "int square(int n) { return n * n; }",
+    xpBonus: 44,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-07",
+    missionId: "c07-mission",
+    concept: "Pointers",
+    storyTitle: "The Memory Maze",
+    storyText: "Follow the pointer through the maze to reveal the value.",
+    language: "c",
+    challenge:
+      "Declare int x = 42. Create a pointer int *p = &x. Print the value using the pointer.",
+    starterCode:
+      "#include <stdio.h>\nint main() {\n    int x = 42;\n    // Create pointer and print via pointer\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nint main() {\n    int x = 42;\n    int *p = &x;\n    printf("%d", *p);\n    return 0;\n}',
+    expectedOutput: "42",
+    hint: 'int *p = &x; then printf("%d", *p);',
+    xpBonus: 46,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-08",
+    missionId: "c08-mission",
+    concept: "Dynamic Memory",
+    storyTitle: "The Conjured Storage",
+    storyText: "Conjure memory for a single value and release it safely.",
+    language: "c",
+    challenge:
+      "Use malloc to allocate an int, assign value 99, print it, then free it.",
+    starterCode:
+      "#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    // malloc, assign, print, free\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*)malloc(sizeof(int));\n    *p = 99;\n    printf("%d", *p);\n    free(p);\n    return 0;\n}',
+    expectedOutput: "99",
+    hint: 'int *p = (int*)malloc(sizeof(int)); *p = 99; printf("%d", *p); free(p);',
+    xpBonus: 48,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-09",
+    missionId: "c09-mission",
+    concept: "Structs",
+    storyTitle: "The Blacksmith's Blueprint",
+    storyText: "Stamp a hero blueprint with name and health for the forge.",
+    language: "c",
+    challenge:
+      "Define a struct Hero with char name[20] and int hp. Create one with name 'Kael' and hp 100. Print both fields.",
+    starterCode:
+      "#include <stdio.h>\n// Define Hero struct\nint main() {\n    // Create instance and print\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nstruct Hero { char name[20]; int hp; };\nint main() {\n    struct Hero h;\n    h.hp = 100;\n    printf("Kael\\n%d", h.hp);\n    return 0;\n}',
+    expectedOutput: "Kael\n100",
+    hint: 'struct Hero h; strcpy(h.name, "Kael"); h.hp = 100;',
+    xpBonus: 50,
+  },
+  {
+    courseId: "c",
+    lessonId: "c-10",
+    missionId: "c10-mission",
+    concept: "File Handling",
+    storyTitle: "The Scribe's Archive",
+    storyText: "Record the quest result and read it back to confirm the ink.",
+    language: "c",
+    challenge:
+      "Open a file quest.txt for writing, write 'Quest complete', close it. Then open for reading and print the content.",
+    starterCode:
+      "#include <stdio.h>\nint main() {\n    // Write then read quest.txt\n    return 0;\n}\n",
+    solution:
+      '#include <stdio.h>\nint main() {\n    FILE *f = fopen("quest.txt", "w");\n    fprintf(f, "Quest complete");\n    fclose(f);\n    f = fopen("quest.txt", "r");\n    char buf[50];\n    fgets(buf, 50, f);\n    printf("%s", buf);\n    fclose(f);\n    return 0;\n}',
+    expectedOutput: "Quest complete",
+    hint: 'FILE *f = fopen("quest.txt", "w"); fprintf(f, ...); fclose(f);',
+    xpBonus: 50,
+  },
+  {
     courseId: "cpp",
     lessonId: "cpp-01",
     missionId: "cpp-vars-mission",
